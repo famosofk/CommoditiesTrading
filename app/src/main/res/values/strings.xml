@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">ProjetoAziz</string>
+    <string name="login_intro">LOGIN</string>
+    <string name="signin_intro">Sign in</string>
+    <string name="tipo_cadastro_intro">Escolha o seu tipo de conta</string>
+    <string name="professor_intro">Professor</string>
+    <string name="aluno_intro">Aluno</string>
+    <string name="nome_intro">NOME</string>
+    <string name="cifrao_intro">R$:    </string>
+    <string name="sobrenome_intro">SOBRENOME</string>
+    <string name="universidade_intro">"UNIVERSIDADE "</string>
+    <string name="email_intro">EMAIL</string>
+    <string name="senha_intro">SENHA</string>
+    <string name="nome_hint_intro">Primeiro nome</string>
+    <string name="sobrenome_hint_intro">Último nome</string>
+    <string name="universidade_hint_intro">Sigla apenas. (Ex: UFV, UFMG, USP)</string>
+    <string name="email_hint_intro">example@domain.com</string>
+    <string name="senha_hint_intro">Mínimo de 6 caracteres</string>
+    <string name="professor_selecionado_intro">"Professor selecionado:   "</string>
+    <string name="matricula_cadastro_intro">MATRICULA</string>
+    <string name="selecionar_professor_intro">Clique para selecionar um professor</string>
+    <string name="matricula_hint_intro">Apenas números. (Ex: 00000, 99999)</string>
+    <string name="algodao">Algodão</string>
+    <string name="amendoim">Amendoim</string>
+    <string name="arroz">Arroz</string>
+    <string name="bezerro">Bezerro</string>
+    <string name="boiGordo">Boi gordo</string>
+    <string name="cafe">Café</string>
+    <string name="feijao">Feijão</string>
+    <string name="frango">Frango</string>
+    <string name="milho">Milho</string>
+    <string name="soja">Soja</string>
+    <string name="trigo">Trigo</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="valor_commodities">Valor das commodities</string>
+    <string name="comprar_intro">Comprar</string>
+    <string name="vender_button_intro">Vender</string>
+    <string name="central_venda_commodities_intro">Venda de commodities</string>
+
+    <string-array name="commodities">
+        <item name="Algodão" />
+        <item name="Amendoim" />
+        <item name="Arroz" />
+        <item name="Bezerro" />
+        <item name="Boi gordo" />
+        <item name="Café" />
+        <item name="Feijão" />
+        <item name="Frango" />
+        <item name="Milho" />
+        <item name="Soja" />
+        <item name="Trigo" />
+    </string-array>
+</resources>

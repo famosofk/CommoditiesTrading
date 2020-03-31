@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_cavalos"
+        android:icon="@drawable/ic_teste_icon"
+        android:title="Cotações" />
+
+
+    <item
+        android:id="@+id/navigation_receitas"
+        android:icon="@drawable/ic_teste_icon"
+        android:title="Receitas" />
+
+
+    <item
+        android:id="@+id/navigation_relatorios"
+        android:icon="@drawable/ic_teste_icon"
+        android:title="Relatorios" />
+
+</menu>
