@@ -5,6 +5,15 @@ import com.google.firebase.database.DatabaseReference;
 
 public class Professor extends Usuario {
 
+
+    private Boolean visibility;
+    private String codigoMonitor;
+
+
+    public Professor() {
+
+    }
+
     public void salvar() {
 
         DatabaseReference firebaseRef = ConfiguracaoDatabase.getFirebaseDatabase();
@@ -13,4 +22,23 @@ public class Professor extends Usuario {
         usuario.setValue(this);
 
     }
+
+
+    public String getCodigoMonitor() {
+        return codigoMonitor;
+    }
+
+    public void setCodigoMonitor(String codigoMonitor) {
+        this.codigoMonitor = codigoMonitor;
+    }
+
+    public Boolean getVisibility() {
+        return visibility;
+    }
+
+    public void setVisibility(Boolean visibility) {
+        this.visibility = visibility;
+    }
+
+
 }

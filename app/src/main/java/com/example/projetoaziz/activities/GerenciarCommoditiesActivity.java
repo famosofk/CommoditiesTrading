@@ -5,18 +5,17 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.projetoaziz.R;
-import com.example.projetoaziz.models.Commodities;
 
 public class GerenciarCommoditiesActivity extends AppCompatActivity {
 
-    Commodities listaCommodities;
+    //Commodities listaCommodities;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
 
-        if (bundle != null) {
+       /* if (bundle != null) {
             listaCommodities = (Commodities) bundle.getSerializable("lista");
 
             switch (listaCommodities.getAcao()) {
@@ -30,7 +29,7 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
                     gerenciarAcoes();
                     break;
             }
-        }
+        } */
 
 
     }

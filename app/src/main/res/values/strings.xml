@@ -20,6 +20,21 @@
     <string name="matricula_cadastro_intro">MATRICULA</string>
     <string name="selecionar_professor_intro">Clique para selecionar um professor</string>
     <string name="matricula_hint_intro">Apenas números. (Ex: 00000, 99999)</string>
+
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="valor_commodities">Valor das commodities</string>
+    <string name="comprar_intro">Comprar</string>
+    <string name="vender_button_intro">Vender</string>
+    <string name="central_venda_commodities_intro">Venda de commodities</string>
+    <string name="codigo_monitor_intro">CÓDIGO CADASTRO MONITOR</string>
+    <string name="lista_commodities_intro">LISTA DE COMMODITIES</string>
+
+
+    <!-- Daqui pra baixo irei colocar as strings que pertencem a arrays e arrays de string -->
+
     <string name="algodao">Algodão</string>
     <string name="amendoim">Amendoim</string>
     <string name="arroz">Arroz</string>
@@ -30,15 +45,8 @@
     <string name="frango">Frango</string>
     <string name="milho">Milho</string>
     <string name="soja">Soja</string>
+    <string name="sorgo">Sorgo</string>
     <string name="trigo">Trigo</string>
-
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="valor_commodities">Valor das commodities</string>
-    <string name="comprar_intro">Comprar</string>
-    <string name="vender_button_intro">Vender</string>
-    <string name="central_venda_commodities_intro">Venda de commodities</string>
 
     <string-array name="commodities">
         <item name="Algodão" />
@@ -51,6 +59,7 @@
         <item name="Frango" />
         <item name="Milho" />
         <item name="Soja" />
+        <item name="Sorgo" />
         <item name="Trigo" />
     </string-array>
 </resources>

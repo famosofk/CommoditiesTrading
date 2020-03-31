@@ -3,6 +3,8 @@ package com.example.projetoaziz.models;
 import com.example.projetoaziz.helpers.Base64Handler;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Usuario implements Serializable {
 
@@ -11,22 +13,14 @@ public class Usuario implements Serializable {
     private String sobrenome;
     private String email;
     private String universidade;
-    private int algodao;
-    private int amendoim;
-    private int arroz;
-    private int bezerro;
-    private int boiGordo;
-    private int cafe;
-    private int feijao;
-    private int frango;
-    private int milho;
-    private int soja;
-    private int trigo;
+    private List<Commodity> listaCommodities;
+    private int acao;
     private int creditos;
 
     public Usuario() {
-        algodao = amendoim = arroz = bezerro = boiGordo = cafe = feijao = frango = milho = soja = trigo = 0;
+        acao = 0;
         creditos = 0;
+        listaCommodities = new ArrayList<>();
     }
 
     public void atualizarID() {
@@ -73,92 +67,12 @@ public class Usuario implements Serializable {
         this.universidade = universidade;
     }
 
-    public int getAlgodao() {
-        return algodao;
+    public int getAcao() {
+        return acao;
     }
 
-    public void setAlgodao(int algodao) {
-        this.algodao = algodao;
-    }
-
-    public int getAmendoim() {
-        return amendoim;
-    }
-
-    public void setAmendoim(int amendoim) {
-        this.amendoim = amendoim;
-    }
-
-    public int getArroz() {
-        return arroz;
-    }
-
-    public void setArroz(int arroz) {
-        this.arroz = arroz;
-    }
-
-    public int getBezerro() {
-        return bezerro;
-    }
-
-    public void setBezerro(int bezerro) {
-        this.bezerro = bezerro;
-    }
-
-    public int getBoiGordo() {
-        return boiGordo;
-    }
-
-    public void setBoiGordo(int boiGordo) {
-        this.boiGordo = boiGordo;
-    }
-
-    public int getCafe() {
-        return cafe;
-    }
-
-    public void setCafe(int cafe) {
-        this.cafe = cafe;
-    }
-
-    public int getFeijao() {
-        return feijao;
-    }
-
-    public void setFeijao(int feijao) {
-        this.feijao = feijao;
-    }
-
-    public int getFrango() {
-        return frango;
-    }
-
-    public void setFrango(int frango) {
-        this.frango = frango;
-    }
-
-    public int getMilho() {
-        return milho;
-    }
-
-    public void setMilho(int milho) {
-        this.milho = milho;
-    }
-
-    public int getSoja() {
-        return soja;
-    }
-
-    public void setSoja(int soja) {
-        this.soja = soja;
-    }
-
-    public int getTrigo() {
-        return trigo;
-    }
-
-    public void setTrigo(int trigo) {
-        this.trigo = trigo;
+    public void setAcao(int acao) {
+        this.acao = acao;
     }
 
     public int getCreditos() {
@@ -167,5 +81,14 @@ public class Usuario implements Serializable {
 
     public void setCreditos(int creditos) {
         this.creditos = creditos;
+    }
+
+
+    public List<Commodity> getListaCommodities() {
+        return listaCommodities;
+    }
+
+    public void setListaCommodities(List<Commodity> listaCommodities) {
+        this.listaCommodities = listaCommodities;
     }
 }

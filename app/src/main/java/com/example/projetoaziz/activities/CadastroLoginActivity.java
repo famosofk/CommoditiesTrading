@@ -17,14 +17,12 @@ import com.example.projetoaziz.adapters.ListagemProfessorAdapter;
 import com.example.projetoaziz.adapters.RecyclerItemClickListener;
 import com.example.projetoaziz.helpers.ConfiguracaoDatabase;
 import com.example.projetoaziz.models.Aluno;
-import com.example.projetoaziz.models.Commodities;
 import com.example.projetoaziz.models.Professor;
 import com.example.projetoaziz.models.RegisterData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -127,6 +125,7 @@ public class CadastroLoginActivity extends AppCompatActivity {
         String UNIVERSIDADE = editUniversidade.getText().toString().trim().toUpperCase();
 
         professorCadastrando = new Professor();
+
         professorCadastrando.setEmail(EMAIL);
         professorCadastrando.setNome(editNome.getText().toString());
         professorCadastrando.setUniversidade(UNIVERSIDADE);
@@ -139,7 +138,6 @@ public class CadastroLoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
 
                             professorCadastrando.salvar();
-                            Commodities commodities = new Commodities();
 
                             DatabaseReference firebaseRef = ConfiguracaoDatabase.getFirebaseDatabase();
                             String nomeSobrenome = professorCadastrando.getNome() + " " + professorCadastrando.getSobrenome();
@@ -148,12 +146,8 @@ public class CadastroLoginActivity extends AppCompatActivity {
                             RegisterData data = new RegisterData(currentDate);
                             universidade.setValue(data);
 
-                            DatabaseReference preco = firebaseRef.child("cotacoes").child(professorCadastrando.getId());
-                            preco.setValue(commodities);
-
                             startActivity(new Intent(CadastroLoginActivity.this, MainActivity.class));
                             finish();
-
 
                         } else {
                             Toast.makeText(CadastroLoginActivity.this, "Não foi possível cadastra-lo.", Toast.LENGTH_SHORT).show();
@@ -213,11 +207,11 @@ public class CadastroLoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+       /* FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             Intent main = new Intent(CadastroLoginActivity.this, MainActivity.class);
             startActivity(main);
             finish();
-        }
+        }*/
     }
 }
