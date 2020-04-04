@@ -15,11 +15,11 @@ public class Usuario implements Serializable {
     private String universidade;
     private List<Commodity> listaCommodities;
     private int acao;
-    private int creditos;
+    private float creditos;
 
     public Usuario() {
         acao = 0;
-        creditos = 0;
+        creditos = (float) 100000.00;
         listaCommodities = new ArrayList<>();
     }
 
@@ -75,11 +75,11 @@ public class Usuario implements Serializable {
         this.acao = acao;
     }
 
-    public int getCreditos() {
+    public float getCreditos() {
         return creditos;
     }
 
-    public void setCreditos(int creditos) {
+    public void setCreditos(Float creditos) {
         this.creditos = creditos;
     }
 

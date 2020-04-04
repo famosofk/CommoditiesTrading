@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +48,7 @@ public class CadastroLoginActivity extends AppCompatActivity {
     private Aluno aluno;
     private Professor professorSelecionado;
     private List<Professor> listaProfessores = new ArrayList<>();
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +122,8 @@ public class CadastroLoginActivity extends AppCompatActivity {
     }
 
     public void cadastrarProfessor(View view) {
+        progressBar = findViewById(R.id.progressBar3);
+        progressBar.setVisibility(View.VISIBLE);
         List<Commodity> list = new ArrayList<>();
         EditText editNome = findViewById(R.id.nomeCadastroProfessor);
         EditText editEmail = findViewById(R.id.emailCadastroProfessor);
@@ -231,6 +235,7 @@ public class CadastroLoginActivity extends AppCompatActivity {
                             }
                         } else {
                             Toast.makeText(CadastroLoginActivity.this, "Não foi possível cadastra-lo.", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
                         }
                     }
                 });
@@ -240,6 +245,8 @@ public class CadastroLoginActivity extends AppCompatActivity {
 
 
     public void cadastrarAluno(View view) {
+        progressBar = findViewById(R.id.progressBar2);
+        progressBar.setVisibility(View.VISIBLE);
 
 
         aluno = new Aluno();
@@ -289,6 +296,7 @@ public class CadastroLoginActivity extends AppCompatActivity {
                                 });
                             }
                         } else {
+                            progressBar.setVisibility(View.GONE);
                             Toast.makeText(CadastroLoginActivity.this, "Não foi possível cadastra-lo.", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -300,11 +308,11 @@ public class CadastroLoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-      /*  FirebaseUser currentUser = mAuth.getCurrentUser();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             Intent main = new Intent(CadastroLoginActivity.this, MainActivity.class);
             startActivity(main);
             finish();
-        }*/
+        }
     }
 }

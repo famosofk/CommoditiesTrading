@@ -38,10 +38,14 @@ public class ListagemProfessorAdapter extends RecyclerView.Adapter<ListagemProfe
         holder.universidadeProfessor.setText(p.getUniversidade());
 
 
+
     }
 
     @Override
     public int getItemCount() {
         return list.size();
     }
+
+
 }
+

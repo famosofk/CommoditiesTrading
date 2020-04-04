@@ -70,7 +70,7 @@ public class ListagemCotacoesAdapter extends RecyclerView.Adapter<ListagemCotaco
                 holder.icone.setImageResource(R.drawable.soy);
                 break;
             case "Sorgo":
-                holder.icone.setImageResource(R.drawable.wheat);
+                holder.icone.setImageResource(R.drawable.sorghum);
                 break;
             case "Trigo":
                 holder.icone.setImageResource(R.drawable.wheatdraw);

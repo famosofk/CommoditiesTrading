@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projetoaziz.R;
 import com.example.projetoaziz.activities.CadastroLoginActivity;
+import com.example.projetoaziz.activities.GerenciarCommoditiesActivity;
 import com.example.projetoaziz.adapters.ListagemCotacoesAdapter;
 import com.example.projetoaziz.helpers.Base64Handler;
 import com.example.projetoaziz.helpers.ConfiguracaoDatabase;
@@ -38,7 +39,7 @@ import java.util.Objects;
  * A simple {@link Fragment} subclass.
  */
 public class OrdensFragment extends Fragment {
-    List<Commodity> listProfessor = new ArrayList<>();
+    RecyclerView recycler;
     private Professor professor = null;
     private Aluno aluno = null;
     private String idProfessor = null;
@@ -46,6 +47,8 @@ public class OrdensFragment extends Fragment {
     Boolean admin = false;
     private FirebaseUser user;
     private View v;
+    ListagemCotacoesAdapter adapter;
+    private List<Commodity> listProfessor = new ArrayList<>();
 
     public OrdensFragment() {
         // Required empty public constructor
@@ -77,6 +80,9 @@ public class OrdensFragment extends Fragment {
         //Nesse momento professor e email estão preenchidos e a listProfessorPopulada;
 
 
+        //adapter.getItemCount(); ->usamos para saber o número de childs
+
+
 
 
 
@@ -101,15 +107,9 @@ public class OrdensFragment extends Fragment {
         comprar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              /*  if (listaCommodities != null) {
-                    if (listaCommodities.isVisibility() || admin) {
-
-                        listaCommodities.setAcao(1);
                         Intent i = new Intent(getActivity(), GerenciarCommoditiesActivity.class);
-                        i.putExtra("lista", listaCommodities);
+                i.putExtra("acao", 1);
                         startActivity(i);
-                    }
-                }*/
             }
         });
 
@@ -199,10 +199,13 @@ public class OrdensFragment extends Fragment {
     }
 
     private void fazerListagem() {
-        RecyclerView recycler = v.findViewById(R.id.recyclerCommodities);
-        ListagemCotacoesAdapter adapter = new ListagemCotacoesAdapter(listProfessor, getActivity());
+        recycler = v.findViewById(R.id.recyclerCommodities);
+        adapter = new ListagemCotacoesAdapter(listProfessor, getActivity());
+
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         recycler.setAdapter(adapter);
+
+
     }
 
 
