@@ -125,7 +125,7 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/editCodigoMonitor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -157,37 +157,37 @@
                     android:orientation="vertical">
 
                     <CheckBox
-                        android:id="@+id/checkBox9"
+                        android:id="@+id/checkBoxAlgodao"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/algodao" />
 
                     <CheckBox
-                        android:id="@+id/checkBox7"
+                        android:id="@+id/checkBoxArroz"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/arroz" />
 
                     <CheckBox
-                        android:id="@+id/checkBox5"
+                        android:id="@+id/checkBoxBoi"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/boiGordo" />
 
                     <CheckBox
-                        android:id="@+id/checkBox3"
+                        android:id="@+id/checkBoxFeijao"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/feijao" />
 
                     <CheckBox
-                        android:id="@+id/checkBox"
+                        android:id="@+id/checkBoxMilho"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/milho" />
 
                     <CheckBox
-                        android:id="@+id/checkBox11"
+                        android:id="@+id/checkBoxSorgo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/sorgo" />
@@ -200,37 +200,37 @@
                     android:orientation="vertical">
 
                     <CheckBox
-                        android:id="@+id/checkBox10"
+                        android:id="@+id/checkBoxAmendoim"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/amendoim" />
 
                     <CheckBox
-                        android:id="@+id/checkBox8"
+                        android:id="@+id/checkBoxBezerro"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/bezerro" />
 
                     <CheckBox
-                        android:id="@+id/checkBox6"
+                        android:id="@+id/checkBoxCafe"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/cafe" />
 
                     <CheckBox
-                        android:id="@+id/checkBox4"
+                        android:id="@+id/checkBoxFrango"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/frango" />
 
                     <CheckBox
-                        android:id="@+id/checkBox2"
+                        android:id="@+id/checkBoxSoja"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/soja" />
 
                     <CheckBox
-                        android:id="@+id/checkBox12"
+                        android:id="@+id/checkBoxTrigo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/trigo" />

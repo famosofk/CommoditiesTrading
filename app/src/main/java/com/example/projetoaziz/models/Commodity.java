@@ -3,7 +3,7 @@ package com.example.projetoaziz.models;
 public class Commodity {
 
     private String nome;
-    private int valor;
+    private float valor;
     private int quantidade;
 
     public Commodity() {
@@ -14,9 +14,10 @@ public class Commodity {
 
     }
 
-    public Commodity(String nome, int valor) {
+    public Commodity(String nome, float valor) {
         this.nome = nome;
         this.valor = valor;
+        quantidade = 0;
     }
 
     public int getQuantidade() {
@@ -35,11 +36,11 @@ public class Commodity {
         this.nome = nome;
     }
 
-    public int getValor() {
+    public float getValor() {
         return valor;
     }
 
-    public void setValor(int valor) {
+    public void setValor(float valor) {
         this.valor = valor;
     }
 }
