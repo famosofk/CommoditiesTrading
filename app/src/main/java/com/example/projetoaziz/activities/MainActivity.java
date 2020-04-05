@@ -13,7 +13,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.projetoaziz.R;
-import com.example.projetoaziz.fragments.OrdensFragment;
+import com.example.projetoaziz.fragments.CotacoesFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         configuraNavigationBottom();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.viewPager, new OrdensFragment()).commit();
+        fragmentTransaction.replace(R.id.viewPager, new CotacoesFragment()).commit();
     }
 
     public void abrirPagina(View view) {
@@ -61,15 +61,15 @@ public class MainActivity extends AppCompatActivity {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 switch (menuItem.getItemId()) {
                     case R.id.navigation_cavalos:
-                        fragmentTransaction.replace(R.id.viewPager, new OrdensFragment()).commit();
+                        fragmentTransaction.replace(R.id.viewPager, new CotacoesFragment()).commit();
                         return true;
 
                     case R.id.navigation_receitas:
-                        fragmentTransaction.replace(R.id.viewPager, new OrdensFragment()).commit();
+                        fragmentTransaction.replace(R.id.viewPager, new CotacoesFragment()).commit();
                         return true;
 
                     case R.id.navigation_relatorios:
-                        fragmentTransaction.replace(R.id.viewPager, new OrdensFragment()).commit();
+                        fragmentTransaction.replace(R.id.viewPager, new CotacoesFragment()).commit();
                         return true;
                 }
                 return false;

@@ -284,6 +284,7 @@ public class CadastroLoginActivity extends AppCompatActivity {
                             if (user != null) {
                                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                         .setPhotoUri(uri)
+                                        .setDisplayName(aluno.getProfessorID())
                                         .build();
                                 user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override

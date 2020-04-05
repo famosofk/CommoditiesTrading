@@ -38,7 +38,7 @@ import java.util.Objects;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class OrdensFragment extends Fragment {
+public class CotacoesFragment extends Fragment {
     RecyclerView recycler;
     private Professor professor = null;
     private Aluno aluno = null;
@@ -50,7 +50,7 @@ public class OrdensFragment extends Fragment {
     ListagemCotacoesAdapter adapter;
     private List<Commodity> listProfessor = new ArrayList<>();
 
-    public OrdensFragment() {
+    public CotacoesFragment() {
         // Required empty public constructor
     }
 
@@ -117,15 +117,9 @@ public class OrdensFragment extends Fragment {
         vender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              /*  if (listaCommodities != null) {
-
-                    if (listaCommodities.isVisibility() || admin) {
-                        listaCommodities.setAcao(2);
-                        Intent i = new Intent(getActivity(), GerenciarCommoditiesActivity.class);
-                        i.putExtra("lista", listaCommodities);
-                        startActivity(i);
-                    }
-                }*/
+                Intent i = new Intent(getActivity(), GerenciarCommoditiesActivity.class);
+                i.putExtra("acao", 2);
+                startActivity(i);
             }
         });
 

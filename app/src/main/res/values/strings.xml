@@ -47,6 +47,9 @@
     <string name="soja">Soja</string>
     <string name="sorgo">Sorgo</string>
     <string name="trigo">Trigo</string>
+    <string name="confirmar_intro">Confirmar</string>
+    <string name="justificativa_intro">JUSTIFICATIVA</string>
+    <string name="vender_commodities_intro">Vender</string>
 
     <string-array name="commodities">
         <item name="Algodão" />

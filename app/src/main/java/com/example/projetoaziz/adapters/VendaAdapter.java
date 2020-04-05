@@ -17,19 +17,18 @@ import com.example.projetoaziz.models.Usuario;
 
 import java.util.List;
 
-public class CompraAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
+public class VendaAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
 
-    float diferenca = 0;
     private List<Commodity> listCompras;
     private Context c;
     private Usuario u;
+    private int maximo = 0;
     private int[] quantidades = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-    public CompraAdapter(List<Commodity> list, Context c, Usuario u) {
-        this.listCompras = list;
+    public VendaAdapter(List<Commodity> listCompras, Context c, Usuario u) {
+        this.listCompras = listCompras;
         this.c = c;
         this.u = u;
-
     }
 
     @NonNull
@@ -41,17 +40,12 @@ public class CompraAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final CompraVendaViewHolder holder, final int position) {
-
         Commodity commodity = listCompras.get(position);
+
         holder.nome.setText(commodity.getNome());
         holder.preco.setText(Float.toString(commodity.getValor()));
         String NOME = commodity.getNome();
-        if (commodity.getValor() != 0) {
-            int maximo = (int) (u.getCreditos() / commodity.getValor());
-            if (maximo > 0) {
-                holder.quantidade.setHint(Integer.toString(maximo));
-            }
-        }
+        holder.quantidade.setHint(Integer.toString(commodity.getQuantidade()));
         switch (NOME) {
             case "Algodão":
                 holder.icone.setImageResource(R.drawable.cotton);
@@ -108,36 +102,28 @@ public class CompraAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
 
                 if (!s.toString().isEmpty()) {
                     Commodity nova = listCompras.get(position);
-                    int quantidadeAntiga = nova.getQuantidade();
-                    quantidades[position] = Integer.parseInt(s.toString());
-                    nova.setQuantidade(Integer.parseInt(s.toString()));
-                    float gasto = calcularGastoTotal();
-                    float creditos = u.getCreditos();
-                    if (creditos > gasto) {
+                    maximo = Integer.parseInt(holder.quantidade.getHint().toString());
+                    int valorNovo = Integer.parseInt(s.toString());
+                    nova.setQuantidade(valorNovo);
+                    if (valorNovo <= maximo) {
                         listCompras.remove(position);
                         listCompras.add(position, nova);
-                        float diferenca = creditos - gasto;
-                        Toast.makeText(c, "Saldo restante: " + diferenca, Toast.LENGTH_SHORT).show();
-
+                        quantidades[position] = valorNovo;
+                        Toast.makeText(c, "Valor da venda: " + calcularLucroTotal(), Toast.LENGTH_SHORT).show();
                     } else {
-                        holder.quantidade.setText(Integer.toString(quantidadeAntiga));
-                        quantidades[position] = quantidadeAntiga;
+                        holder.quantidade.setText(Integer.toString(maximo));
+                        quantidades[position] = maximo;
                     }
                 } else {
                     quantidades[position] = 0;
-                    float diferenca = u.getCreditos() - calcularGastoTotal();
-                    Toast.makeText(c, "Saldo restante: " + diferenca, Toast.LENGTH_SHORT).show();
                 }
-
-
             }
         });
-
-
     }
 
     @Override
     public int getItemCount() {
+
         return listCompras.size();
     }
 
@@ -146,10 +132,12 @@ public class CompraAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
     }
 
 
-    public float calcularGastoTotal() {
+    public float calcularLucroTotal() {
         float value = 0;
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < listCompras.size(); i++)
             value += quantidades[i] * listCompras.get(i).getValor();
         return value;
     }
+
+
 }
