@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projetoaziz.R;
 import com.example.projetoaziz.activities.CadastroLoginActivity;
+import com.example.projetoaziz.adapters.OrdensAdapter;
 import com.example.projetoaziz.adapters.PosseAdapter;
 import com.example.projetoaziz.helpers.Base64Handler;
 import com.example.projetoaziz.helpers.ConfiguracaoDatabase;
@@ -89,31 +90,15 @@ public class OrdensFragment extends Fragment {
                     aluno = dataSnapshot.getValue(Aluno.class);
                     assert aluno != null;
                     idProfessor = aluno.getProfessorID();
-                    DatabaseReference busca = FirebaseDatabase.getInstance().getReference().child("professor").child(idProfessor);
-                    busca.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            professor = dataSnapshot.getValue(Professor.class);
-                            assert professor != null;
-                            List<Commodity> listRecuperacao = new ArrayList<>();
-                            listRecuperacao = aluno.getListaCommodities();
-                            for (int i = 0; i < listRecuperacao.size(); i++) {
-                                Commodity c = listRecuperacao.get(i);
-                                if (c.getQuantidade() != 0) {
-                                    listProfessor.add(c);
-                                }
-                            }
-                            popularTela();
+                    DatabaseReference busca = FirebaseDatabase.getInstance().getReference().child("aluno").child(aluno.getId());
+                    List<Commodity> listRecuperacao = aluno.getListaCommodities();
+                    for (int i = 0; i < listRecuperacao.size(); i++) {
+                        Commodity c = listRecuperacao.get(i);
+                        if (c.getQuantidade() != 0) {
+                            listProfessor.add(c);
                         }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-
-
-                    listProfessor = aluno.getListaCommodities();
+                    }
+                    popularTela();
                 } else {
                     Toast.makeText(getActivity(), "Registro não encontrado.", Toast.LENGTH_SHORT).show();
                 }
@@ -179,7 +164,6 @@ public class OrdensFragment extends Fragment {
         }
         nome.setText(NOME);
         creditos.setText(CREDITOS);
-        Toast.makeText(getActivity(), "" + listProfessor.size(), Toast.LENGTH_SHORT).show();
         recyclerPropriedades = v.findViewById(R.id.recyclerPosses);
         PosseAdapter adapter = new PosseAdapter(listProfessor, getActivity());
         recyclerPropriedades.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -203,8 +187,9 @@ public class OrdensFragment extends Fragment {
                         recuperada = dsp.getValue(Ordens.class);
                         listaOrdens.add(recuperada);
                     }
-
-                    //fazer configuração da exibição de ordens;
+                    OrdensAdapter adapter = new OrdensAdapter(listaOrdens, getActivity());
+                    recyclerOrdens.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    recyclerOrdens.setAdapter(adapter);
 
                 }
 
@@ -221,9 +206,9 @@ public class OrdensFragment extends Fragment {
                     for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                         recuperada = dsp.getValue(Ordens.class);
                         listaOrdens.add(recuperada);
-                        //nesse ponto tenho todas
 
                     }
+
                 }
 
                 @Override
@@ -244,6 +229,12 @@ public class OrdensFragment extends Fragment {
                             }
                         }
                     }
+
+                    OrdensAdapter adapter = new OrdensAdapter(listaOrdens, getActivity());
+                    recyclerOrdens.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    recyclerOrdens.setAdapter(adapter);
+
+
                 }
 
                 @Override
@@ -251,7 +242,6 @@ public class OrdensFragment extends Fragment {
                 }
             });
         }
-        //nesse ponto vai ter a lista completa tanto pra professor quanto pra aluno
 
 
     }

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundPadrao"
     tools:context=".fragments.OrdensFragment">
 
     <ScrollView
@@ -23,19 +24,21 @@
 
                 <TextView
                     android:id="@+id/nomeOrdens"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Nome e Sobrenome"
+                    android:textAlignment="center"
                     android:textColor="@android:color/black"
                     android:textSize="21sp" />
 
                 <TextView
                     android:id="@+id/creditoOrdens"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="creditos"
+                    android:textAlignment="center"
                     android:textColor="@android:color/black"
                     android:textSize="21sp" />
 
@@ -45,11 +48,12 @@
                 android:id="@+id/textView19"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="10dp"
                 android:gravity="center"
                 android:text="Propriedades"
                 android:textColor="@android:color/black"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textStyle="italic" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerPosses"
@@ -62,11 +66,12 @@
                 android:id="@+id/textView23"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="20dp"
                 android:text="Ordens"
                 android:textAlignment="center"
                 android:textColor="@android:color/black"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textStyle="italic" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recylerOrdens"

@@ -11,6 +11,7 @@ public class Ordens {
     String idOrdem;
     String dados;
     String justificativa;
+    String matricula = "Professor";
     String data;
     int tipo;
 
@@ -19,6 +20,14 @@ public class Ordens {
         String currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
         setData(currentDate);
 
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
     }
 
     public String getData() {

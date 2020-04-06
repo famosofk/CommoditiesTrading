@@ -39,8 +39,10 @@ public class PosseAdapter extends RecyclerView.Adapter<PossesViewholder> {
         holder.nome.setText(commodity.getNome());
         holder.preco.setText(Float.toString(commodity.getValor()));
         String NOME = commodity.getNome();
+        float dinheiro = commodity.getQuantidade() * commodity.getValor();
         holder.quantidade.setText(Integer.toString(commodity.getQuantidade()));
-        holder.preco.setText(Float.toString(commodity.getQuantidade() * commodity.getValor()));
+        holder.preco.setText(String.format("%.2f", dinheiro));
+
 
         switch (NOME) {
             case "Algodão":

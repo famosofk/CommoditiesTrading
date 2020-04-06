@@ -131,6 +131,7 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
                 }//no final disso tenho os dados da compra em uma string
                 Ordens ordem = new Ordens();
                 ordem.setTipo("compra");
+                ordem.setMatricula(aluno.getMatricula());
                 ordem.setIdDono(aluno.getId());
                 ordem.setDados(detalhes); //nesse ponto tenho a ordem atualizada, basta salvar as coisas no banco agora.
                 EditText justificativa = findViewById(R.id.justificativaCompra);
@@ -238,6 +239,7 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
                 EditText justificativa = findViewById(R.id.justificativaVenda);
                 ordem.setJustificativa(justificativa.getText().toString());
                 ordem.setDados(detalhes);
+                ordem.setMatricula(aluno.getMatricula());
                 db = FirebaseDatabase.getInstance().getReference().child("ordens").child(idProfessor).child(ordem.getIdDono()).child(ordem.getIdOrdem());
                 db.setValue(ordem);
                 professor.salvar();
