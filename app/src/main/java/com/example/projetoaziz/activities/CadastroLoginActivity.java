@@ -265,6 +265,7 @@ public class CadastroLoginActivity extends AppCompatActivity {
         aluno.setMatricula(matriculaAluno.getText().toString());
         aluno.atualizarID();
         aluno.setProfessorID(professorSelecionado.getId());
+        aluno.setListaCommodities(professorSelecionado.getListaCommodities());
 
 
         mAuth.createUserWithEmailAndPassword(aluno.getEmail(), senhaAluno.getText().toString())

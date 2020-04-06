@@ -1,4 +1,4 @@
-package com.example.projetoaziz.adapters;
+package com.example.projetoaziz.viewholders;
 
 import android.view.View;
 import android.widget.EditText;

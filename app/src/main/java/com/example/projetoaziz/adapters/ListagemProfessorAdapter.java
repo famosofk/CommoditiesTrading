@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projetoaziz.R;
 import com.example.projetoaziz.models.Professor;
+import com.example.projetoaziz.viewholders.ListagemProfessorViewHolder;
 
 import java.util.List;
 

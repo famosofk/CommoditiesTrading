@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.projetoaziz.R;
 import com.example.projetoaziz.models.Commodity;
 import com.example.projetoaziz.models.Usuario;
+import com.example.projetoaziz.viewholders.CompraVendaViewHolder;
 
 import java.util.List;
 

@@ -40,14 +40,14 @@ import java.util.Objects;
  */
 public class CotacoesFragment extends Fragment {
     RecyclerView recycler;
+    Boolean admin = false;
+    ListagemCotacoesAdapter adapter;
     private Professor professor = null;
     private Aluno aluno = null;
     private String idProfessor = null;
     private DatabaseReference db;
-    Boolean admin = false;
     private FirebaseUser user;
     private View v;
-    ListagemCotacoesAdapter adapter;
     private List<Commodity> listProfessor = new ArrayList<>();
 
     public CotacoesFragment() {
@@ -58,7 +58,7 @@ public class CotacoesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_ordens, container, false);
+        v = inflater.inflate(R.layout.fragment_cotacoes, container, false);
         ImageButton editar = v.findViewById(R.id.imageView3);
 
 
@@ -77,17 +77,6 @@ public class CotacoesFragment extends Fragment {
                 recuperarProfessor();
             }
         }
-        //Nesse momento professor e email estão preenchidos e a listProfessorPopulada;
-
-
-        //adapter.getItemCount(); ->usamos para saber o número de childs
-
-
-
-
-
-
-
 
         editar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,9 +96,10 @@ public class CotacoesFragment extends Fragment {
         comprar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                        Intent i = new Intent(getActivity(), GerenciarCommoditiesActivity.class);
+                Intent i = new Intent(getActivity(), GerenciarCommoditiesActivity.class);
                 i.putExtra("acao", 1);
-                        startActivity(i);
+                startActivity(i);
+                getActivity().finish();
             }
         });
 
@@ -120,6 +110,7 @@ public class CotacoesFragment extends Fragment {
                 Intent i = new Intent(getActivity(), GerenciarCommoditiesActivity.class);
                 i.putExtra("acao", 2);
                 startActivity(i);
+                getActivity().finish();
             }
         });
 
@@ -143,6 +134,7 @@ public class CotacoesFragment extends Fragment {
                             professor = dataSnapshot.getValue(Professor.class);
                             assert professor != null;
                             listProfessor = professor.getListaCommodities();
+                            fazerListagem();
                         }
 
                         @Override
@@ -195,7 +187,6 @@ public class CotacoesFragment extends Fragment {
     private void fazerListagem() {
         recycler = v.findViewById(R.id.recyclerCommodities);
         adapter = new ListagemCotacoesAdapter(listProfessor, getActivity());
-
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         recycler.setAdapter(adapter);
 

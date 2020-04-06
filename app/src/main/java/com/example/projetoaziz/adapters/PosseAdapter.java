@@ -10,34 +10,37 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projetoaziz.R;
 import com.example.projetoaziz.models.Commodity;
-import com.example.projetoaziz.viewholders.ListagemCotacoesViewHolder;
+import com.example.projetoaziz.viewholders.PossesViewholder;
 
 import java.util.List;
 
-public class ListagemCotacoesAdapter extends RecyclerView.Adapter<ListagemCotacoesViewHolder> {
+public class PosseAdapter extends RecyclerView.Adapter<PossesViewholder> {
 
     private List<Commodity> list;
     private Context c;
 
-    public ListagemCotacoesAdapter(List<Commodity> list, Context c) {
+    public PosseAdapter(List<Commodity> list, Context c) {
         this.list = list;
         this.c = c;
+
     }
 
     @NonNull
     @Override
-    public ListagemCotacoesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_listagem_cotacao, parent, false);
-
-        return new ListagemCotacoesViewHolder(view);
+    public PossesViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_listagem_posses, parent, false);
+        return new PossesViewholder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListagemCotacoesViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PossesViewholder holder, int position) {
+
         Commodity commodity = list.get(position);
-        String NOME = commodity.getNome();
-        holder.nome.setText(NOME);
+        holder.nome.setText(commodity.getNome());
         holder.preco.setText(Float.toString(commodity.getValor()));
+        String NOME = commodity.getNome();
+        holder.quantidade.setText(Integer.toString(commodity.getQuantidade()));
+        holder.preco.setText(Float.toString(commodity.getQuantidade() * commodity.getValor()));
 
         switch (NOME) {
             case "Algodão":
@@ -78,7 +81,6 @@ public class ListagemCotacoesAdapter extends RecyclerView.Adapter<ListagemCotaco
                 break;
 
         }
-
 
     }
 

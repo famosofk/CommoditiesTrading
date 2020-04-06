@@ -1,19 +1,37 @@
 package com.example.projetoaziz.models;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 public class Ordens {
 
     String idDono;
     String idOrdem;
-    int tipo;
     String dados;
     String justificativa;
+    String data;
+    int tipo;
 
     public Ordens() {
-
         idOrdem = UUID.randomUUID().toString();
+        String currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
+        setData(currentDate);
 
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+
+    public void setIdOrdem(String idOrdem) {
+        this.idOrdem = idOrdem;
     }
 
     public String getJustificativa() {

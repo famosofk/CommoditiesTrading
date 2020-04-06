@@ -291,7 +291,7 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
                     aluno = dataSnapshot.getValue(Aluno.class);
                     assert aluno != null;
                     listProfessor = aluno.getListaCommodities();
-                    idProfessor = professor.getId();
+                    idProfessor = aluno.getProfessorID();
                     if (value == 1) {
 
                         compraAcoesAluno();
