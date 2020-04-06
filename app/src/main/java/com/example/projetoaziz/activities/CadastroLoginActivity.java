@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ProgressBar;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,7 +48,7 @@ public class CadastroLoginActivity extends AppCompatActivity {
     private Aluno aluno;
     private Professor professorSelecionado;
     private List<Professor> listaProfessores = new ArrayList<>();
-    private ProgressBar progressBar;
+    private LinearLayout progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +122,7 @@ public class CadastroLoginActivity extends AppCompatActivity {
     }
 
     public void cadastrarProfessor(View view) {
-        progressBar = findViewById(R.id.progressBar3);
+        progressBar = findViewById(R.id.layoutProgressBar1);
         progressBar.setVisibility(View.VISIBLE);
         List<Commodity> list = new ArrayList<>();
         EditText editNome = findViewById(R.id.nomeCadastroProfessor);
@@ -245,7 +245,7 @@ public class CadastroLoginActivity extends AppCompatActivity {
 
 
     public void cadastrarAluno(View view) {
-        progressBar = findViewById(R.id.progressBar2);
+        progressBar = findViewById(R.id.layoutProgressBar2);
         progressBar.setVisibility(View.VISIBLE);
 
 
@@ -313,8 +313,8 @@ public class CadastroLoginActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             Intent main = new Intent(CadastroLoginActivity.this, MainActivity.class);
-            startActivity(main);
-            finish();
+            //startActivity(main);
+            //finish();
         }
     }
 }
