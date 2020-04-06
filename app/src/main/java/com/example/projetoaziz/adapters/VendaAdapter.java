@@ -23,12 +23,18 @@ public class VendaAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
     private Context c;
     private Usuario u;
     private int maximo = 0;
-    private int[] quantidades = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    private int[] quantidades, originais;
 
     public VendaAdapter(List<Commodity> listCompras, Context c, Usuario u) {
         this.listCompras = listCompras;
         this.c = c;
         this.u = u;
+        originais = new int[listCompras.size()];
+        quantidades = new int[listCompras.size()];
+        for (int i = 0; i < listCompras.size(); i++) {
+            originais[i] = listCompras.get(i).getQuantidade();
+            quantidades[i] = 0;
+        }
     }
 
     @NonNull
@@ -104,7 +110,8 @@ public class VendaAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
                     Commodity nova = listCompras.get(position);
                     maximo = Integer.parseInt(holder.quantidade.getHint().toString());
                     int valorNovo = Integer.parseInt(s.toString());
-                    nova.setQuantidade(valorNovo);
+
+                    nova.setQuantidade(originais[position] - valorNovo);
                     if (valorNovo <= maximo) {
                         listCompras.remove(position);
                         listCompras.add(position, nova);
@@ -127,8 +134,8 @@ public class VendaAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
         return listCompras.size();
     }
 
-    public List<Commodity> getListCompras() {
-        return listCompras;
+    public int[] getOriginais() {
+        return originais;
     }
 
 

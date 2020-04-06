@@ -1,9 +1,10 @@
 package com.example.projetoaziz.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import com.example.projetoaziz.helpers.Base64Handler;
 import com.example.projetoaziz.helpers.ConfiguracaoDatabase;
 import com.example.projetoaziz.models.Aluno;
 import com.example.projetoaziz.models.Commodity;
+import com.example.projetoaziz.models.Ordens;
 import com.example.projetoaziz.models.Professor;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,13 +38,12 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
     DatabaseReference db;
     FirebaseUser user;
     FirebaseAuth mauth;
-    List<Commodity> listProfessor;
-    String idProfessor;
+    List<Commodity> listProfessor, listVendas;
+    String idProfessor, detalhes;
     RecyclerView recycler;
     CompraAdapter adapterCompras;
     VendaAdapter adapterVendas;
     float gasto;
-    List<Commodity> listaNova;
     int value;
 
     @Override
@@ -54,7 +55,6 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
 
         if (bundle != null) {
             value = (int) bundle.getSerializable("acao");
-            Toast.makeText(this, "" + value, Toast.LENGTH_SHORT).show();
 
             if (user.getPhotoUrl().toString().equals("professor"))
                 recuperarProfessor();
@@ -77,11 +77,29 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
         compra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listaNova = adapterCompras.getListCompras();
                 gasto = adapterCompras.calcularGastoTotal();
                 professor.setCreditos(professor.getCreditos() - gasto);
-                professor.setListaCommodities(listaNova);
-                //salvar no banco e fechar.
+                detalhes = "As compras foram de: ";
+                int[] originais = adapterCompras.getOriginais();
+                for (int i = 0; i < listProfessor.size(); i++) {
+                    Commodity commodity = listProfessor.get(i);
+                    int diferenca = commodity.getQuantidade() - originais[i];
+                    if (diferenca != 0) {
+                        String transacao = commodity.getNome() + ": " + Integer.toString(diferenca) + "  ";
+                        detalhes = detalhes.concat(transacao);
+                    }
+                }//no final disso tenho os dados da compra em uma string
+                Ordens ordem = new Ordens();
+                ordem.setTipo("compra");
+                ordem.setIdDono(professor.getId());
+                ordem.setDados(detalhes); //nesse ponto tenho a ordem atualizada, basta salvar as coisas no banco agora.
+                EditText justificativa = findViewById(R.id.justificativaCompra);
+                ordem.setJustificativa(justificativa.getText().toString());
+                db = FirebaseDatabase.getInstance().getReference().child("ordens").child(idProfessor).child(ordem.getIdDono()).child(ordem.getIdOrdem());
+                db.setValue(ordem);
+                professor.salvar();
+                startActivity(new Intent(GerenciarCommoditiesActivity.this, MainActivity.class));
+                finish();
 
             }
         });
@@ -99,11 +117,29 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
         compra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listaNova = adapterCompras.getListCompras();
                 gasto = adapterCompras.calcularGastoTotal();
                 aluno.setCreditos(aluno.getCreditos() - gasto);
-                aluno.setListaCommodities(listaNova);
-                //salvar no banco e fechar.
+                detalhes = "As compras foram de: ";
+                int[] originais = adapterCompras.getOriginais();
+                for (int i = 0; i < listProfessor.size(); i++) {
+                    Commodity commodity = listProfessor.get(i);
+                    int diferenca = commodity.getQuantidade() - originais[i];
+                    if (diferenca != 0) {
+                        String transacao = commodity.getNome() + ": " + diferenca + "  ";
+                        detalhes = detalhes.concat(transacao);
+                    }
+                }//no final disso tenho os dados da compra em uma string
+                Ordens ordem = new Ordens();
+                ordem.setTipo("compra");
+                ordem.setIdDono(aluno.getId());
+                ordem.setDados(detalhes); //nesse ponto tenho a ordem atualizada, basta salvar as coisas no banco agora.
+                EditText justificativa = findViewById(R.id.justificativaCompra);
+                ordem.setJustificativa(justificativa.getText().toString());
+                db = FirebaseDatabase.getInstance().getReference().child("ordens").child(idProfessor).child(ordem.getIdDono()).child(ordem.getIdOrdem());
+                db.setValue(ordem);
+                aluno.salvar();
+                startActivity(new Intent(GerenciarCommoditiesActivity.this, MainActivity.class));
+                finish();
 
             }
         });
@@ -114,34 +150,103 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
     private void vendaAcoesProfessor() {
         setContentView(R.layout.vender_commodities);
         recycler = findViewById(R.id.recyclerVenderCommodities);
-        List<Commodity> listVendas = new ArrayList<>();
+        listVendas = new ArrayList<>();
         for (Commodity commodity : listProfessor) {
             if (commodity.getQuantidade() != 0) {
                 listVendas.add(commodity);
             }
         }
-        Toast.makeText(this, "" + listVendas.size(), Toast.LENGTH_SHORT).show();
-        adapterVendas = new VendaAdapter(listVendas, getApplicationContext(), aluno);
+        adapterVendas = new VendaAdapter(listVendas, getApplicationContext(), professor);
         recycler.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recycler.setAdapter(adapterVendas);
         Button venda = findViewById(R.id.confirmarVendaButton);
+
+        venda.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int[] originais = adapterVendas.getOriginais();
+                Ordens ordem = new Ordens();
+                ordem.setIdDono(professor.getId());
+                ordem.setTipo("venda");
+                detalhes = "As vendas foram de: ";
+                Commodity cProfessor, cVenda;
+                professor.setCreditos(adapterVendas.calcularLucroTotal() + professor.getCreditos());
+                for (int lpIndex = 0; lpIndex < listProfessor.size(); lpIndex++) {
+                    cProfessor = listProfessor.get(lpIndex);
+                    for (int lvIndex = 0; lvIndex < listVendas.size(); lvIndex++) {
+                        cVenda = listVendas.get(lvIndex);
+                        if (cProfessor.getNome().equals(cVenda.getNome())) {
+                            int diferenca = originais[lvIndex] - cProfessor.getQuantidade();
+                            if (diferenca != 0) {
+                                String transacao = cProfessor.getNome() + ": " + diferenca + "  ";
+                                detalhes = detalhes.concat(transacao);
+                            }
+                        }
+                    }
+                }
+                EditText justificativa = findViewById(R.id.justificativaVenda);
+                ordem.setJustificativa(justificativa.getText().toString());
+                ordem.setDados(detalhes);
+                db = FirebaseDatabase.getInstance().getReference().child("ordens").child(idProfessor).child(ordem.getIdDono()).child(ordem.getIdOrdem());
+                db.setValue(ordem);
+                professor.salvar();
+                startActivity(new Intent(GerenciarCommoditiesActivity.this, MainActivity.class));
+                finish();
+
+
+            }
+        });
     }
 
     private void vendaAcoesAluno() {
         setContentView(R.layout.vender_commodities);
         recycler = findViewById(R.id.recyclerVenderCommodities);
-        List<Commodity> listVendas = new ArrayList<>();
+        listVendas = new ArrayList<>();
         for (Commodity commodity : listProfessor) {
             if (commodity.getQuantidade() != 0) {
                 listVendas.add(commodity);
             }
         }
-        Toast.makeText(this, "" + listVendas.size(), Toast.LENGTH_SHORT).show();
         adapterVendas = new VendaAdapter(listVendas, getApplicationContext(), aluno);
         recycler.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recycler.setAdapter(adapterVendas);
         Button venda = findViewById(R.id.confirmarVendaButton);
 
+        venda.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int[] originais = adapterVendas.getOriginais();
+                Ordens ordem = new Ordens();
+                ordem.setIdDono(aluno.getId());
+                ordem.setTipo("venda");
+                detalhes = "As vendas foram de: ";
+                Commodity cAluno, cVenda;
+                professor.setCreditos(adapterVendas.calcularLucroTotal() + professor.getCreditos());
+                for (int lpIndex = 0; lpIndex < listProfessor.size(); lpIndex++) {
+                    cAluno = listProfessor.get(lpIndex);
+                    for (int lvIndex = 0; lvIndex < listVendas.size(); lvIndex++) {
+                        cVenda = listVendas.get(lvIndex);
+                        if (cAluno.getNome().equals(cVenda.getNome())) {
+                            int diferenca = originais[lvIndex] - cAluno.getQuantidade();
+                            if (diferenca != 0) {
+                                String transacao = cAluno.getNome() + ": " + diferenca + "  ";
+                                detalhes = detalhes.concat(transacao);
+                            }
+                        }
+                    }
+                }
+                EditText justificativa = findViewById(R.id.justificativaVenda);
+                ordem.setJustificativa(justificativa.getText().toString());
+                ordem.setDados(detalhes);
+                db = FirebaseDatabase.getInstance().getReference().child("ordens").child(idProfessor).child(ordem.getIdDono()).child(ordem.getIdOrdem());
+                db.setValue(ordem);
+                professor.salvar();
+                startActivity(new Intent(GerenciarCommoditiesActivity.this, MainActivity.class));
+                finish();
+
+
+            }
+        });
     }
 
     private void gerenciarAcoes() {
@@ -160,10 +265,8 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
                     listProfessor = professor.getListaCommodities();
                     idProfessor = professor.getId();
                     if (value == 1) {
-                        Toast.makeText(GerenciarCommoditiesActivity.this, "Abrirá compra professor", Toast.LENGTH_SHORT).show();
                         compraAcoesProfessor();
                     } else if (value == 2) {
-                        Toast.makeText(GerenciarCommoditiesActivity.this, "Abrirá venda professor", Toast.LENGTH_SHORT).show();
 
                         vendaAcoesProfessor();
                     }
@@ -190,11 +293,9 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
                     listProfessor = aluno.getListaCommodities();
                     idProfessor = professor.getId();
                     if (value == 1) {
-                        Toast.makeText(GerenciarCommoditiesActivity.this, "Abrirá compra aluno", Toast.LENGTH_SHORT).show();
 
                         compraAcoesAluno();
                     } else if (value == 2) {
-                        Toast.makeText(GerenciarCommoditiesActivity.this, "Abrirá venda aluno", Toast.LENGTH_SHORT).show();
 
                         vendaAcoesAluno();
                     }
@@ -211,9 +312,7 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
 
     }
 
-    private void recuperarAunoVenda() {
 
-    }
 
 
 }

@@ -9,8 +9,8 @@
 
     <item
         android:id="@+id/navigation_receitas"
-        android:icon="@drawable/ic_teste_icon"
-        android:title="Receitas" />
+        android:icon="@drawable/ic_message_black_24dp"
+        android:title="Ordens" />
 
 
     <item

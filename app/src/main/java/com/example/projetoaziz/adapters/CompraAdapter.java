@@ -21,15 +21,20 @@ public class CompraAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
 
     float diferenca = 0;
     private List<Commodity> listCompras;
+    private int[] originais, quantidades;
     private Context c;
     private Usuario u;
-    private int[] quantidades = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-    public CompraAdapter(List<Commodity> list, Context c, Usuario u) {
-        this.listCompras = list;
+    public CompraAdapter(List<Commodity> listCompras, Context c, Usuario u) {
+        this.listCompras = listCompras;
         this.c = c;
         this.u = u;
-
+        originais = new int[listCompras.size()];
+        quantidades = new int[listCompras.size()];
+        for (int i = 0; i < listCompras.size(); i++) {
+            originais[i] = listCompras.get(i).getQuantidade();
+            quantidades[i] = 0;
+        }
     }
 
     @NonNull
@@ -141,14 +146,14 @@ public class CompraAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
         return listCompras.size();
     }
 
-    public List<Commodity> getListCompras() {
-        return listCompras;
+    public int[] getOriginais() {
+        return originais;
     }
 
 
     public float calcularGastoTotal() {
         float value = 0;
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < listCompras.size(); i++)
             value += quantidades[i] * listCompras.get(i).getValor();
         return value;
     }

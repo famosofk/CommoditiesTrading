@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundPadrao"
+    android:padding="10dp"
     tools:context=".activities.GerenciarCommoditiesActivity">
 
     <TextView
@@ -42,11 +44,13 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/justificativaVenda"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="15dp"
+                android:background="@android:color/white"
+                android:elevation="5dp"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:minHeight="200dp" />
