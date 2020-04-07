@@ -313,8 +313,8 @@ public class CadastroLoginActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             Intent main = new Intent(CadastroLoginActivity.this, MainActivity.class);
-            //startActivity(main);
-            //finish();
+            startActivity(main);
+            finish();
         }
     }
 }

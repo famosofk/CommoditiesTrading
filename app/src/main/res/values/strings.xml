@@ -6,7 +6,7 @@
     <string name="professor_intro">Professor</string>
     <string name="aluno_intro">Aluno</string>
     <string name="nome_intro">NOME</string>
-    <string name="cifrao_intro">R$:    </string>
+    <string name="cifrao_intro">R$  </string>
     <string name="sobrenome_intro">SOBRENOME</string>
     <string name="universidade_intro">"UNIVERSIDADE "</string>
     <string name="email_intro">EMAIL</string>

@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:minWidth="110dp"
+                android:minWidth="100dp"
                 android:text="TextView"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
@@ -41,7 +41,7 @@
                 android:id="@+id/textView21"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:text="@string/cifrao_intro"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
