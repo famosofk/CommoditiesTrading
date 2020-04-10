@@ -21,6 +21,7 @@ import com.example.projetoaziz.adapters.RecyclerItemClickListener;
 import com.example.projetoaziz.helpers.ConfiguracaoDatabase;
 import com.example.projetoaziz.models.Aluno;
 import com.example.projetoaziz.models.Commodity;
+import com.example.projetoaziz.models.Monitor;
 import com.example.projetoaziz.models.Professor;
 import com.example.projetoaziz.models.RegisterData;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -45,6 +46,7 @@ public class CadastroLoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private Professor professorCadastrando;
+    private Monitor monitor;
     private Aluno aluno;
     private Professor professorSelecionado;
     private List<Professor> listaProfessores = new ArrayList<>();
@@ -119,6 +121,107 @@ public class CadastroLoginActivity extends AppCompatActivity {
                 universidadeAluno.setText(professorSelecionado.getUniversidade());
             }
         }));
+    }
+
+    public void iniciarCadastroMonitor(View view) {
+
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("professor");
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Professor recuperado;
+                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                    recuperado = dsp.getValue(Professor.class);
+                    listaProfessores.add(recuperado);
+                }
+
+                if (listaProfessores.size() > 0) {
+                    exibirCadastroMonitor();
+                } else {
+                    Toast.makeText(CadastroLoginActivity.this, "Desculpe, ainda não há professor cadastrado.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+    }
+
+    private void exibirCadastroMonitor() {
+        setContentView(R.layout.activity_cadastro_monitor);
+        RecyclerView recycler = findViewById(R.id.recyclerCadastroMonitor);
+
+        ListagemProfessorAdapter adapter = new ListagemProfessorAdapter(listaProfessores, this);
+        recycler.setLayoutManager(new LinearLayoutManager(this));
+        recycler.setAdapter(adapter);
+        recycler.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                professorSelecionado = listaProfessores.get(position);
+                TextView nome = findViewById(R.id.professorSelecionadoMonitor);
+                nome.setText(professorSelecionado.getNome());
+
+            }
+        }));
+
+    }
+
+    public void cadastrarMonitor(View view) {
+        monitor = new Monitor();
+        EditText codigoMonitor = findViewById(R.id.codigoCadastroMonitor);
+        if (codigoMonitor.getText().toString().equals(professorSelecionado.getCodigoMonitor())) {
+            EditText nome = findViewById(R.id.nomeCadastroMonitor);
+            EditText sobrenome = findViewById(R.id.sobrenomeCadastroMonitor);
+            EditText matricula = findViewById(R.id.matriculaCadastroMonitor);
+            EditText editSenha = findViewById(R.id.senhaCadastroMonitor);
+            EditText email = findViewById(R.id.emailCadastroMonitor);
+            monitor.setIdProfessor(professorSelecionado.getId());
+            String EMAIL = email.getText().toString().toLowerCase().trim();
+            monitor.setListaCommodities(professorSelecionado.getListaCommodities());
+
+            monitor.setEmail(EMAIL);
+            monitor.atualizarID();
+            monitor.setNome(nome.getText().toString());
+            monitor.setSobrenome(sobrenome.getText().toString());
+            monitor.setMatricula(matricula.getText().toString());
+
+            mAuth.createUserWithEmailAndPassword(monitor.getEmail(), editSenha.getText().toString())
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+
+                                monitor.salvar();
+
+                                Uri uri = Uri.parse("monitor");
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                if (user != null) {
+                                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                            .setPhotoUri(uri)
+                                            .build();
+                                    user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                startActivity(new Intent(CadastroLoginActivity.this, MainActivity.class));
+                                                finish();
+                                            }
+                                        }
+                                    });
+                                }
+                            } else {
+                                Toast.makeText(CadastroLoginActivity.this, "Não foi possível cadastra-lo.", Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        }
+                    });
+
+
+        } else {
+            Toast.makeText(this, "Código inválido. Impossível cadastrar.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void cadastrarProfessor(View view) {
@@ -242,7 +345,6 @@ public class CadastroLoginActivity extends AppCompatActivity {
 
 
     }
-
 
     public void cadastrarAluno(View view) {
         progressBar = findViewById(R.id.layoutProgressBar2);

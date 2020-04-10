@@ -22,7 +22,9 @@ import com.example.projetoaziz.helpers.Base64Handler;
 import com.example.projetoaziz.helpers.ConfiguracaoDatabase;
 import com.example.projetoaziz.models.Aluno;
 import com.example.projetoaziz.models.Commodity;
+import com.example.projetoaziz.models.Monitor;
 import com.example.projetoaziz.models.Professor;
+import com.example.projetoaziz.models.Usuario;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -43,6 +45,7 @@ public class CotacoesFragment extends Fragment {
     Boolean admin = false;
     ListagemCotacoesAdapter adapter;
     private Professor professor = null;
+    private Monitor monitor = null;
     private Aluno aluno = null;
     private String idProfessor = null;
     private DatabaseReference db;
@@ -75,7 +78,10 @@ public class CotacoesFragment extends Fragment {
                 recuperarAluno();
             } else if (user.getPhotoUrl().toString().equals("professor")) {
                 recuperarProfessor();
+            } else if (user.getPhotoUrl().toString().equals("monitor")) {
+                recuperarMonitor();
             }
+
         }
 
         editar.setOnClickListener(new View.OnClickListener() {
@@ -117,6 +123,46 @@ public class CotacoesFragment extends Fragment {
         return v;
     }
 
+    private void recuperarMonitor() {
+        db = FirebaseDatabase.getInstance().getReference().child("monitor").child(Base64Handler.codificarBase64(user.getEmail()));
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                    monitor = dataSnapshot.getValue(Monitor.class);
+                    assert monitor != null;
+                    idProfessor = monitor.getIdProfessor();
+                    DatabaseReference busca = FirebaseDatabase.getInstance().getReference().child("professor").child(idProfessor);
+                    busca.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            professor = dataSnapshot.getValue(Professor.class);
+                            assert professor != null;
+                            listProfessor = professor.getListaCommodities();
+                            atualizarLista(listProfessor, monitor);
+                            listProfessor = monitor.getListaCommodities();
+                            monitor.salvar();
+                            fazerListagem();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
+                    });
+                    listProfessor = monitor.getListaCommodities();
+                } else {
+                    Toast.makeText(getActivity(), "Registro não encontrado.", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     private void recuperarAluno() {
 
         db = FirebaseDatabase.getInstance().getReference().child("aluno").child(Base64Handler.codificarBase64(user.getEmail()));
@@ -127,6 +173,7 @@ public class CotacoesFragment extends Fragment {
                     aluno = dataSnapshot.getValue(Aluno.class);
                     assert aluno != null;
                     idProfessor = aluno.getProfessorID();
+
                     DatabaseReference busca = FirebaseDatabase.getInstance().getReference().child("professor").child(idProfessor);
                     busca.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -134,7 +181,14 @@ public class CotacoesFragment extends Fragment {
                             professor = dataSnapshot.getValue(Professor.class);
                             assert professor != null;
                             listProfessor = professor.getListaCommodities();
-                            fazerListagem();
+                            atualizarLista(listProfessor, aluno);
+                            listProfessor = aluno.getListaCommodities();
+                            aluno.salvar();
+                            if (professor.getVisibility()) {
+                                fazerListagem();
+                            } else {
+                                Toast.makeText(getActivity(), "O professor não liberou a negociação.", Toast.LENGTH_SHORT).show();
+                            }
                         }
 
                         @Override
@@ -185,12 +239,23 @@ public class CotacoesFragment extends Fragment {
     }
 
     private void fazerListagem() {
+
         recycler = v.findViewById(R.id.recyclerCommodities);
         adapter = new ListagemCotacoesAdapter(listProfessor, getActivity());
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         recycler.setAdapter(adapter);
 
 
+    }
+
+    private void atualizarLista(List<Commodity> lista, Usuario usuario) {
+        List<Commodity> listaUsuario = usuario.getListaCommodities();
+
+        for (int i = 0; i < lista.size(); i++) {
+            listaUsuario.get(i).setValor(lista.get(i).getValor());
+        }
+
+        usuario.setListaCommodities(listaUsuario);
     }
 
 

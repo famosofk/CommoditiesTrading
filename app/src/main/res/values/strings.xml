@@ -49,6 +49,9 @@
     <string name="confirmar_intro">Confirmar</string>
     <string name="justificativa_intro">JUSTIFICATIVA</string>
     <string name="vender_commodities_intro">Vender</string>
+    <string name="monitor_intro">Monitor</string>
+    <string name="codigo_professor_intro">CÓDIGO PROFESSOR</string>
+    <string name="codigo_monitor_hint">Código fornecido pelo professor</string>
 
     <string-array name="commodities">
         <item name="Algodão" />

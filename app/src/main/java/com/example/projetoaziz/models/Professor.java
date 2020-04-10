@@ -8,12 +8,13 @@ import java.io.Serializable;
 public class Professor extends Usuario implements Serializable {
 
 
-    private Boolean visibility;
     private String codigoMonitor;
+    private Boolean visibility;
 
 
     public Professor() {
 
+        setVisibility(false);
     }
 
     public void salvar() {
@@ -26,6 +27,14 @@ public class Professor extends Usuario implements Serializable {
     }
 
 
+    public Boolean getVisibility() {
+        return visibility;
+    }
+
+    public void setVisibility(Boolean visibility) {
+        this.visibility = visibility;
+    }
+
     public String getCodigoMonitor() {
         return codigoMonitor;
     }
@@ -34,13 +43,7 @@ public class Professor extends Usuario implements Serializable {
         this.codigoMonitor = codigoMonitor;
     }
 
-    public Boolean getVisibility() {
-        return visibility;
-    }
 
-    public void setVisibility(Boolean visibility) {
-        this.visibility = visibility;
-    }
 
 
 }

@@ -1,39 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <LinearLayout
-        android:id="@+id/layoutProgressBar2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="-20dp"
-        android:background="#50000000"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <ProgressBar
-            android:id="@+id/progressBar3"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="100dp"
-            android:layout_height="100dp" />
-    </LinearLayout>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="5dp">
+    android:layout_height="match_parent"
+    android:background="@color/backgroundPadrao">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="5dp">
-
+        android:padding="10dp">
 
         <TextView
-            android:id="@+id/textView14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
@@ -43,9 +20,9 @@
             android:textSize="18sp" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerCadastroAluno"
+            android:id="@+id/recyclerCadastroMonitor"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="match_parent"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
             android:background="@drawable/button_shape_secondary"
@@ -62,14 +39,13 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/professor_selecionado_intro"
                 android:textColor="@android:color/black" />
 
             <TextView
-                android:id="@+id/professorSelecionadoNome"
+                android:id="@+id/professorSelecionadoMonitor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimaryDark"
@@ -84,7 +60,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/nomeCadastroAluno"
+            android:id="@+id/nomeCadastroMonitor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -100,7 +76,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/sobrenomeCadastroAluno"
+            android:id="@+id/sobrenomeCadastroMonitor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -116,7 +92,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/matriculaCadastroAluno"
+            android:id="@+id/matriculaCadastroMonitor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -127,29 +103,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/universidade_intro"
-            android:textColor="@color/colorPrimaryDark"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/universidadeCadastroAluno"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:editable="false"
-            android:ems="10"
-            android:hint="@string/universidade_hint_intro"
-            android:inputType="textCapCharacters"
-            android:textAlignment="center" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:text="@string/email_intro"
             android:textColor="@color/colorPrimaryDark"
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/emailCadastroAluno"
+            android:id="@+id/emailCadastroMonitor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -165,7 +124,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/senhaCadastroAluno"
+            android:id="@+id/senhaCadastroMonitor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -173,14 +132,31 @@
             android:inputType="textPassword"
             android:textAlignment="center" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/codigo_professor_intro"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/codigoCadastroMonitor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+
+            android:hint="@string/codigo_monitor_hint"
+            android:inputType="textPassword"
+            android:textAlignment="center" />
+
         <Button
-            android:id="@+id/button6"
+            android:id="@+id/button99"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:background="@drawable/button_shape_primary"
-            android:onClick="cadastrarAluno"
+            android:onClick="cadastrarMonitor"
             android:text="@string/signin_intro"
             android:textColor="@color/backgroundPadrao"
             android:textSize="18sp"
@@ -188,7 +164,4 @@
 
 
     </LinearLayout>
-
-    </ScrollView>
-
-</FrameLayout>
+</ScrollView>
