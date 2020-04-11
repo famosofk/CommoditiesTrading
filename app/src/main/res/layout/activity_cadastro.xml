@@ -28,7 +28,7 @@
             android:layout_height="55dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/button_shape_third"
-            android:onClick="iniciarCadastroMonitor"
+            android:onClick="autorizaCadastroMonitor"
             android:text="@string/monitor_intro"
             android:textSize="24sp" />
 
@@ -37,7 +37,7 @@
             android:layout_width="250dp"
             android:layout_height="55dp"
             android:background="@drawable/button_shape_secondary"
-            android:onClick="iniciarCadastroAluno"
+            android:onClick="permitirCadastroAluno"
             android:text="@string/aluno_intro"
             android:textSize="24sp" />
     </LinearLayout>

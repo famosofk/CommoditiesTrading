@@ -420,7 +420,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/button_shape_primary"
-                android:onClick="cadastrarProfessor"
+                android:onClick="criarProfessor"
                 android:text="@string/signin_intro"
                 android:textColor="@color/backgroundPadrao"
                 android:textStyle="bold" />

@@ -45,9 +45,6 @@ import java.util.Locale;
 public class CadastroLoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    private Professor professorCadastrando;
-    private Monitor monitor;
-    private Aluno aluno;
     private Professor professorSelecionado;
     private List<Professor> listaProfessores = new ArrayList<>();
     private LinearLayout progressBar;
@@ -58,101 +55,28 @@ public class CadastroLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cadastro_login);
         mAuth = FirebaseAuth.getInstance();
         professorSelecionado = new Professor();
+        verificarCadastroProfessores();
 
 
     }
 
-    public void exibirLogin(View view) {
-        setContentView(R.layout.activity_login);
-    }
-
-    public void exibirCadastro(View view) {
-        setContentView(R.layout.activity_cadastro);
-    }
 
     public void iniciarCadastroProfessor(View view) {
         setContentView(R.layout.activity_professor_cadastro);
     }
 
-    public void iniciarCadastroAluno(View view) {
 
-
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("professor");
-        db.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Professor recuperado;
-                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                    recuperado = dsp.getValue(Professor.class);
-                    listaProfessores.add(recuperado);
-                }
-
-                if (listaProfessores.size() > 0) {
-                    exibirCadastroAluno();
-                } else {
-                    Toast.makeText(CadastroLoginActivity.this, "Desculpe, ainda não há professor cadastrado.", Toast.LENGTH_SHORT).show();
-                }
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-
-
-    }
-
-    private void exibirCadastroAluno() {
-        setContentView(R.layout.activity_cadastro_aluno);
-        RecyclerView recycler = findViewById(R.id.recyclerCadastroAluno);
-
-        ListagemProfessorAdapter adapter = new ListagemProfessorAdapter(listaProfessores, this);
-        recycler.setLayoutManager(new LinearLayoutManager(this));
-        recycler.setAdapter(adapter);
-        recycler.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                professorSelecionado = listaProfessores.get(position);
-                TextView nome = findViewById(R.id.professorSelecionadoNome);
-                nome.setText(professorSelecionado.getNome());
-                EditText universidadeAluno = findViewById(R.id.universidadeCadastroAluno);
-                universidadeAluno.setText(professorSelecionado.getUniversidade());
-            }
-        }));
-    }
-
-    public void iniciarCadastroMonitor(View view) {
-
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("professor");
-        db.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Professor recuperado;
-                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                    recuperado = dsp.getValue(Professor.class);
-                    listaProfessores.add(recuperado);
-                }
-
-                if (listaProfessores.size() > 0) {
-                    exibirCadastroMonitor();
-                } else {
-                    Toast.makeText(CadastroLoginActivity.this, "Desculpe, ainda não há professor cadastrado.", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-
+    public void autorizaCadastroMonitor(View view) {
+        if (listaProfessores.size() > 0) {
+            exibirCadastroMonitor();
+        } else {
+            Toast.makeText(this, "Ainda não há professores cadastrados.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void exibirCadastroMonitor() {
         setContentView(R.layout.activity_cadastro_monitor);
         RecyclerView recycler = findViewById(R.id.recyclerCadastroMonitor);
-
         ListagemProfessorAdapter adapter = new ListagemProfessorAdapter(listaProfessores, this);
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setAdapter(adapter);
@@ -162,20 +86,18 @@ public class CadastroLoginActivity extends AppCompatActivity {
                 professorSelecionado = listaProfessores.get(position);
                 TextView nome = findViewById(R.id.professorSelecionadoMonitor);
                 nome.setText(professorSelecionado.getNome());
-
             }
         }));
 
     }
 
-    public void cadastrarMonitor(View view) {
-        monitor = new Monitor();
+    public void criarMonitor(View view) {
+        Monitor monitor = new Monitor();
         EditText codigoMonitor = findViewById(R.id.codigoCadastroMonitor);
         if (codigoMonitor.getText().toString().equals(professorSelecionado.getCodigoMonitor())) {
             EditText nome = findViewById(R.id.nomeCadastroMonitor);
             EditText sobrenome = findViewById(R.id.sobrenomeCadastroMonitor);
             EditText matricula = findViewById(R.id.matriculaCadastroMonitor);
-            EditText editSenha = findViewById(R.id.senhaCadastroMonitor);
             EditText email = findViewById(R.id.emailCadastroMonitor);
             monitor.setIdProfessor(professorSelecionado.getId());
             String EMAIL = email.getText().toString().toLowerCase().trim();
@@ -186,57 +108,76 @@ public class CadastroLoginActivity extends AppCompatActivity {
             monitor.setNome(nome.getText().toString());
             monitor.setSobrenome(sobrenome.getText().toString());
             monitor.setMatricula(matricula.getText().toString());
-
-            mAuth.createUserWithEmailAndPassword(monitor.getEmail(), editSenha.getText().toString())
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-
-                                monitor.salvar();
-
-                                Uri uri = Uri.parse("monitor");
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                if (user != null) {
-                                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                            .setPhotoUri(uri)
-                                            .build();
-                                    user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                startActivity(new Intent(CadastroLoginActivity.this, MainActivity.class));
-                                                finish();
-                                            }
-                                        }
-                                    });
-                                }
-                            } else {
-                                Toast.makeText(CadastroLoginActivity.this, "Não foi possível cadastra-lo.", Toast.LENGTH_SHORT).show();
-                                progressBar.setVisibility(View.GONE);
-                            }
-                        }
-                    });
-
+            efetuarCadastroMonitor(monitor);
 
         } else {
-            Toast.makeText(this, "Código inválido. Impossível cadastrar.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Não foi possível criar o monitor. Código inválido.", Toast.LENGTH_SHORT).show();
         }
+
     }
 
-    public void cadastrarProfessor(View view) {
+    private void efetuarCadastroMonitor(final Monitor monitor) {
+
+        EditText editSenha = findViewById(R.id.senhaCadastroMonitor);
+        mAuth.createUserWithEmailAndPassword(monitor.getEmail(), editSenha.getText().toString())
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            monitor.salvar();
+                            Uri uri = Uri.parse("monitor");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            if (user != null) {
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setPhotoUri(uri)
+                                        .build();
+                                user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            startActivity(new Intent(CadastroLoginActivity.this, MainActivity.class));
+                                            finish();
+                                        }
+                                    }
+                                });
+                            }
+                        } else {
+                            Toast.makeText(CadastroLoginActivity.this, "Não foi possível cadastra-lo.", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    }
+                });
+
+
+    }
+
+    public void criarProfessor(View view) {
         progressBar = findViewById(R.id.layoutProgressBar1);
         progressBar.setVisibility(View.VISIBLE);
-        List<Commodity> list = new ArrayList<>();
         EditText editNome = findViewById(R.id.nomeCadastroProfessor);
         EditText editEmail = findViewById(R.id.emailCadastroProfessor);
         EditText editUniversidade = findViewById(R.id.universidadeCadastroProfessor);
         EditText editSobrenome = findViewById(R.id.sobrenomeCadastroProfessor);
-        EditText editSenha = findViewById(R.id.senhaCadastroProfessor);
         EditText editCogido = findViewById(R.id.editCodigoMonitor);
         String EMAIL = editEmail.getText().toString().trim().toLowerCase();
         String UNIVERSIDADE = editUniversidade.getText().toString().trim().toUpperCase();
 
+        Professor professorCadastrando = new Professor();
+        professorCadastrando.setEmail(EMAIL);
+        professorCadastrando.setNome(editNome.getText().toString());
+        professorCadastrando.setUniversidade(UNIVERSIDADE);
+        professorCadastrando.setSobrenome(editSobrenome.getText().toString());
+        professorCadastrando.setCodigoMonitor(editCogido.getText().toString().trim());
+        professorCadastrando.atualizarID();
+        professorCadastrando.setListaCommodities(criarListaCommoditiesProfessor());
+
+        efetuarCadastroProfessor(professorCadastrando);
+
+
+    }
+
+    private List<Commodity> criarListaCommoditiesProfessor() {
+        List<Commodity> list = new ArrayList<>();
         CheckBox algodao = findViewById(R.id.checkBoxAlgodao);
         if (algodao.isChecked()) {
             Commodity commodity = new Commodity("Algodão", (float) 0.00);
@@ -310,20 +251,17 @@ public class CadastroLoginActivity extends AppCompatActivity {
             list.add(commodity);
         }
 
-        professorCadastrando = new Professor();
-        professorCadastrando.setEmail(EMAIL);
-        professorCadastrando.setNome(editNome.getText().toString());
-        professorCadastrando.setUniversidade(UNIVERSIDADE);
-        professorCadastrando.setSobrenome(editSobrenome.getText().toString());
-        professorCadastrando.setCodigoMonitor(editCogido.getText().toString().trim());
-        professorCadastrando.atualizarID();
-        professorCadastrando.setListaCommodities(list);
+        return list;
+    }
+
+    private void efetuarCadastroProfessor(final Professor professorCadastrando) {
+
+        EditText editSenha = findViewById(R.id.senhaCadastroProfessor);
         mAuth.createUserWithEmailAndPassword(professorCadastrando.getEmail(), editSenha.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-
                             professorCadastrando.salvar();
 
                             DatabaseReference firebaseRef = ConfiguracaoDatabase.getFirebaseDatabase();
@@ -355,23 +293,66 @@ public class CadastroLoginActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    private void verificarCadastroProfessores() {
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("professor");
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Professor recuperado;
+                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                    recuperado = dsp.getValue(Professor.class);
+                    listaProfessores.add(recuperado);
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
 
     }
 
-    public void cadastrarAluno(View view) {
+    public void permitirCadastroAluno(View view) {
+        if (listaProfessores.size() > 0) {
+            exibirCadastroAluno();
+        } else {
+            Toast.makeText(this, "Não há professores cadastrados no sistema.", Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
+
+    private void exibirCadastroAluno() {
+        setContentView(R.layout.activity_cadastro_aluno);
+        RecyclerView recycler = findViewById(R.id.recyclerCadastroAluno);
+        ListagemProfessorAdapter adapter = new ListagemProfessorAdapter(listaProfessores, this);
+        recycler.setLayoutManager(new LinearLayoutManager(this));
+        recycler.setAdapter(adapter);
+        recycler.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                professorSelecionado = listaProfessores.get(position);
+                TextView nome = findViewById(R.id.professorSelecionadoNome);
+                nome.setText(professorSelecionado.getNome());
+                EditText universidadeAluno = findViewById(R.id.universidadeCadastroAluno);
+                universidadeAluno.setText(professorSelecionado.getUniversidade());
+            }
+        }));
+    }
+
+    public void criarAluno(View view) {
         progressBar = findViewById(R.id.layoutProgressBar2);
         progressBar.setVisibility(View.VISIBLE);
-
-
-        aluno = new Aluno();
+        Aluno aluno = new Aluno();
         EditText nomeAluno = findViewById(R.id.nomeCadastroAluno);
         EditText sobrenomeAluno = findViewById(R.id.sobrenomeCadastroAluno);
         EditText matriculaAluno = findViewById(R.id.matriculaCadastroAluno);
         EditText universidadeAluno = findViewById(R.id.universidadeCadastroAluno);
         EditText emailAluno = findViewById(R.id.emailCadastroAluno);
-        EditText senhaAluno = findViewById(R.id.senhaCadastroAluno);
-
-
         aluno.setEmail(emailAluno.getText().toString());
         aluno.setUniversidade(universidadeAluno.getText().toString());
         aluno.setNome(nomeAluno.getText().toString());
@@ -380,12 +361,17 @@ public class CadastroLoginActivity extends AppCompatActivity {
         aluno.atualizarID();
         aluno.setProfessorID(professorSelecionado.getId());
         aluno.setListaCommodities(professorSelecionado.getListaCommodities());
-
         for (Commodity c : aluno.getListaCommodities()) {
             c.setQuantidade(0);
         }
+        efetuarCadastroAluno(aluno);
 
 
+
+    }
+
+    private void efetuarCadastroAluno(final Aluno aluno) {
+        EditText senhaAluno = findViewById(R.id.senhaCadastroAluno);
         mAuth.createUserWithEmailAndPassword(aluno.getEmail(), senhaAluno.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -421,8 +407,10 @@ public class CadastroLoginActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
 
-
+    public void exibirSelecaoTipoCadastro(View view) {
+        setContentView(R.layout.activity_cadastro);
     }
 
     public void loginUsuario(View view) {
@@ -454,6 +442,10 @@ public class CadastroLoginActivity extends AppCompatActivity {
 
     }
 
+    public void exibirLogin(View view) {
+        setContentView(R.layout.activity_login);
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -465,3 +457,4 @@ public class CadastroLoginActivity extends AppCompatActivity {
         }
     }
 }
+

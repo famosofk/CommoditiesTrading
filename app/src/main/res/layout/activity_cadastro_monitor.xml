@@ -156,7 +156,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:background="@drawable/button_shape_primary"
-            android:onClick="cadastrarMonitor"
+            android:onClick="criarMonitor"
             android:text="@string/signin_intro"
             android:textColor="@color/backgroundPadrao"
             android:textSize="18sp"
