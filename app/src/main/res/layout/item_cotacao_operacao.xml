@@ -38,25 +38,26 @@
                 android:textStyle="italic" />
 
             <TextView
-                android:id="@+id/textView21"
+                android:id="@+id/unidadeCompraVenda"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
+                android:minWidth="55dp"
                 android:text="@string/cifrao_intro"
                 android:textColor="@android:color/black"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/precoCompraVenda"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:minWidth="50dp"
                 android:text="TextView"
                 android:textAlignment="viewEnd"
                 android:textColor="@color/colorPrimaryDark"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
         </LinearLayout>

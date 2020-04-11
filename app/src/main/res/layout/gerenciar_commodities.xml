@@ -39,22 +39,23 @@
                 android:id="@+id/visibilitycheckBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="35dp"
                 android:text="@string/visibility_change_intro" />
+
+            <Button
+                android:id="@+id/confirmarGerenciarButton"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/button_shape_primary"
+                android:text="@string/confirmar_intro"
+                android:textColor="@android:color/white" />
 
 
         </LinearLayout>
 
     </ScrollView>
-
-    <Button
-        android:id="@+id/confirmarGerenciarButton"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="15dp"
-        android:background="@drawable/button_shape_primary"
-        android:text="@string/confirmar_intro"
-        android:textColor="@android:color/white" />
 
 
 </FrameLayout>

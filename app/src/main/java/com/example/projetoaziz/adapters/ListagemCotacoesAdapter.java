@@ -37,7 +37,8 @@ public class ListagemCotacoesAdapter extends RecyclerView.Adapter<ListagemCotaco
         Commodity commodity = list.get(position);
         String NOME = commodity.getNome();
         holder.nome.setText(NOME);
-        holder.preco.setText(Float.toString(commodity.getValor()));
+        holder.unidade.setText(commodity.getUnidade());
+        holder.preco.setText(String.format("%.2f", commodity.getValor()));
 
         switch (NOME) {
             case "Algodão":

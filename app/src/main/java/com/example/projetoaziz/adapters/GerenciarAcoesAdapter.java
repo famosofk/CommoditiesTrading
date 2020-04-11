@@ -40,6 +40,7 @@ public class GerenciarAcoesAdapter extends RecyclerView.Adapter<CompraVendaViewH
         String VALORRECUPERADO = String.format("%.2f", commodity.getValor());
         String VALOR = VALORRECUPERADO.replace(',', '.');
         holder.nome.setText(NOME);
+        holder.unidade.setText(commodity.getUnidade());
         holder.preco.setText(VALOR);
         holder.quantidade.setText(VALOR);
 

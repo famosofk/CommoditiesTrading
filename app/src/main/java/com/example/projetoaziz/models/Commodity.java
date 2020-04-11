@@ -5,6 +5,7 @@ public class Commodity {
     private String nome;
     private float valor;
     private int quantidade;
+    private String unidade;
 
     public Commodity() {
 
@@ -18,6 +19,14 @@ public class Commodity {
         this.nome = nome;
         this.valor = valor;
         quantidade = 0;
+    }
+
+    public String getUnidade() {
+        return unidade;
+    }
+
+    public void setUnidade(String unidade) {
+        this.unidade = unidade;
     }
 
     public int getQuantidade() {

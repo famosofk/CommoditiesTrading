@@ -51,6 +51,7 @@ public class CompraAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
         Commodity commodity = listCompras.get(position);
         holder.nome.setText(commodity.getNome());
         holder.preco.setText(String.format("%.2f", commodity.getValor()));
+        holder.unidade.setText(commodity.getUnidade());
         String NOME = commodity.getNome();
         if (commodity.getValor() != 0) {
             int maximo = (int) (u.getCreditos() / commodity.getValor());

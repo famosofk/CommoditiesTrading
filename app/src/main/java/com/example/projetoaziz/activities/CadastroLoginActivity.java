@@ -240,61 +240,73 @@ public class CadastroLoginActivity extends AppCompatActivity {
         CheckBox algodao = findViewById(R.id.checkBoxAlgodao);
         if (algodao.isChecked()) {
             Commodity commodity = new Commodity("Algodão", (float) 0.00);
+            commodity.setUnidade("R$/lb");
             list.add(commodity);
         }
         CheckBox amendoim = findViewById(R.id.checkBoxAmendoim);
         if (amendoim.isChecked()) {
             Commodity commodity = new Commodity("Amendoim", (float) 0.00);
+            commodity.setUnidade("R$/sc");
             list.add(commodity);
         }
         CheckBox arroz = findViewById(R.id.checkBoxArroz);
         if (arroz.isChecked()) {
             Commodity commodity = new Commodity("Arroz", (float) 0.00);
+            commodity.setUnidade("R$/sc");
             list.add(commodity);
         }
         CheckBox bezerro = findViewById(R.id.checkBoxBezerro);
         if (bezerro.isChecked()) {
             Commodity commodity = new Commodity("Bezerro", (float) 0.00);
+            commodity.setUnidade("R$/cab");
             list.add(commodity);
         }
         CheckBox boi = findViewById(R.id.checkBoxBoi);
         if (boi.isChecked()) {
             Commodity commodity = new Commodity("Boi gordo", (float) 0.00);
+            commodity.setUnidade("R$/@");
             list.add(commodity);
         }
         CheckBox cafe = findViewById(R.id.checkBoxCafe);
         if (cafe.isChecked()) {
             Commodity commodity = new Commodity("Café", (float) 0.00);
+            commodity.setUnidade("R$/sc");
             list.add(commodity);
         }
         CheckBox feijao = findViewById(R.id.checkBoxFeijao);
         if (feijao.isChecked()) {
             Commodity commodity = new Commodity("Feijão", (float) 0.00);
+            commodity.setUnidade("R$/sc");
             list.add(commodity);
         }
         CheckBox frango = findViewById(R.id.checkBoxFrango);
         if (frango.isChecked()) {
             Commodity commodity = new Commodity("Frango", (float) 0.00);
+            commodity.setUnidade("R$/kg");
             list.add(commodity);
         }
         CheckBox milho = findViewById(R.id.checkBoxMilho);
         if (milho.isChecked()) {
             Commodity commodity = new Commodity("Milho", (float) 0.00);
+            commodity.setUnidade("R$/sc");
             list.add(commodity);
         }
         CheckBox soja = findViewById(R.id.checkBoxSoja);
         if (soja.isChecked()) {
             Commodity commodity = new Commodity("Soja", (float) 0.00);
+            commodity.setUnidade("R$/sc");
             list.add(commodity);
         }
         CheckBox sorgo = findViewById(R.id.checkBoxSorgo);
         if (sorgo.isChecked()) {
             Commodity commodity = new Commodity("Sorgo", (float) 0.00);
+            commodity.setUnidade("R$/sc");
             list.add(commodity);
         }
         CheckBox trigo = findViewById(R.id.checkBoxTrigo);
         if (trigo.isChecked()) {
             Commodity commodity = new Commodity("Trigo", (float) 0.00);
+            commodity.setUnidade("R$/t");
             list.add(commodity);
         }
 

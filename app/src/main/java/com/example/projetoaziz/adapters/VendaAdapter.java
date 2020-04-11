@@ -51,6 +51,7 @@ public class VendaAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
 
         holder.nome.setText(commodity.getNome());
         holder.preco.setText(Float.toString(commodity.getValor()));
+        holder.unidade.setText(commodity.getUnidade());
         String NOME = commodity.getNome();
         holder.quantidade.setHint(Integer.toString(commodity.getQuantidade()));
         switch (NOME) {

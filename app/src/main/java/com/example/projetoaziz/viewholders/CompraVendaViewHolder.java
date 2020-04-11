@@ -11,12 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.projetoaziz.R;
 
 public class CompraVendaViewHolder extends RecyclerView.ViewHolder {
-    public TextView nome, preco;
+    public TextView nome, preco, unidade;
     public ImageView icone;
     public EditText quantidade;
 
     public CompraVendaViewHolder(@NonNull View itemView) {
         super(itemView);
+        unidade = itemView.findViewById(R.id.unidadeCompraVenda);
         nome = itemView.findViewById(R.id.nomeCompraVenda);
         preco = itemView.findViewById(R.id.precoCompraVenda);
         icone = itemView.findViewById(R.id.iconeCompraVenda);

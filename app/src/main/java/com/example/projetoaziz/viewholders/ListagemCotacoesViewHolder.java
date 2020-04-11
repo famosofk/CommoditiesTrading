@@ -11,12 +11,12 @@ import com.example.projetoaziz.R;
 
 public class ListagemCotacoesViewHolder extends RecyclerView.ViewHolder {
 
-    public TextView nome, preco;
+    public TextView nome, preco, unidade;
     public ImageView icone;
 
     public ListagemCotacoesViewHolder(@NonNull View itemView) {
         super(itemView);
-
+        unidade = itemView.findViewById(R.id.unidadeCotacao);
         nome = itemView.findViewById(R.id.nomeCotacao);
         preco = itemView.findViewById(R.id.precoCotacao);
         icone = itemView.findViewById(R.id.iconeCotacao);

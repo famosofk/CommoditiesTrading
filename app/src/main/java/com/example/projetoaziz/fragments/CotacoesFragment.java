@@ -102,10 +102,15 @@ public class CotacoesFragment extends Fragment {
         comprar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), GerenciarCommoditiesActivity.class);
-                i.putExtra("acao", 1);
-                startActivity(i);
-                getActivity().finish();
+                if (aluno != null) {
+                    if (professor.getVisibility()) {
+                        transicaoTelaCompra();
+                    } else {
+                        exibirToastMercadoFechado();
+                    }
+                } else {
+                    transicaoTelaCompra();
+                }
             }
         });
 
@@ -113,10 +118,16 @@ public class CotacoesFragment extends Fragment {
         vender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), GerenciarCommoditiesActivity.class);
-                i.putExtra("acao", 2);
-                startActivity(i);
-                getActivity().finish();
+
+                if (aluno != null) {
+                    if (professor.getVisibility()) {
+                        transicaoTelaVenda();
+                    } else {
+                        exibirToastMercadoFechado();
+                    }
+                } else {
+                    transicaoTelaVenda();
+                }
             }
         });
 
@@ -185,7 +196,7 @@ public class CotacoesFragment extends Fragment {
                             if (professor.getVisibility()) {
                                 fazerListagem();
                             } else {
-                                Toast.makeText(getActivity(), "O professor não liberou a negociação.", Toast.LENGTH_SHORT).show();
+                                exibirToastMercadoFechado();
                             }
                         }
 
@@ -254,5 +265,22 @@ public class CotacoesFragment extends Fragment {
         return listaUsuario;
     }
 
+    private void exibirToastMercadoFechado() {
+        Toast.makeText(getActivity(), "O professor não liberou a negociação.", Toast.LENGTH_SHORT).show();
+    }
+
+    private void transicaoTelaCompra() {
+        Intent i = new Intent(getActivity(), GerenciarCommoditiesActivity.class);
+        i.putExtra("acao", 1);
+        startActivity(i);
+        getActivity().finish();
+    }
+
+    private void transicaoTelaVenda() {
+        Intent i = new Intent(getActivity(), GerenciarCommoditiesActivity.class);
+        i.putExtra("acao", 2);
+        startActivity(i);
+        getActivity().finish();
+    }
 
 }
