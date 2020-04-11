@@ -139,6 +139,7 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
                 ordem.setTipo("venda");
                 db = FirebaseDatabase.getInstance().getReference().child("ordens").child(idProfessor).child(ordem.getIdDono()).child(ordem.getIdOrdem());
                 db.setValue(ordem);
+                professor.setCreditos(adapterVendas.calcularLucroTotal() + professor.getCreditos());
                 professor.salvar();
                 startActivity(new Intent(GerenciarCommoditiesActivity.this, MainActivity.class));
                 finish();
@@ -163,6 +164,7 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
 
                     db = FirebaseDatabase.getInstance().getReference().child("ordens").child(idProfessor).child(ordem.getIdDono()).child(ordem.getIdOrdem());
                 if (!ordem.getJustificativa().isEmpty()) {
+                    aluno.setCreditos(adapterVendas.calcularLucroTotal() + aluno.getCreditos());
                     db.setValue(ordem);
                     aluno.salvar();
                     startActivity(new Intent(GerenciarCommoditiesActivity.this, MainActivity.class));
@@ -183,12 +185,12 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
         if (value == 1) {
             ordem.setTipo("compra");
             EditText justificativa = findViewById(R.id.justificativaCompra);
-            ordem.setDados(getOrderDetails(1, usuario));
+            ordem.setDados(getOrderDetails(1));
             ordem.setJustificativa(justificativa.getText().toString());
         } else if (value == 2) {
             ordem.setTipo("venda");
             EditText justificativa = findViewById(R.id.justificativaVenda);
-            ordem.setDados(getOrderDetails(2, usuario));
+            ordem.setDados(getOrderDetails(2));
             ordem.setJustificativa(justificativa.getText().toString());
         }
 
@@ -197,7 +199,7 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
         return ordem;
     }
 
-    private String getOrderDetails(int value, Usuario usuario) {
+    private String getOrderDetails(int value) {
         if (value == 1) {
             String detalhes = "As compras foram de: ";
 
@@ -215,7 +217,6 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
             int[] originais = adapterVendas.getOriginais();
             String detalhes = "As vendas foram de: ";
             Commodity cAluno, cVenda;
-            usuario.setCreditos(adapterVendas.calcularLucroTotal() + usuario.getCreditos());
             for (int lpIndex = 0; lpIndex < listProfessor.size(); lpIndex++) {
                 cAluno = listProfessor.get(lpIndex);
                 for (int lvIndex = 0; lvIndex < listVendas.size(); lvIndex++) {
