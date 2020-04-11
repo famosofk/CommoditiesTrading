@@ -369,6 +369,10 @@ public class CadastroLoginActivity extends AppCompatActivity {
         aluno.setProfessorID(professorSelecionado.getId());
         aluno.setListaCommodities(professorSelecionado.getListaCommodities());
 
+        for (Commodity c : aluno.getListaCommodities()) {
+            c.setQuantidade(0);
+        }
+
 
         mAuth.createUserWithEmailAndPassword(aluno.getEmail(), senhaAluno.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {

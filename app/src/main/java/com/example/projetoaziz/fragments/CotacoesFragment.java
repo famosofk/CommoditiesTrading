@@ -139,8 +139,7 @@ public class CotacoesFragment extends Fragment {
                             professor = dataSnapshot.getValue(Professor.class);
                             assert professor != null;
                             listProfessor = professor.getListaCommodities();
-                            monitor.setListaCommodities(atualizarLista(listProfessor, monitor));
-                            listProfessor = monitor.getListaCommodities();
+                            monitor.setListaCommodities(listProfessor);
                             monitor.salvar();
                             fazerListagem();
                         }

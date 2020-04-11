@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -14,11 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projetoaziz.R;
 import com.example.projetoaziz.adapters.CompraAdapter;
+import com.example.projetoaziz.adapters.GerenciarAcoesAdapter;
 import com.example.projetoaziz.adapters.VendaAdapter;
 import com.example.projetoaziz.helpers.Base64Handler;
 import com.example.projetoaziz.helpers.ConfiguracaoDatabase;
 import com.example.projetoaziz.models.Aluno;
 import com.example.projetoaziz.models.Commodity;
+import com.example.projetoaziz.models.Monitor;
 import com.example.projetoaziz.models.Ordens;
 import com.example.projetoaziz.models.Professor;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,6 +39,7 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
 
     Professor professor;
     Aluno aluno;
+    Monitor monitor;
     DatabaseReference db;
     FirebaseUser user;
     FirebaseAuth mauth;
@@ -44,6 +48,7 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
     RecyclerView recycler;
     CompraAdapter adapterCompras;
     VendaAdapter adapterVendas;
+    GerenciarAcoesAdapter adapterGerenciar;
     float gasto;
     int value;
 
@@ -61,6 +66,8 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
                 recuperarProfessor();
             else if (user.getPhotoUrl().toString().equals("aluno")) {
                 recuperarAluno();
+            } else if (user.getPhotoUrl().toString().equals("monitor")) {
+                recuperarMonitor();
             }
 
 
@@ -263,7 +270,55 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
     }
 
     private void gerenciarAcoes() {
+
+        if (professor == null) {
+            db = FirebaseDatabase.getInstance().getReference().child("professor").child(monitor.getIdProfessor());
+            db.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.getValue() != null) {
+                        professor = dataSnapshot.getValue(Professor.class);
+                        assert professor != null;
+                        efetuarAtualizacao();
+
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
+        } else {
+            efetuarAtualizacao();
+        }
+
+
+    }
+
+    private void efetuarAtualizacao() {
         setContentView(R.layout.gerenciar_commodities);
+        recycler = findViewById(R.id.recyclerGerenciarCommodities);
+        adapterGerenciar = new GerenciarAcoesAdapter(listProfessor, getApplicationContext());
+        recycler.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recycler.setAdapter(adapterGerenciar);
+        Button gerenciar = findViewById(R.id.confirmarGerenciarButton);
+        gerenciar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                professor.setListaCommodities(listProfessor);
+                CheckBox visibility = findViewById(R.id.visibilitycheckBox);
+                if (visibility.isChecked()) {
+                    professor.setVisibility(true);
+                } else {
+                    professor.setVisibility(false);
+                }
+                professor.salvar();
+                Intent i = new Intent(GerenciarCommoditiesActivity.this, MainActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
     }
 
     private void recuperarProfessor() {
@@ -280,8 +335,9 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
                     if (value == 1) {
                         compraAcoesProfessor();
                     } else if (value == 2) {
-
                         vendaAcoesProfessor();
+                    } else if (value == 3) {
+                        gerenciarAcoes();
                     }
 
                 }
@@ -292,6 +348,37 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void recuperarMonitor() {
+
+        db = FirebaseDatabase.getInstance().getReference().child("monitor").child(Base64Handler.codificarBase64(user.getEmail()));
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                    monitor = dataSnapshot.getValue(Monitor.class);
+                    assert monitor != null;
+                    listProfessor = monitor.getListaCommodities();
+                    idProfessor = monitor.getIdProfessor();
+                    if (value == 1) {
+                        //compraAcoesAluno();
+                    } else if (value == 2) {
+                        //vendaAcoesAluno();
+                    } else if (value == 3) {
+                        gerenciarAcoes();
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     private void recuperarAluno() {
@@ -306,20 +393,14 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
                     listProfessor = aluno.getListaCommodities();
                     idProfessor = aluno.getProfessorID();
                     if (value == 1) {
-
                         compraAcoesAluno();
                     } else if (value == 2) {
-
                         vendaAcoesAluno();
                     }
-
-
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
 
