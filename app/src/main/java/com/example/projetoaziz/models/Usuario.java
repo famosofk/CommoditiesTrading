@@ -14,11 +14,9 @@ public class Usuario implements Serializable {
     private String email;
     private String universidade;
     private List<Commodity> listaCommodities;
-    private int acao;
     private float creditos;
 
     public Usuario() {
-        acao = 0;
         creditos = (float) 100000.00;
         listaCommodities = new ArrayList<>();
     }
@@ -65,14 +63,6 @@ public class Usuario implements Serializable {
 
     public void setUniversidade(String universidade) {
         this.universidade = universidade;
-    }
-
-    public int getAcao() {
-        return acao;
-    }
-
-    public void setAcao(int acao) {
-        this.acao = acao;
     }
 
     public float getCreditos() {

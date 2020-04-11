@@ -41,8 +41,8 @@ import java.util.Objects;
  * A simple {@link Fragment} subclass.
  */
 public class CotacoesFragment extends Fragment {
+
     RecyclerView recycler;
-    Boolean admin = false;
     ListagemCotacoesAdapter adapter;
     private Professor professor = null;
     private Monitor monitor = null;
@@ -87,13 +87,13 @@ public class CotacoesFragment extends Fragment {
         editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (idProfessor == Base64Handler.codificarBase64(user.getEmail())) {
-                 /*   if (listaCommodities != null) {
-                        listaCommodities.setAcao(3);
+                if (aluno == null) {
+                    if (listProfessor != null) {
                         Intent i = new Intent(getActivity(), GerenciarCommoditiesActivity.class);
-                        i.putExtra("lista", listaCommodities);
+                        i.putExtra("acao", 3);
                         startActivity(i);
-                    }*/
+                        getActivity().finish();
+                    }
                 }
             }
         });
@@ -139,7 +139,7 @@ public class CotacoesFragment extends Fragment {
                             professor = dataSnapshot.getValue(Professor.class);
                             assert professor != null;
                             listProfessor = professor.getListaCommodities();
-                            atualizarLista(listProfessor, monitor);
+                            monitor.setListaCommodities(atualizarLista(listProfessor, monitor));
                             listProfessor = monitor.getListaCommodities();
                             monitor.salvar();
                             fazerListagem();
@@ -149,7 +149,6 @@ public class CotacoesFragment extends Fragment {
                         public void onCancelled(@NonNull DatabaseError databaseError) {
                         }
                     });
-                    listProfessor = monitor.getListaCommodities();
                 } else {
                     Toast.makeText(getActivity(), "Registro não encontrado.", Toast.LENGTH_SHORT).show();
                 }
@@ -181,7 +180,7 @@ public class CotacoesFragment extends Fragment {
                             professor = dataSnapshot.getValue(Professor.class);
                             assert professor != null;
                             listProfessor = professor.getListaCommodities();
-                            atualizarLista(listProfessor, aluno);
+                            aluno.setListaCommodities(atualizarLista(listProfessor, aluno));
                             listProfessor = aluno.getListaCommodities();
                             aluno.salvar();
                             if (professor.getVisibility()) {
@@ -197,8 +196,6 @@ public class CotacoesFragment extends Fragment {
                         }
                     });
 
-
-                    listProfessor = aluno.getListaCommodities();
                 } else {
                     Toast.makeText(getActivity(), "Registro não encontrado.", Toast.LENGTH_SHORT).show();
                 }
@@ -248,14 +245,14 @@ public class CotacoesFragment extends Fragment {
 
     }
 
-    private void atualizarLista(List<Commodity> lista, Usuario usuario) {
+    private List<Commodity> atualizarLista(List<Commodity> lista, Usuario usuario) {
         List<Commodity> listaUsuario = usuario.getListaCommodities();
 
         for (int i = 0; i < lista.size(); i++) {
             listaUsuario.get(i).setValor(lista.get(i).getValor());
         }
 
-        usuario.setListaCommodities(listaUsuario);
+        return listaUsuario;
     }
 
 

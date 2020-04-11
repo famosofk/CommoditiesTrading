@@ -409,6 +409,35 @@ public class CadastroLoginActivity extends AppCompatActivity {
 
     }
 
+    public void loginUsuario(View view) {
+        final LinearLayout loading = findViewById(R.id.loadingLogin);
+        loading.setVisibility(View.VISIBLE);
+
+        EditText editEmail = findViewById(R.id.emailLogin);
+        EditText editSenha = findViewById(R.id.senhaLogin);
+
+        String email = editEmail.getText().toString().toLowerCase().trim();
+
+        mAuth.signInWithEmailAndPassword(email, editSenha.getText().toString())
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Intent i = new Intent(CadastroLoginActivity.this, MainActivity.class);
+                            startActivity(i);
+                            finish();
+
+                        } else {
+                            Toast.makeText(CadastroLoginActivity.this, "Não foi possível realizar o login.", Toast.LENGTH_SHORT).show();
+                            loading.setVisibility(View.GONE);
+                        }
+
+                        // ...
+                    }
+                });
+
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
