@@ -52,19 +52,18 @@ public class CadastroLoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cadastro_login);
+
         mAuth = FirebaseAuth.getInstance();
         professorSelecionado = new Professor();
-        verificarCadastroProfessores();
+        verificarSeHaProfessoresCadastrados();
 
 
     }
 
 
-    public void iniciarCadastroProfessor(View view) {
+    public void exibirCadastroProfessor(View view) {
         setContentView(R.layout.activity_professor_cadastro);
     }
-
 
     public void autorizaCadastroMonitor(View view) {
         if (listaProfessores.size() > 0) {
@@ -295,7 +294,7 @@ public class CadastroLoginActivity extends AppCompatActivity {
 
     }
 
-    private void verificarCadastroProfessores() {
+    private void verificarSeHaProfessoresCadastrados() {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("professor");
         db.addValueEventListener(new ValueEventListener() {
             @Override
@@ -305,7 +304,7 @@ public class CadastroLoginActivity extends AppCompatActivity {
                     recuperado = dsp.getValue(Professor.class);
                     listaProfessores.add(recuperado);
                 }
-
+                setContentView(R.layout.activity_cadastro_login);
 
             }
 
@@ -452,8 +451,8 @@ public class CadastroLoginActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             Intent main = new Intent(CadastroLoginActivity.this, MainActivity.class);
-            startActivity(main);
-            finish();
+            // startActivity(main);
+            // finish();
         }
     }
 }

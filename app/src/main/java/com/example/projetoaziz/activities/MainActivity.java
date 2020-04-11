@@ -60,9 +60,6 @@ public class MainActivity extends AppCompatActivity {
                         fragmentTransaction.replace(R.id.viewPager, new OrdensFragment()).commit();
                         return true;
 
-                    case R.id.navigation_relatorios:
-                        fragmentTransaction.replace(R.id.viewPager, new CotacoesFragment()).commit();
-                        return true;
                 }
                 return false;
             }

@@ -17,7 +17,7 @@
             android:layout_height="55dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/button_shape_primary"
-            android:onClick="iniciarCadastroProfessor"
+            android:onClick="exibirCadastroProfessor"
             android:text="@string/professor_intro"
             android:textColor="@color/backgroundPadrao"
             android:textSize="24sp" />
