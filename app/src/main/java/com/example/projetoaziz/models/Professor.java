@@ -13,7 +13,7 @@ public class Professor extends Usuario implements Serializable {
 
 
     public Professor() {
-
+        setMatricula("Professor");
         setVisibility(false);
     }
 
@@ -21,7 +21,6 @@ public class Professor extends Usuario implements Serializable {
 
         DatabaseReference firebaseRef = ConfiguracaoDatabase.getFirebaseDatabase();
         DatabaseReference usuario = firebaseRef.child("professor").child(getId());
-
         usuario.setValue(this);
 
     }

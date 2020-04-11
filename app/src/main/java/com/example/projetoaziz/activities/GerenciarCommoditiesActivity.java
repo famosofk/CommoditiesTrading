@@ -24,6 +24,7 @@ import com.example.projetoaziz.models.Commodity;
 import com.example.projetoaziz.models.Monitor;
 import com.example.projetoaziz.models.Ordens;
 import com.example.projetoaziz.models.Professor;
+import com.example.projetoaziz.models.Usuario;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -34,22 +35,21 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class GerenciarCommoditiesActivity extends AppCompatActivity {
 
     Professor professor;
-    Aluno aluno;
     Monitor monitor;
     DatabaseReference db;
     FirebaseUser user;
     FirebaseAuth mauth;
     List<Commodity> listProfessor, listVendas;
-    String idProfessor, detalhes;
+    String idProfessor;
     RecyclerView recycler;
     CompraAdapter adapterCompras;
     VendaAdapter adapterVendas;
     GerenciarAcoesAdapter adapterGerenciar;
-    float gasto;
     int value;
 
     @Override
@@ -62,12 +62,12 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
         if (bundle != null) {
             value = (int) bundle.getSerializable("acao");
 
-            if (user.getPhotoUrl().toString().equals("professor"))
-                recuperarProfessor();
-            else if (user.getPhotoUrl().toString().equals("aluno")) {
-                recuperarAluno();
-            } else if (user.getPhotoUrl().toString().equals("monitor")) {
-                recuperarMonitor();
+            if (Objects.requireNonNull(user.getPhotoUrl()).toString().equals("professor"))
+                professorRecoveryData();
+            else if (Objects.requireNonNull(user.getPhotoUrl().toString().equals("aluno"))) {
+                studentRecoveryData();
+            } else if (Objects.requireNonNull(user.getPhotoUrl().toString().equals("monitor"))) {
+                monitorRecoveryData();
             }
 
 
@@ -75,7 +75,7 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
     }
 
 
-    private void compraAcoesProfessor() {
+    private void professorBuyingCommodities() {
         setContentView(R.layout.comprar_commodities);
         recycler = findViewById(R.id.recyclerComprarCommodities);
         adapterCompras = new CompraAdapter(listProfessor, getApplicationContext(), professor);
@@ -85,37 +85,19 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
         compra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gasto = adapterCompras.calcularGastoTotal();
-                professor.setCreditos(professor.getCreditos() - gasto);
-                detalhes = "As compras foram de: ";
-                int[] originais = adapterCompras.getOriginais();
-                for (int i = 0; i < listProfessor.size(); i++) {
-                    Commodity commodity = listProfessor.get(i);
-                    int diferenca = commodity.getQuantidade() - originais[i];
-                    if (diferenca != 0) {
-                        String transacao = commodity.getNome() + ": " + Integer.toString(diferenca) + "  ";
-                        detalhes = detalhes.concat(transacao);
-                    }
-                }//no final disso tenho os dados da compra em uma string
-                Ordens ordem = new Ordens();
-                ordem.setTipo("compra");
-                ordem.setIdDono(professor.getId());
-                ordem.setDados(detalhes); //nesse ponto tenho a ordem atualizada, basta salvar as coisas no banco agora.
-                EditText justificativa = findViewById(R.id.justificativaCompra);
-                ordem.setJustificativa(justificativa.getText().toString());
+                Ordens ordem = createOrder(professor, 1);
                 db = FirebaseDatabase.getInstance().getReference().child("ordens").child(idProfessor).child(ordem.getIdDono()).child(ordem.getIdOrdem());
+                float gasto = adapterCompras.calcularGastoTotal();
+                professor.setCreditos(professor.getCreditos() - gasto);
                 db.setValue(ordem);
                 professor.salvar();
                 startActivity(new Intent(GerenciarCommoditiesActivity.this, MainActivity.class));
                 finish();
-
             }
         });
-
-
     }
 
-    private void compraAcoesAluno() {
+    private void studentBuyingCommodities(final Aluno aluno) {
         setContentView(R.layout.comprar_commodities);
         recycler = findViewById(R.id.recyclerComprarCommodities);
         adapterCompras = new CompraAdapter(listProfessor, getApplicationContext(), aluno);
@@ -125,28 +107,11 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
         compra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText justificativa = findViewById(R.id.justificativaCompra);
-                if (!justificativa.getText().toString().isEmpty()) {
-
-                    gasto = adapterCompras.calcularGastoTotal();
-                    aluno.setCreditos(aluno.getCreditos() - gasto);
-                    detalhes = "As compras foram de: ";
-                    int[] originais = adapterCompras.getOriginais();
-                    for (int i = 0; i < listProfessor.size(); i++) {
-                        Commodity commodity = listProfessor.get(i);
-                        int diferenca = commodity.getQuantidade() - originais[i];
-                        if (diferenca != 0) {
-                            String transacao = commodity.getNome() + ": " + diferenca + "  ";
-                            detalhes = detalhes.concat(transacao);
-                        }
-                    }//no final disso tenho os dados da compra em uma string
-                    Ordens ordem = new Ordens();
-                    ordem.setTipo("compra");
-                    ordem.setMatricula(aluno.getMatricula());
-                    ordem.setIdDono(aluno.getId());
-                    ordem.setDados(detalhes); //nesse ponto tenho a ordem atualizada, basta salvar as coisas no banco agora.
-                    ordem.setJustificativa(justificativa.getText().toString());
+                Ordens ordem = createOrder(aluno, 1);
                     db = FirebaseDatabase.getInstance().getReference().child("ordens").child(idProfessor).child(ordem.getIdDono()).child(ordem.getIdOrdem());
+                if (!ordem.getJustificativa().isEmpty()) {
+                    float gasto = adapterCompras.calcularGastoTotal();
+                    aluno.setCreditos(aluno.getCreditos() - gasto);
                     db.setValue(ordem);
                     aluno.salvar();
                     startActivity(new Intent(GerenciarCommoditiesActivity.this, MainActivity.class));
@@ -154,22 +119,14 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(GerenciarCommoditiesActivity.this, "Preencha a justificativa.", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 
 
     }
 
-    private void vendaAcoesProfessor() {
-        setContentView(R.layout.vender_commodities);
-        recycler = findViewById(R.id.recyclerVenderCommodities);
-        listVendas = new ArrayList<>();
-        for (Commodity commodity : listProfessor) {
-            if (commodity.getQuantidade() != 0) {
-                listVendas.add(commodity);
-            }
-        }
+    private void professorSellingCommodities() {
+        showSellingScreen();
         adapterVendas = new VendaAdapter(listVendas, getApplicationContext(), professor);
         recycler.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recycler.setAdapter(adapterVendas);
@@ -178,29 +135,8 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
         venda.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int[] originais = adapterVendas.getOriginais();
-                Ordens ordem = new Ordens();
-                ordem.setIdDono(professor.getId());
+                Ordens ordem = createOrder(professor, 2);
                 ordem.setTipo("venda");
-                detalhes = "As vendas foram de: ";
-                Commodity cProfessor, cVenda;
-                professor.setCreditos(adapterVendas.calcularLucroTotal() + professor.getCreditos());
-                for (int lpIndex = 0; lpIndex < listProfessor.size(); lpIndex++) {
-                    cProfessor = listProfessor.get(lpIndex);
-                    for (int lvIndex = 0; lvIndex < listVendas.size(); lvIndex++) {
-                        cVenda = listVendas.get(lvIndex);
-                        if (cProfessor.getNome().equals(cVenda.getNome())) {
-                            int diferenca = originais[lvIndex] - cProfessor.getQuantidade();
-                            if (diferenca != 0) {
-                                String transacao = cProfessor.getNome() + ": " + diferenca + "  ";
-                                detalhes = detalhes.concat(transacao);
-                            }
-                        }
-                    }
-                }
-                EditText justificativa = findViewById(R.id.justificativaVenda);
-                ordem.setJustificativa(justificativa.getText().toString());
-                ordem.setDados(detalhes);
                 db = FirebaseDatabase.getInstance().getReference().child("ordens").child(idProfessor).child(ordem.getIdDono()).child(ordem.getIdOrdem());
                 db.setValue(ordem);
                 professor.salvar();
@@ -212,15 +148,8 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
         });
     }
 
-    private void vendaAcoesAluno() {
-        setContentView(R.layout.vender_commodities);
-        recycler = findViewById(R.id.recyclerVenderCommodities);
-        listVendas = new ArrayList<>();
-        for (Commodity commodity : listProfessor) {
-            if (commodity.getQuantidade() != 0) {
-                listVendas.add(commodity);
-            }
-        }
+    private void studentSellingCommodities(final Aluno aluno) {
+        showSellingScreen();
         adapterVendas = new VendaAdapter(listVendas, getApplicationContext(), aluno);
         recycler.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recycler.setAdapter(adapterVendas);
@@ -229,47 +158,95 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
         venda.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                EditText justificativa = findViewById(R.id.justificativaVenda);
-                if (!justificativa.getText().toString().isEmpty()) {
-
-                    int[] originais = adapterVendas.getOriginais();
-                    Ordens ordem = new Ordens();
-                    ordem.setIdDono(aluno.getId());
+                Ordens ordem = createOrder(aluno, 2);
                     ordem.setTipo("venda");
-                    detalhes = "As vendas foram de: ";
-                    Commodity cAluno, cVenda;
-                    professor.setCreditos(adapterVendas.calcularLucroTotal() + professor.getCreditos());
-                    for (int lpIndex = 0; lpIndex < listProfessor.size(); lpIndex++) {
-                        cAluno = listProfessor.get(lpIndex);
-                        for (int lvIndex = 0; lvIndex < listVendas.size(); lvIndex++) {
-                            cVenda = listVendas.get(lvIndex);
-                            if (cAluno.getNome().equals(cVenda.getNome())) {
-                                int diferenca = originais[lvIndex] - cAluno.getQuantidade();
-                                if (diferenca != 0) {
-                                    String transacao = cAluno.getNome() + ": " + diferenca + "  ";
-                                    detalhes = detalhes.concat(transacao);
-                                }
-                            }
-                        }
-                    }
-                    ordem.setJustificativa(justificativa.getText().toString());
-                    ordem.setDados(detalhes);
-                    ordem.setMatricula(aluno.getMatricula());
+
                     db = FirebaseDatabase.getInstance().getReference().child("ordens").child(idProfessor).child(ordem.getIdDono()).child(ordem.getIdOrdem());
+                if (!ordem.getJustificativa().isEmpty()) {
                     db.setValue(ordem);
-                    professor.salvar();
+                    aluno.salvar();
                     startActivity(new Intent(GerenciarCommoditiesActivity.this, MainActivity.class));
                     finish();
                 } else {
-                    Toast.makeText(GerenciarCommoditiesActivity.this, "Preencha a justificativa.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GerenciarCommoditiesActivity.this, "Preencha a justificativa da ordem.", Toast.LENGTH_SHORT).show();
                 }
+
 
             }
         });
     }
 
-    private void gerenciarAcoes() {
+    private Ordens createOrder(Usuario usuario, int value) {
+
+        Ordens ordem = new Ordens();
+        ordem.setIdDono(usuario.getId());
+        if (value == 1) {
+            ordem.setTipo("compra");
+            EditText justificativa = findViewById(R.id.justificativaCompra);
+            ordem.setDados(getOrderDetails(1, usuario));
+            ordem.setJustificativa(justificativa.getText().toString());
+        } else if (value == 2) {
+            ordem.setTipo("venda");
+            EditText justificativa = findViewById(R.id.justificativaVenda);
+            ordem.setDados(getOrderDetails(2, usuario));
+            ordem.setJustificativa(justificativa.getText().toString());
+        }
+
+
+        ordem.setMatricula(usuario.getMatricula());
+        return ordem;
+    }
+
+    private String getOrderDetails(int value, Usuario usuario) {
+        if (value == 1) {
+            String detalhes = "As compras foram de: ";
+
+            int[] originais = adapterCompras.getOriginais();
+            for (int i = 0; i < listProfessor.size(); i++) {
+                Commodity commodity = listProfessor.get(i);
+                int diferenca = commodity.getQuantidade() - originais[i];
+                if (diferenca != 0) {
+                    String transacao = commodity.getNome() + ": " + diferenca + "  ";
+                    detalhes = detalhes.concat(transacao);
+                }
+            }
+            return detalhes;
+        } else if (value == 2) {
+            int[] originais = adapterVendas.getOriginais();
+            String detalhes = "As vendas foram de: ";
+            Commodity cAluno, cVenda;
+            usuario.setCreditos(adapterVendas.calcularLucroTotal() + usuario.getCreditos());
+            for (int lpIndex = 0; lpIndex < listProfessor.size(); lpIndex++) {
+                cAluno = listProfessor.get(lpIndex);
+                for (int lvIndex = 0; lvIndex < listVendas.size(); lvIndex++) {
+                    cVenda = listVendas.get(lvIndex);
+                    if (cAluno.getNome().equals(cVenda.getNome())) {
+                        int diferenca = originais[lvIndex] - cAluno.getQuantidade();
+                        if (diferenca != 0) {
+                            String transacao = cAluno.getNome() + ": " + diferenca + "  ";
+                            detalhes = detalhes.concat(transacao);
+                        }
+                    }
+                }
+            }
+            return detalhes;
+        }
+
+        return null;
+    }
+
+    private void showSellingScreen() {
+        setContentView(R.layout.vender_commodities);
+        recycler = findViewById(R.id.recyclerVenderCommodities);
+        listVendas = new ArrayList<>();
+        for (Commodity commodity : listProfessor) {
+            if (commodity.getQuantidade() != 0) {
+                listVendas.add(commodity);
+            }
+        }
+    }
+
+    private void allowManageCommodities() {
 
         if (professor == null) {
             db = FirebaseDatabase.getInstance().getReference().child("professor").child(monitor.getIdProfessor());
@@ -279,8 +256,7 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
                     if (dataSnapshot.getValue() != null) {
                         professor = dataSnapshot.getValue(Professor.class);
                         assert professor != null;
-                        efetuarAtualizacao();
-
+                        showManageCommoditiesScreen();
 
                     }
                 }
@@ -290,13 +266,13 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
                 }
             });
         } else {
-            efetuarAtualizacao();
+            showManageCommoditiesScreen();
         }
 
 
     }
 
-    private void efetuarAtualizacao() {
+    private void showManageCommoditiesScreen() {
         setContentView(R.layout.gerenciar_commodities);
         recycler = findViewById(R.id.recyclerGerenciarCommodities);
         adapterGerenciar = new GerenciarAcoesAdapter(listProfessor, getApplicationContext());
@@ -306,24 +282,28 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
         gerenciar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                professor.setListaCommodities(listProfessor);
-                CheckBox visibility = findViewById(R.id.visibilitycheckBox);
-                if (visibility.isChecked()) {
-                    professor.setVisibility(true);
-                } else {
-                    professor.setVisibility(false);
-                }
-                professor.salvar();
-                Intent i = new Intent(GerenciarCommoditiesActivity.this, MainActivity.class);
-                startActivity(i);
-                finish();
+                attCommodities();
             }
         });
     }
 
-    private void recuperarProfessor() {
+    private void attCommodities() {
+        professor.setListaCommodities(listProfessor);
+        CheckBox visibility = findViewById(R.id.visibilitycheckBox);
+        if (visibility.isChecked()) {
+            professor.setVisibility(true);
+        } else {
+            professor.setVisibility(false);
+        }
+        professor.salvar();
+        Intent i = new Intent(GerenciarCommoditiesActivity.this, MainActivity.class);
+        startActivity(i);
+        finish();
+    }
 
-        db = FirebaseDatabase.getInstance().getReference().child("professor").child(Base64Handler.codificarBase64(user.getEmail()));
+    private void professorRecoveryData() {
+
+        db = FirebaseDatabase.getInstance().getReference().child("professor").child(Base64Handler.codificarBase64(Objects.requireNonNull(user.getEmail())));
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -333,11 +313,11 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
                     listProfessor = professor.getListaCommodities();
                     idProfessor = professor.getId();
                     if (value == 1) {
-                        compraAcoesProfessor();
+                        professorBuyingCommodities();
                     } else if (value == 2) {
-                        vendaAcoesProfessor();
+                        professorSellingCommodities();
                     } else if (value == 3) {
-                        gerenciarAcoes();
+                        allowManageCommodities();
                     }
 
                 }
@@ -350,9 +330,9 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
         });
     }
 
-    private void recuperarMonitor() {
+    private void monitorRecoveryData() {
 
-        db = FirebaseDatabase.getInstance().getReference().child("monitor").child(Base64Handler.codificarBase64(user.getEmail()));
+        db = FirebaseDatabase.getInstance().getReference().child("monitor").child(Base64Handler.codificarBase64(Objects.requireNonNull(user.getEmail())));
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -361,13 +341,7 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
                     assert monitor != null;
                     listProfessor = monitor.getListaCommodities();
                     idProfessor = monitor.getIdProfessor();
-                    if (value == 1) {
-                        //compraAcoesAluno();
-                    } else if (value == 2) {
-                        //vendaAcoesAluno();
-                    } else if (value == 3) {
-                        gerenciarAcoes();
-                    }
+                    allowManageCommodities();
 
 
                 }
@@ -381,21 +355,21 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
 
     }
 
-    private void recuperarAluno() {
+    private void studentRecoveryData() {
 
-        db = FirebaseDatabase.getInstance().getReference().child("aluno").child(Base64Handler.codificarBase64(user.getEmail()));
+        db = FirebaseDatabase.getInstance().getReference().child("aluno").child(Base64Handler.codificarBase64(Objects.requireNonNull(user.getEmail())));
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() != null) {
-                    aluno = dataSnapshot.getValue(Aluno.class);
+                    Aluno aluno = dataSnapshot.getValue(Aluno.class);
                     assert aluno != null;
                     listProfessor = aluno.getListaCommodities();
                     idProfessor = aluno.getProfessorID();
                     if (value == 1) {
-                        compraAcoesAluno();
+                        studentBuyingCommodities(aluno);
                     } else if (value == 2) {
-                        vendaAcoesAluno();
+                        studentSellingCommodities(aluno);
                     }
                 }
             }

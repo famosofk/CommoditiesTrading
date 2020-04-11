@@ -112,7 +112,7 @@ public class CompraAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
                     Commodity nova = listCompras.get(position);
                     int quantidadeAntiga = nova.getQuantidade();
                     quantidades[position] = Integer.parseInt(s.toString());
-                    nova.setQuantidade(Integer.parseInt(s.toString()));
+                    nova.setQuantidade(originais[position] + Integer.parseInt(s.toString()));
                     float gasto = calcularGastoTotal();
                     float creditos = u.getCreditos();
                     if (creditos > gasto) {

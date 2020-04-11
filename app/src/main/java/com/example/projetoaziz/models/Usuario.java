@@ -15,6 +15,7 @@ public class Usuario implements Serializable {
     private String universidade;
     private List<Commodity> listaCommodities;
     private float creditos;
+    private String matricula;
 
     public Usuario() {
         creditos = (float) 100000.00;
@@ -27,6 +28,14 @@ public class Usuario implements Serializable {
 
     public String getId() {
         return id;
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
     }
 
     private void setId(String id) {

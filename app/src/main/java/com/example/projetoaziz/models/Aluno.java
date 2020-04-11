@@ -5,7 +5,7 @@ import com.google.firebase.database.DatabaseReference;
 
 public class Aluno extends Usuario {
 
-    private String matricula;
+
     private String professorID;
 
     public Aluno() {
@@ -28,11 +28,5 @@ public class Aluno extends Usuario {
         this.professorID = professorID;
     }
 
-    public String getMatricula() {
-        return matricula;
-    }
 
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
-    }
 }
