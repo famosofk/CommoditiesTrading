@@ -301,8 +301,8 @@ public class CadastroLoginActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Professor recuperado;
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                    recuperado = dsp.getValue(Professor.class);
-                    listaProfessores.add(recuperado);
+                    // recuperado = dsp.getValue(Professor.class);
+                    //listaProfessores.add(recuperado);
                 }
                 setContentView(R.layout.activity_cadastro_login);
 

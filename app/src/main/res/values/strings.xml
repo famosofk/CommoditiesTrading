@@ -54,6 +54,7 @@
     <string name="codigo_monitor_hint">Código fornecido pelo professor</string>
     <string name="gerenciar_commodities_intro">Atualizar preços</string>
     <string name="visibility_change_intro">Permitir negociação de ordens</string>
+    <string name="graficos_intro">Variação entre os líderes</string>
 
     <string-array name="commodities">
         <item name="Algodão" />

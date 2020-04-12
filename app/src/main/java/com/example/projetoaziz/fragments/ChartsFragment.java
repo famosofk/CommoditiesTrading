@@ -1,10 +1,10 @@
 package com.example.projetoaziz.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -12,8 +12,19 @@ import androidx.fragment.app.Fragment;
 import com.example.projetoaziz.R;
 import com.example.projetoaziz.helpers.Base64Handler;
 import com.example.projetoaziz.helpers.MoneySort;
+import com.example.projetoaziz.models.Commodity;
 import com.example.projetoaziz.models.Professor;
 import com.example.projetoaziz.models.Usuario;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LegendEntry;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,12 +38,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ChartsFragment extends Fragment {
 
-    View v;
+    private View v;
+    private DatabaseReference db;
 
     public ChartsFragment() {
         // Required empty public constructor
@@ -51,17 +64,66 @@ public class ChartsFragment extends Fragment {
         return v;
     }
 
+    @SuppressLint("ResourceAsColor")
     private void plotarGraficos(List<Usuario> list) {
-        String value = list.get(0).getNome() + " " + list.get(1).getNome();
+        BarChart mbar = v.findViewById(R.id.barChart);
+        List<Usuario> dezMelhores = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            if (i == 11) {
+                break;
+            } else {
+                dezMelhores.add(list.get(i));
+            }
+        }
+        List<BarEntry> entries = new ArrayList<>();
+        List<LegendEntry> legendEntries = new ArrayList<>();
+        for (int i = 0; i < dezMelhores.size(); i++) {
+            Usuario usuario = dezMelhores.get(i);
+            float patrimonio = usuario.getCreditos();
+            for (Commodity commodity : usuario.getListaCommodities()) {
+                patrimonio += commodity.getQuantidade() * commodity.getValor();
+            }
+            entries.add(new BarEntry(i, patrimonio));
+            LegendEntry legendEntry = new LegendEntry();
+            legendEntry.label = usuario.getNome();
+            legendEntry.formColor = ColorTemplate.JOYFUL_COLORS[i % 5];
 
-        Toast.makeText(getActivity(), "" + value, Toast.LENGTH_SHORT).show();
+            legendEntries.add(legendEntry);
+
+
+        }
+        BarDataSet set = new BarDataSet(entries, "Jogadores");
+        set.setColors(ColorTemplate.JOYFUL_COLORS);
+
+        BarData data = new BarData(set);
+        YAxis yAxisRight = mbar.getAxisRight();
+        YAxis yAxisLeft = mbar.getAxisLeft();
+        yAxisRight.setEnabled(false);
+        yAxisLeft.setEnabled(false);
+        XAxis xAxis = mbar.getXAxis();
+        xAxis.setEnabled(false);
+        data.setBarWidth(0.9f);
+        mbar.setDrawValueAboveBar(true);
+        mbar.fitScreen();
+        Description description = mbar.getDescription();
+        description.setEnabled(false);
+        Legend legend = mbar.getLegend();
+        legend.setCustom(legendEntries);
+        legend.setTextSize(10);
+        mbar.animateY(3000);
+        mbar.setDrawGridBackground(false);
+        mbar.setDrawBorders(false);
+        mbar.setFitBars(true);
+        mbar.setData(data);
+        mbar.invalidate();
+        db = null;
     }
 
     private void recuperarListaUsuarios(Professor professor) {
 
         final List<Usuario> list = new ArrayList<>();
         list.add(professor);
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("aluno");
+        db = FirebaseDatabase.getInstance().getReference().child("aluno");
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -84,8 +146,8 @@ public class ChartsFragment extends Fragment {
 
     private void recuperarProfessor(final FirebaseUser user) {
 
-        DatabaseReference db = null;
-        if ("professor".equals(user.getPhotoUrl().toString())) {
+        DatabaseReference db;
+        if ("professor".equals(Objects.requireNonNull(user.getPhotoUrl()).toString())) {
             db = FirebaseDatabase.getInstance().getReference().child("professor").child(Base64Handler.codificarBase64(Objects.requireNonNull(user.getEmail())));
             db.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -123,8 +185,7 @@ public class ChartsFragment extends Fragment {
 
     private FirebaseUser getCurrentUser() {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-        return user;
+        return mAuth.getCurrentUser();
     }
 
 }
