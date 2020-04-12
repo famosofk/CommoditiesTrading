@@ -1,5 +1,6 @@
 package com.example.projetoaziz.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -40,13 +41,13 @@ import java.util.Objects;
  */
 public class OrdensFragment extends Fragment {
 
-    View v;
+    private View v;
     private Professor professor = null;
     private Aluno aluno = null;
     private String idProfessor = null;
     private DatabaseReference db;
     private FirebaseUser user;
-    private RecyclerView recyclerPropriedades, recyclerOrdens;
+    private RecyclerView recyclerOrdens;
     private List<Commodity> listProfessor = new ArrayList<>();
     private List<Ordens> listaOrdens = new ArrayList<>();
 
@@ -69,7 +70,7 @@ public class OrdensFragment extends Fragment {
             Toast.makeText(getActivity(), "Por favor, faça login novamente.", Toast.LENGTH_SHORT).show();
         } else {
 
-            if (user.getPhotoUrl().toString().equals("aluno")) {
+            if (Objects.requireNonNull(user.getPhotoUrl()).toString().equals("aluno")) {
                 recuperarAluno();
             } else if (user.getPhotoUrl().toString().equals("professor")) {
                 recuperarProfessor();
@@ -80,7 +81,7 @@ public class OrdensFragment extends Fragment {
 
     private void recuperarAluno() {
 
-        db = FirebaseDatabase.getInstance().getReference().child("aluno").child(Base64Handler.codificarBase64(user.getEmail()));
+        db = FirebaseDatabase.getInstance().getReference().child("aluno").child(Base64Handler.codificarBase64(Objects.requireNonNull(user.getEmail())));
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -108,7 +109,7 @@ public class OrdensFragment extends Fragment {
 
     private void recuperarProfessor() {
 
-        db = FirebaseDatabase.getInstance().getReference().child("professor").child(Base64Handler.codificarBase64(user.getEmail()));
+        db = FirebaseDatabase.getInstance().getReference().child("professor").child(Base64Handler.codificarBase64(Objects.requireNonNull(user.getEmail())));
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -135,6 +136,7 @@ public class OrdensFragment extends Fragment {
         });
     }
 
+    @SuppressLint("DefaultLocale")
     private void popularTela() {
         TextView nome = v.findViewById(R.id.nomeOrdens);
         TextView creditos = v.findViewById(R.id.creditoOrdens);
@@ -150,7 +152,7 @@ public class OrdensFragment extends Fragment {
         }
         nome.setText(NOME);
         creditos.setText(CREDITOS);
-        recyclerPropriedades = v.findViewById(R.id.recyclerPosses);
+        RecyclerView recyclerPropriedades = v.findViewById(R.id.recyclerPosses);
         PosseAdapter adapter = new PosseAdapter(listProfessor, getActivity());
         recyclerPropriedades.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerPropriedades.setAdapter(adapter);
@@ -160,7 +162,7 @@ public class OrdensFragment extends Fragment {
     private void popularOrdens() {
         recyclerOrdens = v.findViewById(R.id.recylerOrdens);
 
-        if (user.getPhotoUrl().toString().equals("aluno")) {
+        if (Objects.requireNonNull(user.getPhotoUrl()).toString().equals("aluno")) {
             db = FirebaseDatabase.getInstance().getReference().child("ordens").child(idProfessor).child(aluno.getId());
             db.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -203,6 +205,7 @@ public class OrdensFragment extends Fragment {
                     for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                         for (DataSnapshot dsp3 : dsp.getChildren()) {
                             recuperada = dsp3.getValue(Ordens.class);
+                            assert recuperada != null;
                             if (!(recuperada.getIdDono().equals(professor.getId()))) {
                                 listaOrdens.add(recuperada);
                             }
