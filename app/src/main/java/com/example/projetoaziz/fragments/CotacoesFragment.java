@@ -42,8 +42,6 @@ import java.util.Objects;
  */
 public class CotacoesFragment extends Fragment {
 
-    RecyclerView recycler;
-    ListagemCotacoesAdapter adapter;
     private Professor professor = null;
     private Monitor monitor = null;
     private Aluno aluno = null;
@@ -60,11 +58,8 @@ public class CotacoesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_cotacoes, container, false);
         ImageButton editar = v.findViewById(R.id.imageView3);
-
-
         FirebaseAuth mauth = ConfiguracaoDatabase.getFirebaseAutenticacao();
         user = mauth.getCurrentUser();
         if (user == null) {
@@ -72,18 +67,16 @@ public class CotacoesFragment extends Fragment {
             Objects.requireNonNull(getActivity()).finish();
             startActivity(new Intent(getActivity(), CadastroLoginActivity.class));
             Toast.makeText(getActivity(), "Por favor, faça login novamente.", Toast.LENGTH_SHORT).show();
+            getActivity().finish();
         } else {
-
-            if (user.getPhotoUrl().toString().equals("aluno")) {
+            if (Objects.requireNonNull(user.getPhotoUrl()).toString().equals("aluno")) {
                 recuperarAluno();
             } else if (user.getPhotoUrl().toString().equals("professor")) {
                 recuperarProfessor();
             } else if (user.getPhotoUrl().toString().equals("monitor")) {
                 recuperarMonitor();
             }
-
         }
-
         editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,12 +85,11 @@ public class CotacoesFragment extends Fragment {
                         Intent i = new Intent(getActivity(), GerenciarCommoditiesActivity.class);
                         i.putExtra("acao", 3);
                         startActivity(i);
-                        getActivity().finish();
+                        Objects.requireNonNull(getActivity()).finish();
                     }
                 }
             }
         });
-
         Button comprar = v.findViewById(R.id.buttonComprar);
         comprar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,7 +110,6 @@ public class CotacoesFragment extends Fragment {
         vender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (aluno != null) {
                     if (professor.getVisibility()) {
                         transicaoTelaVenda();
@@ -130,12 +121,11 @@ public class CotacoesFragment extends Fragment {
                 }
             }
         });
-
         return v;
     }
 
     private void recuperarMonitor() {
-        db = FirebaseDatabase.getInstance().getReference().child("monitor").child(Base64Handler.codificarBase64(user.getEmail()));
+        db = FirebaseDatabase.getInstance().getReference().child("monitor").child(Base64Handler.codificarBase64(Objects.requireNonNull(user.getEmail())));
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -174,7 +164,7 @@ public class CotacoesFragment extends Fragment {
 
     private void recuperarAluno() {
 
-        db = FirebaseDatabase.getInstance().getReference().child("aluno").child(Base64Handler.codificarBase64(user.getEmail()));
+        db = FirebaseDatabase.getInstance().getReference().child("aluno").child(Base64Handler.codificarBase64(Objects.requireNonNull(user.getEmail())));
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -182,7 +172,6 @@ public class CotacoesFragment extends Fragment {
                     aluno = dataSnapshot.getValue(Aluno.class);
                     assert aluno != null;
                     idProfessor = aluno.getProfessorID();
-
                     DatabaseReference busca = FirebaseDatabase.getInstance().getReference().child("professor").child(idProfessor);
                     busca.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -199,13 +188,10 @@ public class CotacoesFragment extends Fragment {
                                 exibirToastMercadoFechado();
                             }
                         }
-
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
-
                         }
                     });
-
                 } else {
                     Toast.makeText(getActivity(), "Registro não encontrado.", Toast.LENGTH_SHORT).show();
                 }
@@ -214,14 +200,13 @@ public class CotacoesFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
     }
 
     private void recuperarProfessor() {
 
-        db = FirebaseDatabase.getInstance().getReference().child("professor").child(Base64Handler.codificarBase64(user.getEmail()));
+        db = FirebaseDatabase.getInstance().getReference().child("professor").child(Base64Handler.codificarBase64(Objects.requireNonNull(user.getEmail())));
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -231,7 +216,6 @@ public class CotacoesFragment extends Fragment {
                     idProfessor = professor.getId();
                     listProfessor = professor.getListaCommodities();
                     fazerListagem();
-
                 } else {
                     Toast.makeText(getActivity(), "Registro não encontrado.", Toast.LENGTH_SHORT).show();
                 }
@@ -240,15 +224,14 @@ public class CotacoesFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
     }
 
     private void fazerListagem() {
 
-        recycler = v.findViewById(R.id.recyclerCommodities);
-        adapter = new ListagemCotacoesAdapter(listProfessor, getActivity());
+        RecyclerView recycler = v.findViewById(R.id.recyclerCommodities);
+        ListagemCotacoesAdapter adapter = new ListagemCotacoesAdapter(listProfessor, getActivity());
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         recycler.setAdapter(adapter);
 
@@ -273,14 +256,14 @@ public class CotacoesFragment extends Fragment {
         Intent i = new Intent(getActivity(), GerenciarCommoditiesActivity.class);
         i.putExtra("acao", 1);
         startActivity(i);
-        getActivity().finish();
+        Objects.requireNonNull(getActivity()).finish();
     }
 
     private void transicaoTelaVenda() {
         Intent i = new Intent(getActivity(), GerenciarCommoditiesActivity.class);
         i.putExtra("acao", 2);
         startActivity(i);
-        getActivity().finish();
+        Objects.requireNonNull(getActivity()).finish();
     }
 
 }

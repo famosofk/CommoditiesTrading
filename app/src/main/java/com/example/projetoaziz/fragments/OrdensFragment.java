@@ -74,9 +74,7 @@ public class OrdensFragment extends Fragment {
             } else if (user.getPhotoUrl().toString().equals("professor")) {
                 recuperarProfessor();
             }
-        } //Dados do usuárioRecuperados.
-
-
+        }
         return v;
     }
 
@@ -90,7 +88,6 @@ public class OrdensFragment extends Fragment {
                     aluno = dataSnapshot.getValue(Aluno.class);
                     assert aluno != null;
                     idProfessor = aluno.getProfessorID();
-                    DatabaseReference busca = FirebaseDatabase.getInstance().getReference().child("aluno").child(aluno.getId());
                     List<Commodity> listRecuperacao = aluno.getListaCommodities();
                     for (int i = 0; i < listRecuperacao.size(); i++) {
                         Commodity c = listRecuperacao.get(i);
@@ -102,12 +99,9 @@ public class OrdensFragment extends Fragment {
                 } else {
                     Toast.makeText(getActivity(), "Registro não encontrado.", Toast.LENGTH_SHORT).show();
                 }
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
     }
@@ -130,20 +124,13 @@ public class OrdensFragment extends Fragment {
                             listProfessor.add(c);
                         }
                     }
-
-
                     popularTela();
-
-
                 } else {
                     Toast.makeText(getActivity(), "Registro não encontrado.", Toast.LENGTH_SHORT).show();
                 }
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
     }
@@ -159,7 +146,6 @@ public class OrdensFragment extends Fragment {
         }
         if (professor != null) {
             NOME = professor.getNome() + " " + professor.getSobrenome();
-
             CREDITOS = CREDITOS.concat(String.format("%.2f", professor.getCreditos()));
         }
         nome.setText(NOME);
@@ -168,10 +154,7 @@ public class OrdensFragment extends Fragment {
         PosseAdapter adapter = new PosseAdapter(listProfessor, getActivity());
         recyclerPropriedades.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerPropriedades.setAdapter(adapter);
-
         popularOrdens();
-
-
     }
 
     private void popularOrdens() {
@@ -206,16 +189,12 @@ public class OrdensFragment extends Fragment {
                     for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                         recuperada = dsp.getValue(Ordens.class);
                         listaOrdens.add(recuperada);
-
                     }
-
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                 }
             });
-
             db = FirebaseDatabase.getInstance().getReference().child("ordens").child(idProfessor);
             db.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -229,21 +208,15 @@ public class OrdensFragment extends Fragment {
                             }
                         }
                     }
-
                     OrdensAdapter adapter = new OrdensAdapter(listaOrdens, getActivity());
                     recyclerOrdens.setLayoutManager(new LinearLayoutManager(getActivity()));
                     recyclerOrdens.setAdapter(adapter);
-
-
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                 }
             });
         }
-
-
     }
 
 }
