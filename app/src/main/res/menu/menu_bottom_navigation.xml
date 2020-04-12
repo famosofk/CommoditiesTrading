@@ -15,7 +15,7 @@
 
     <item
         android:id="@+id/navigation_relatorios"
-        android:icon="@drawable/ic_teste_icon"
-        android:title="Relatorios" />
+        android:icon="@drawable/ic_show_chart_black_24dp"
+        android:title="Gráficos" />
 
 </menu>

@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.projetoaziz.R;
+import com.example.projetoaziz.fragments.ChartsFragment;
 import com.example.projetoaziz.fragments.CotacoesFragment;
 import com.example.projetoaziz.fragments.OrdensFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -58,6 +59,10 @@ public class MainActivity extends AppCompatActivity {
 
                     case R.id.navigation_receitas:
                         fragmentTransaction.replace(R.id.viewPager, new OrdensFragment()).commit();
+                        return true;
+
+                    case R.id.navigation_relatorios:
+                        fragmentTransaction.replace(R.id.viewPager, new ChartsFragment()).commit();
                         return true;
 
                 }

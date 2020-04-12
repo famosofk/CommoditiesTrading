@@ -108,7 +108,7 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Ordens ordem = createOrder(aluno, 1);
-                    db = FirebaseDatabase.getInstance().getReference().child("ordens").child(idProfessor).child(ordem.getIdDono()).child(ordem.getIdOrdem());
+                db = FirebaseDatabase.getInstance().getReference().child("ordens").child(idProfessor).child(ordem.getIdDono()).push();
                 if (!ordem.getJustificativa().isEmpty()) {
                     float gasto = adapterCompras.calcularGastoTotal();
                     aluno.setCreditos(aluno.getCreditos() - gasto);
