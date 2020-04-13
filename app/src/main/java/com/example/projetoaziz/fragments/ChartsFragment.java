@@ -46,16 +46,16 @@ import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
 public class ChartsFragment extends Fragment {
 
     private static int[] FABINHO_COLORS = {
-            rgb("#b50037"), //0
+            rgb("#bb002f"), //0
             rgb("#d50000"), //1
             rgb("#ff5722"), //2
             rgb("#fbc02d"), //3
             rgb("#ffeb3b"), //4
             rgb("#00c853"), //5
             rgb("#00838f"), //6
-            rgb("#1976d2"), //7
-            rgb("#2556d1"), //8
-            rgb("#303f9f"), //9
+            rgb("#1976d2"),//7
+            rgb("#536dfe"), //0
+            rgb("#303f9f"), //4
     };
 
     private View v;
@@ -81,8 +81,6 @@ public class ChartsFragment extends Fragment {
     @SuppressLint("ResourceAsColor")
     private void plotarGraficos(List<Usuario> list) {
         BarChart mbar = v.findViewById(R.id.barChart);
-
-
         List<Usuario> dezMelhores = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
             if (i == 11) {
@@ -131,7 +129,8 @@ public class ChartsFragment extends Fragment {
             entries.add(new BarEntry(i, patrimonio));
             LegendEntry legendEntry = new LegendEntry();
             legendEntry.label = usuario.getNome();
-            legendEntry.formColor = FABINHO_COLORS[i % 10];
+            legendEntry.formColor = FABINHO_COLORS[i % 8];
+
             legendEntries.add(legendEntry);
 
 
@@ -154,7 +153,7 @@ public class ChartsFragment extends Fragment {
         Legend legend = mbar.getLegend();
         legend.setCustom(legendEntries);
         legend.setTextSize(10);
-        mbar.animateY(3000);
+        mbar.animateY(5000);
         mbar.setDrawGridBackground(false);
         mbar.setDrawBorders(false);
         mbar.setFitBars(true);
