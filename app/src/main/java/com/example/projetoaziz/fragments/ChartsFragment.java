@@ -24,7 +24,6 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -38,11 +37,26 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ChartsFragment extends Fragment {
+
+    private static int[] FABINHO_COLORS = {
+            rgb("#b50037"), //0
+            rgb("#d50000"), //1
+            rgb("#ff5722"), //2
+            rgb("#fbc02d"), //3
+            rgb("#ffeb3b"), //4
+            rgb("#00c853"), //5
+            rgb("#00838f"), //6
+            rgb("#1976d2"), //7
+            rgb("#2556d1"), //8
+            rgb("#303f9f"), //9
+    };
 
     private View v;
     private DatabaseReference db;
@@ -67,6 +81,8 @@ public class ChartsFragment extends Fragment {
     @SuppressLint("ResourceAsColor")
     private void plotarGraficos(List<Usuario> list) {
         BarChart mbar = v.findViewById(R.id.barChart);
+
+
         List<Usuario> dezMelhores = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
             if (i == 11) {
@@ -75,6 +91,35 @@ public class ChartsFragment extends Fragment {
                 dezMelhores.add(list.get(i));
             }
         }
+        for (int i = 0; i < list.size(); i++) {
+            if (i == 11) {
+                break;
+            } else {
+                dezMelhores.add(list.get(i));
+            }
+        }
+        for (int i = 0; i < list.size(); i++) {
+            if (i == 11) {
+                break;
+            } else {
+                dezMelhores.add(list.get(i));
+            }
+        }
+        for (int i = 0; i < list.size(); i++) {
+            if (i == 11) {
+                break;
+            } else {
+                dezMelhores.add(list.get(i));
+            }
+        }
+        for (int i = 0; i < list.size(); i++) {
+            if (i == 11) {
+                break;
+            } else {
+                dezMelhores.add(list.get(i));
+            }
+        }
+
         List<BarEntry> entries = new ArrayList<>();
         List<LegendEntry> legendEntries = new ArrayList<>();
         for (int i = 0; i < dezMelhores.size(); i++) {
@@ -86,19 +131,18 @@ public class ChartsFragment extends Fragment {
             entries.add(new BarEntry(i, patrimonio));
             LegendEntry legendEntry = new LegendEntry();
             legendEntry.label = usuario.getNome();
-            legendEntry.formColor = ColorTemplate.JOYFUL_COLORS[i % 5];
-
+            legendEntry.formColor = FABINHO_COLORS[i % 10];
             legendEntries.add(legendEntry);
 
 
         }
         BarDataSet set = new BarDataSet(entries, "Jogadores");
-        set.setColors(ColorTemplate.JOYFUL_COLORS);
+        set.setColors(FABINHO_COLORS);
 
         BarData data = new BarData(set);
         YAxis yAxisRight = mbar.getAxisRight();
-        YAxis yAxisLeft = mbar.getAxisLeft();
         yAxisRight.setEnabled(false);
+        YAxis yAxisLeft = mbar.getAxisLeft();
         yAxisLeft.setEnabled(false);
         XAxis xAxis = mbar.getXAxis();
         xAxis.setEnabled(false);
