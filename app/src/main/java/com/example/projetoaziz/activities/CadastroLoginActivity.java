@@ -181,7 +181,7 @@ public class CadastroLoginActivity extends AppCompatActivity {
         CheckBox acucar = findViewById(R.id.sugarBox);
         if (acucar.isChecked()) {
             Commodity commodity = new Commodity("Açúcar", (float) 0.00);
-            commodity.setUnidade("R$/sc");
+            commodity.setUnidade("R$/kg");
             list.add(commodity);
         }
         CheckBox algodao = findViewById(R.id.checkBoxAlgodao);
