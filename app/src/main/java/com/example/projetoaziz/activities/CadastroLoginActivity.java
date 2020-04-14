@@ -1,3 +1,4 @@
+
 package com.example.projetoaziz.activities;
 
 import android.content.Intent;
@@ -376,7 +377,12 @@ public class CadastroLoginActivity extends AppCompatActivity {
         for (Commodity c : aluno.getListaCommodities()) {
             c.setQuantidade(0);
         }
-        efetuarCadastroAluno(aluno);
+
+        if (professorSelecionado != null) {
+            efetuarCadastroAluno(aluno);
+        } else {
+            Toast.makeText(this, "Selecione um professor.", Toast.LENGTH_SHORT).show();
+        }
 
 
 

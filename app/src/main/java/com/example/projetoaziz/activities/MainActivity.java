@@ -1,6 +1,9 @@
 package com.example.projetoaziz.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -13,7 +16,9 @@ import com.example.projetoaziz.R;
 import com.example.projetoaziz.fragments.ChartsFragment;
 import com.example.projetoaziz.fragments.CotacoesFragment;
 import com.example.projetoaziz.fragments.OrdensFragment;
+import com.example.projetoaziz.helpers.ConfiguracaoDatabase;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,6 +37,39 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.viewPager, new CotacoesFragment()).commit();
     }
 
+
+    public void deslogarUsuario() {
+        FirebaseAuth mauth = ConfiguracaoDatabase.getFirebaseAutenticacao();
+        try {
+            if (mauth.getCurrentUser() != null) {
+                mauth.signOut();
+            }
+            Intent i = new Intent(MainActivity.this, CadastroLoginActivity.class);
+            startActivity(i);
+            finish();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_toolbar, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menuSair:
+                deslogarUsuario();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
 
 
