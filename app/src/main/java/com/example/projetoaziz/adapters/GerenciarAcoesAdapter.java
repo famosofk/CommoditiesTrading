@@ -81,6 +81,12 @@ public class GerenciarAcoesAdapter extends RecyclerView.Adapter<CompraVendaViewH
             case "Trigo":
                 holder.icone.setImageResource(R.drawable.wheatdraw);
                 break;
+            case "Açúcar":
+                holder.icone.setImageResource(R.drawable.sugar);
+                break;
+            case "Suíno":
+                holder.icone.setImageResource(R.drawable.pig);
+                break;
         }
 
         holder.quantidade.addTextChangedListener(new TextWatcher() {

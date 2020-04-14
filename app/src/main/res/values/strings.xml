@@ -55,6 +55,8 @@
     <string name="gerenciar_commodities_intro">Atualizar preços</string>
     <string name="visibility_change_intro">Permitir negociação de ordens</string>
     <string name="graficos_intro">Variação entre os líderes</string>
+    <string name="sugar_intro">Açúcar</string>
+    <string name="suino_intro">Suíno</string>
 
     <string-array name="commodities">
         <item name="Algodão" />

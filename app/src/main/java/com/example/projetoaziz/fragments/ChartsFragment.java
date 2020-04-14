@@ -45,18 +45,7 @@ import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
  */
 public class ChartsFragment extends Fragment {
 
-    private static int[] FABINHO_COLORS = {
-            rgb("#bb002f"), //0
-            rgb("#d50000"), //1
-            rgb("#ff5722"), //2
-            rgb("#fbc02d"), //3
-            rgb("#ffeb3b"), //4
-            rgb("#00c853"), //5
-            rgb("#00838f"), //6
-            rgb("#1976d2"),//7
-            rgb("#536dfe"), //0
-            rgb("#303f9f"), //4
-    };
+    private static int[] FABINHO_COLORS = {rgb("#bb002f"), rgb("#d50000"), rgb("#ff5722"), rgb("#fbc02d"), rgb("#ffeb3b"), rgb("#00c853"), rgb("#00838f"), rgb("#1976d2"), rgb("#536dfe"), rgb("#303f9f"),};
 
     private View v;
     private DatabaseReference db;
@@ -82,34 +71,6 @@ public class ChartsFragment extends Fragment {
     private void plotarGraficos(List<Usuario> list) {
         BarChart mbar = v.findViewById(R.id.barChart);
         List<Usuario> dezMelhores = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            if (i == 11) {
-                break;
-            } else {
-                dezMelhores.add(list.get(i));
-            }
-        }
-        for (int i = 0; i < list.size(); i++) {
-            if (i == 11) {
-                break;
-            } else {
-                dezMelhores.add(list.get(i));
-            }
-        }
-        for (int i = 0; i < list.size(); i++) {
-            if (i == 11) {
-                break;
-            } else {
-                dezMelhores.add(list.get(i));
-            }
-        }
-        for (int i = 0; i < list.size(); i++) {
-            if (i == 11) {
-                break;
-            } else {
-                dezMelhores.add(list.get(i));
-            }
-        }
         for (int i = 0; i < list.size(); i++) {
             if (i == 11) {
                 break;

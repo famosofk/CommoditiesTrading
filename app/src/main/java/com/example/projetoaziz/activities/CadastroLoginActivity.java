@@ -129,6 +129,7 @@ public class CadastroLoginActivity extends AppCompatActivity {
                             if (user != null) {
                                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                         .setPhotoUri(uri)
+                                        .setDisplayName(monitor.getIdProfessor())
                                         .build();
                                 user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
@@ -177,6 +178,12 @@ public class CadastroLoginActivity extends AppCompatActivity {
 
     private List<Commodity> criarListaCommoditiesProfessor() {
         List<Commodity> list = new ArrayList<>();
+        CheckBox acucar = findViewById(R.id.sugarBox);
+        if (acucar.isChecked()) {
+            Commodity commodity = new Commodity("Açúcar", (float) 0.00);
+            commodity.setUnidade("R$/sc");
+            list.add(commodity);
+        }
         CheckBox algodao = findViewById(R.id.checkBoxAlgodao);
         if (algodao.isChecked()) {
             Commodity commodity = new Commodity("Algodão", (float) 0.00);
@@ -235,6 +242,12 @@ public class CadastroLoginActivity extends AppCompatActivity {
         if (soja.isChecked()) {
             Commodity commodity = new Commodity("Soja", (float) 0.00);
             commodity.setUnidade("R$/sc");
+            list.add(commodity);
+        }
+        CheckBox suino = findViewById(R.id.checkBoxSuino);
+        if (suino.isChecked()) {
+            Commodity commodity = new Commodity("Suíno", (float) 0.00);
+            commodity.setUnidade("R$/kg");
             list.add(commodity);
         }
         CheckBox sorgo = findViewById(R.id.checkBoxSorgo);
@@ -301,8 +314,8 @@ public class CadastroLoginActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Professor recuperado;
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                    // recuperado = dsp.getValue(Professor.class);
-                    //listaProfessores.add(recuperado);
+                    recuperado = dsp.getValue(Professor.class);
+                    listaProfessores.add(recuperado);
                 }
                 setContentView(R.layout.activity_cadastro_login);
 
