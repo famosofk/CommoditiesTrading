@@ -37,7 +37,8 @@ public class OrdensAdapter extends RecyclerView.Adapter<OrdensViewholder> {
         Ordens ordem = list.get(position);
         holder.tipo.setText(ordem.getTipo());
         holder.justificativa.setText(ordem.getJustificativa());
-        holder.matricula.setText(ordem.getMatricula());
+        String matriculaNome = ordem.getMatricula() + " - " + ordem.getNome();
+        holder.matricula.setText(matriculaNome);
         holder.dados.setText(ordem.getDados());
         holder.data.setText(ordem.getData());
         if (ordem.getTipo().equals("Venda")) {

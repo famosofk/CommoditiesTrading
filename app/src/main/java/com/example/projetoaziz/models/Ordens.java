@@ -13,6 +13,7 @@ public class Ordens {
     String justificativa;
     String matricula = "Professor";
     String data;
+    String nome;
     int tipo;
 
     public Ordens() {
@@ -20,6 +21,14 @@ public class Ordens {
         String currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
         setData(currentDate);
 
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getMatricula() {

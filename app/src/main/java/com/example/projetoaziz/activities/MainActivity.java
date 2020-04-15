@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbarPrincipal);
-        toolbar.setTitle("Nome do aplicativo");
+        toolbar.setTitle("Agtoplus Preços");
         setSupportActionBar(toolbar);
 
         configuraNavigationBottom();
@@ -97,35 +97,35 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.navigation_cavalos:
                         cotacoes = new CotacoesFragment();
                         fragmentTransaction.replace(R.id.viewPager, cotacoes).commit();
-                        if (ordens != null) {
+                        /*if (ordens != null) {
                             fragmentTransaction.remove(ordens).commit();
                         }
                         if (chart != null) {
                             fragmentTransaction.remove(chart).commit();
-                        }
+                        }*/
 
                         return true;
 
                     case R.id.navigation_receitas:
                         ordens = new OrdensFragment();
                         fragmentTransaction.replace(R.id.viewPager, ordens).commit();
-                        if (cotacoes != null) {
+                        /*if (cotacoes != null) {
                             fragmentTransaction.remove(cotacoes).commit();
                         }
                         if (chart != null) {
                             fragmentTransaction.remove(chart).commit();
-                        }
+                        }*/
                         return true;
 
                     case R.id.navigation_relatorios:
                         chart = new ChartsFragment();
                         fragmentTransaction.replace(R.id.viewPager, chart).commit();
-                        if (ordens != null) {
+                     /*   if (ordens != null) {
                             fragmentTransaction.remove(ordens).commit();
                         }
                         if (cotacoes != null) {
                             fragmentTransaction.remove(cotacoes).commit();
-                        }
+                        } */
                         return true;
 
                 }

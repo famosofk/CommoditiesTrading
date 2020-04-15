@@ -112,6 +112,7 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
                 if (!ordem.getJustificativa().isEmpty()) {
                     float gasto = adapterCompras.calcularGastoTotal();
                     aluno.setCreditos(aluno.getCreditos() - gasto);
+                    ordem.setNome(aluno.getNome());
                     db.setValue(ordem);
                     aluno.salvar();
                     startActivity(new Intent(GerenciarCommoditiesActivity.this, MainActivity.class));
@@ -165,6 +166,7 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
                     db = FirebaseDatabase.getInstance().getReference().child("ordens").child(idProfessor).child(ordem.getIdDono()).child(ordem.getIdOrdem());
                 if (!ordem.getJustificativa().isEmpty()) {
                     aluno.setCreditos(adapterVendas.calcularLucroTotal() + aluno.getCreditos());
+                    ordem.setNome(aluno.getNome());
                     db.setValue(ordem);
                     aluno.salvar();
                     startActivity(new Intent(GerenciarCommoditiesActivity.this, MainActivity.class));
