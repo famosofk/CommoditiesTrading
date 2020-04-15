@@ -46,7 +46,7 @@ import java.util.Locale;
 public class CadastroLoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    private Professor professorSelecionado;
+    private Professor professorSelecionado = null;
     private List<Professor> listaProfessores = new ArrayList<>();
     private LinearLayout progressBar;
 
@@ -55,7 +55,7 @@ public class CadastroLoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         mAuth = FirebaseAuth.getInstance();
-        professorSelecionado = new Professor();
+
         verificarSeHaProfessoresCadastrados();
 
 
@@ -372,15 +372,17 @@ public class CadastroLoginActivity extends AppCompatActivity {
         aluno.setSobrenome(sobrenomeAluno.getText().toString());
         aluno.setMatricula(matriculaAluno.getText().toString());
         aluno.atualizarID();
-        aluno.setProfessorID(professorSelecionado.getId());
+        if (professorSelecionado != null) {
+            aluno.setProfessorID(professorSelecionado.getId());
         aluno.setListaCommodities(professorSelecionado.getListaCommodities());
         for (Commodity c : aluno.getListaCommodities()) {
             c.setQuantidade(0);
         }
 
-        if (professorSelecionado != null) {
+
             efetuarCadastroAluno(aluno);
         } else {
+            progressBar.setVisibility(View.GONE);
             Toast.makeText(this, "Selecione um professor.", Toast.LENGTH_SHORT).show();
         }
 
@@ -398,7 +400,7 @@ public class CadastroLoginActivity extends AppCompatActivity {
                             aluno.salvar();
                             DatabaseReference firebaseRef = ConfiguracaoDatabase.getFirebaseDatabase();
                             String nomeSobrenome = aluno.getMatricula() + "-" + aluno.getNome() + "-" + aluno.getSobrenome();
-                            DatabaseReference turma = firebaseRef.child("turmas").child(professorSelecionado.getUniversidade()).child(professorSelecionado.getNome() + professorSelecionado.getSobrenome()).child(nomeSobrenome);
+                            DatabaseReference turma = firebaseRef.child("turmas").child(aluno.getUniversidade()).child(professorSelecionado.getNome() + professorSelecionado.getSobrenome()).child(nomeSobrenome);
                             String currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
                             RegisterData registrarTurma = new RegisterData(currentDate);
                             turma.setValue(registrarTurma);

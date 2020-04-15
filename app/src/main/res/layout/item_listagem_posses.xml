@@ -35,8 +35,6 @@
             android:id="@+id/quantidadePosse"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
             android:ems="10"
             android:maxLength="7"
             android:minWidth="30dp"
@@ -46,8 +44,7 @@
             android:id="@+id/unidadePosse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="10dp"
             android:text="@string/cifrao_intro"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
