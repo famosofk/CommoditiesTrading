@@ -44,11 +44,9 @@ public class OrdensAdapter extends RecyclerView.Adapter<OrdensViewholder> {
         if (ordem.getTipo().equals("Venda")) {
             holder.icone.setImageResource(R.drawable.money);
         }
-
         if (ordem.getMatricula().equals("Professor")) {
             holder.matricula.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
         }
-
     }
 
     @Override
