@@ -185,7 +185,7 @@ public class CotacoesFragment extends Fragment {
                             if (professor.getVisibility()) {
                                 fazerListagem();
                             } else {
-                                exibirToastMercadoFechado();
+                                //   exibirToastMercadoFechado();
                             }
                         }
                         @Override

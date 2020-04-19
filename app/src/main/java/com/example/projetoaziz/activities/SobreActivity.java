@@ -38,11 +38,11 @@ public class SobreActivity extends AppCompatActivity {
     }
 
     public void abrirJOHN(View view) {
-        //startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("")));
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.linkedin.com/in/john-lucas-teixeira-9a07121a5")));
     }
 
     public void abrirPATRICIA(View view) {
-        //startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("")));
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.linkedin.com/in/patr%C3%ADcia-b-souza-a57035175")));
     }
 
 

@@ -45,7 +45,14 @@ import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
  */
 public class ChartsFragment extends Fragment {
 
-    private static int[] FABINHO_COLORS = {rgb("#bb002f"), rgb("#d50000"), rgb("#ff5722"), rgb("#fbc02d"), rgb("#ffeb3b"), rgb("#00c853"), rgb("#00838f"), rgb("#1976d2"), rgb("#536dfe"), rgb("#303f9f"),};
+    //private static int[] FABINHO_COLORS = {rgb("#bb002f"), rgb("#d50000"), rgb("#ff5722"), rgb("#fbc02d"), rgb("#ffeb3b"), rgb("#00c853"), rgb("#00838f"), rgb("#1976d2"), rgb("#536dfe"), rgb("#303f9f"),};
+    private static int[] FABINHO_COLORS = {rgb("#f44336"),
+            rgb("#9c27b0"),
+            rgb("#3f51b5"),
+            rgb("#03a9f4"),
+            rgb("#009688"),
+            rgb("#8bc34a"),
+            rgb("#ffeb3b"),};
 
     private View v;
     private DatabaseReference db;
@@ -101,6 +108,7 @@ public class ChartsFragment extends Fragment {
             }
         }
 
+
         List<BarEntry> entries = new ArrayList<>();
         List<BarEntry> entries2 = new ArrayList<>();
         List<LegendEntry> legendEntries = new ArrayList<>();
@@ -110,7 +118,7 @@ public class ChartsFragment extends Fragment {
             entries2.add(new BarEntry(i, usuario.getPatrimonio() / usuario.getPatrimonioAnterior()));
             LegendEntry legendEntry = new LegendEntry();
             legendEntry.label = usuario.getNome();
-            legendEntry.formColor = FABINHO_COLORS[i % 8];
+            legendEntry.formColor = FABINHO_COLORS[i % 6];
             legendEntries.add(legendEntry);
         }
         BarDataSet set = new BarDataSet(entries, "Jogadores");
@@ -132,13 +140,11 @@ public class ChartsFragment extends Fragment {
         Legend legend = mbar.getLegend();
         legend.setCustom(legendEntries);
         legend.setTextSize(10);
-        mbar.animateY(5000);
         mbar.setDrawGridBackground(false);
         mbar.setDrawBorders(false);
         mbar.setFitBars(true);
         mbar.setData(data);
         mbar.invalidate();
-
         BarData data2 = new BarData(set2);
         YAxis yAxisRight2 = mbar2.getAxisRight();
         yAxisRight2.setEnabled(false);
@@ -154,7 +160,6 @@ public class ChartsFragment extends Fragment {
         Legend legend2 = mbar2.getLegend();
         legend2.setCustom(legendEntries);
         legend2.setTextSize(10);
-        mbar2.animateY(5000);
         mbar2.setDrawGridBackground(false);
         mbar2.setDrawBorders(false);
         mbar2.setFitBars(true);
