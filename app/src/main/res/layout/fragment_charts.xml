@@ -6,22 +6,52 @@
     android:background="@color/backgroundPadrao"
     tools:context=".fragments.ChartsFragment">
 
-    <TextView
-        android:id="@+id/textView13"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/graficos_intro"
-        android:textAlignment="center"
-        android:textColor="@android:color/black"
-        android:textSize="24sp" />
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <Button
+            android:id="@+id/exibirPatrimonio"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:background="@color/colorPrimary"
+            android:text="@string/patrimonio_chart_intro"
+            android:textColor="@color/backgroundPadrao" />
+
+        <Space
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+
+        <Button
+            android:id="@+id/exibirVariacao"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:background="#d3d3d3"
+            android:text="@string/variacao_chart_intro"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/barChart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="60dp"
         android:layout_marginBottom="10dp"
         android:background="@color/backgroundPadrao"
         android:padding="5dp" />
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/barChart2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/backgroundPadrao"
+        android:padding="5dp"
+        android:visibility="gone" />
 
 </FrameLayout>

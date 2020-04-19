@@ -49,6 +49,7 @@
         android:layout_height="200dp"
         android:layout_gravity="center"
         android:background="@drawable/shape_background_image"
+        android:onClick="abrirSobreLogin"
         android:padding="10dp"
         android:translationY="-30dp"
         app:srcCompat="@drawable/agroplus_logo" />

@@ -54,9 +54,24 @@
     <string name="codigo_monitor_hint">Código fornecido pelo professor</string>
     <string name="gerenciar_commodities_intro">Atualizar preços</string>
     <string name="visibility_change_intro">Permitir negociação de ordens</string>
-    <string name="graficos_intro">Variação entre os líderes</string>
+    <string name="graficos_intro">Líderes</string>
     <string name="sugar_intro">Açúcar</string>
     <string name="suino_intro">Suíno</string>
+    <string name="sobre_intro">Sobre</string>
+    <string name="sobre_equipe_intro">Este aplicativo foi desenvolvido pela Equipe Agro Plus UFV. Clique aqui e conheça um pouco da nossa história. </string>
+    <string name="ufv_intro">Clique aqui e conheça um pouco mais sobre a Universidade Federal de Viçosa</string>
+    <string name="der_intro">Para saber mais sobre o Departamento de Economia Rural da UFV, clique aqui.</string>
+    <string name="jogo_intro">Jogo Preços de Commodities Agricolas</string>
+    <string name="sobre_intro_value">Agroplus Preços se trata de uma ferramenta para utilização em sala de aula, por parte de docentes, com intuito em levar a metodologia de gamification para o ambiente acadêmico.</string>
+    <string name="coordenador_intro">Coordenador</string>
+    <string name="desenvolvedor_intro">Desenvolvedor</string>
+    <string name="equipe_intro">Equipe</string>
+    <string name="aziz_galvao">Prof. Aziz Galvão</string>
+    <string name="fabiano_gomes">Fabiano Gomes</string>
+    <string name="john_lucas">John Lucas</string>
+    <string name="patricia_souza">Patrícia Souza</string>
+    <string name="patrimonio_chart_intro">Patrimônio</string>
+    <string name="variacao_chart_intro">Variação</string>
 
     <string-array name="commodities">
         <item name="Algodão" />

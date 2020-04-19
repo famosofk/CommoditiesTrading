@@ -16,10 +16,41 @@ public class Usuario implements Serializable {
     private List<Commodity> listaCommodities;
     private float creditos;
     private String matricula;
+    private float patrimonio;
+    private float patrimonioAnterior;
 
     public Usuario() {
         creditos = (float) 100000.00;
         listaCommodities = new ArrayList<>();
+        patrimonio = (float) 100000.00;
+        patrimonioAnterior = 1;
+    }
+
+    public void atualizarPatrimonio() {
+        float value = getCreditos();
+        for (int i = 0; i < listaCommodities.size(); i++) {
+            value += listaCommodities.get(i).getQuantidade() * listaCommodities.get(i).getValor();
+        }
+        if (patrimonio != value) {
+            patrimonioAnterior = patrimonio;
+            patrimonio = value;
+        }
+    }
+
+    public float getPatrimonio() {
+        return patrimonio;
+    }
+
+    public void setPatrimonio(float patrimonio) {
+        this.patrimonio = patrimonio;
+    }
+
+    public float getPatrimonioAnterior() {
+        return patrimonioAnterior;
+    }
+
+    public void setPatrimonioAnterior(float patrimonioAnterior) {
+        this.patrimonioAnterior = patrimonioAnterior;
     }
 
     public void atualizarID() {

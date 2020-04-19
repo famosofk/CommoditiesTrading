@@ -298,6 +298,7 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
         } else {
             professor.setVisibility(false);
         }
+        professor.atualizarPatrimonio();
         professor.salvar();
         Intent i = new Intent(GerenciarCommoditiesActivity.this, MainActivity.class);
         startActivity(i);

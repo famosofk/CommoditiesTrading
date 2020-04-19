@@ -476,5 +476,10 @@ public class CadastroLoginActivity extends AppCompatActivity {
             finish();
         }
     }
+
+    public void abrirSobreLogin(View view) {
+        Intent i = new Intent(CadastroLoginActivity.this, SobreActivity.class);
+        startActivity(i);
+    }
 }
 

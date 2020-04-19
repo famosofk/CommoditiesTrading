@@ -240,10 +240,10 @@ public class CotacoesFragment extends Fragment {
 
     private List<Commodity> atualizarLista(List<Commodity> lista, Usuario usuario) {
         List<Commodity> listaUsuario = usuario.getListaCommodities();
-
         for (int i = 0; i < lista.size(); i++) {
             listaUsuario.get(i).setValor(lista.get(i).getValor());
         }
+        usuario.atualizarPatrimonio();
 
         return listaUsuario;
     }

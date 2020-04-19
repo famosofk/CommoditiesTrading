@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 deslogarUsuario();
                 break;
             case R.id.menuSobre:
-
+                startActivity(new Intent(MainActivity.this, SobreActivity.class));
                 break;
         }
 

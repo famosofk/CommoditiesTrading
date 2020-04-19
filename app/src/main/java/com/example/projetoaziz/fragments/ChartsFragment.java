@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -12,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import com.example.projetoaziz.R;
 import com.example.projetoaziz.helpers.Base64Handler;
 import com.example.projetoaziz.helpers.MoneySort;
-import com.example.projetoaziz.models.Commodity;
 import com.example.projetoaziz.models.Professor;
 import com.example.projetoaziz.models.Usuario;
 import com.github.mikephil.charting.charts.BarChart;
@@ -60,8 +60,29 @@ public class ChartsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_charts, container, false);
-
         recuperarProfessor(getCurrentUser());
+
+        final BarChart mbar = v.findViewById(R.id.barChart);
+        final BarChart mbar2 = v.findViewById(R.id.barChart2);
+
+        Button variacao = v.findViewById(R.id.exibirVariacao);
+        Button patrimonio = v.findViewById(R.id.exibirPatrimonio);
+
+        variacao.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mbar.setVisibility(View.GONE);
+                mbar2.setVisibility(View.VISIBLE);
+            }
+        });
+
+        patrimonio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mbar.setVisibility(View.VISIBLE);
+                mbar2.setVisibility(View.GONE);
+            }
+        });
 
 
         return v;
@@ -70,9 +91,10 @@ public class ChartsFragment extends Fragment {
     @SuppressLint("ResourceAsColor")
     private void plotarGraficos(List<Usuario> list) {
         BarChart mbar = v.findViewById(R.id.barChart);
+        BarChart mbar2 = v.findViewById(R.id.barChart2);
         List<Usuario> dezMelhores = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
-            if (i == 11) {
+            if (i == 6) {
                 break;
             } else {
                 dezMelhores.add(list.get(i));
@@ -80,25 +102,21 @@ public class ChartsFragment extends Fragment {
         }
 
         List<BarEntry> entries = new ArrayList<>();
+        List<BarEntry> entries2 = new ArrayList<>();
         List<LegendEntry> legendEntries = new ArrayList<>();
         for (int i = 0; i < dezMelhores.size(); i++) {
             Usuario usuario = dezMelhores.get(i);
-            float patrimonio = usuario.getCreditos();
-            for (Commodity commodity : usuario.getListaCommodities()) {
-                patrimonio += commodity.getQuantidade() * commodity.getValor();
-            }
-            entries.add(new BarEntry(i, patrimonio));
+            entries.add(new BarEntry(i, usuario.getPatrimonio()));
+            entries2.add(new BarEntry(i, usuario.getPatrimonio() / usuario.getPatrimonioAnterior()));
             LegendEntry legendEntry = new LegendEntry();
             legendEntry.label = usuario.getNome();
             legendEntry.formColor = FABINHO_COLORS[i % 8];
-
             legendEntries.add(legendEntry);
-
-
         }
         BarDataSet set = new BarDataSet(entries, "Jogadores");
+        BarDataSet set2 = new BarDataSet(entries2, "Jogadores");
         set.setColors(FABINHO_COLORS);
-
+        set2.setColors(FABINHO_COLORS);
         BarData data = new BarData(set);
         YAxis yAxisRight = mbar.getAxisRight();
         yAxisRight.setEnabled(false);
@@ -120,6 +138,28 @@ public class ChartsFragment extends Fragment {
         mbar.setFitBars(true);
         mbar.setData(data);
         mbar.invalidate();
+
+        BarData data2 = new BarData(set2);
+        YAxis yAxisRight2 = mbar2.getAxisRight();
+        yAxisRight2.setEnabled(false);
+        YAxis yAxisLeft2 = mbar2.getAxisLeft();
+        yAxisLeft2.setEnabled(false);
+        XAxis xAxis2 = mbar2.getXAxis();
+        xAxis2.setEnabled(false);
+        data2.setBarWidth(0.9f);
+        mbar2.setDrawValueAboveBar(true);
+        mbar2.fitScreen();
+        Description description2 = mbar2.getDescription();
+        description2.setEnabled(false);
+        Legend legend2 = mbar2.getLegend();
+        legend2.setCustom(legendEntries);
+        legend2.setTextSize(10);
+        mbar2.animateY(5000);
+        mbar2.setDrawGridBackground(false);
+        mbar2.setDrawBorders(false);
+        mbar2.setFitBars(true);
+        mbar2.setData(data2);
+        mbar2.invalidate();
         db = null;
     }
 
@@ -191,5 +231,6 @@ public class ChartsFragment extends Fragment {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         return mAuth.getCurrentUser();
     }
+
 
 }
