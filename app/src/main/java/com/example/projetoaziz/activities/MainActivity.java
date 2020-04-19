@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbarPrincipal);
-        toolbar.setTitle("Agtoplus Preços");
+        toolbar.setTitle("Agroplus Preços");
         setSupportActionBar(toolbar);
 
         configuraNavigationBottom();
@@ -65,6 +65,9 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.menuSair:
                 deslogarUsuario();
+                break;
+            case R.id.menuSobre:
+
                 break;
         }
 

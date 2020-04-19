@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Agroplus Preços</string>
+    <string name="app_name">Preços</string>
     <string name="login_intro">LOGIN</string>
     <string name="signin_intro">Sign in</string>
     <string name="tipo_cadastro_intro">Escolha o seu tipo de conta</string>
@@ -24,7 +24,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="valor_commodities">Valor das commodities</string>
+    <string name="valor_commodities">Preço das commodities</string>
     <string name="comprar_intro">Comprar</string>
     <string name="vender_button_intro">Vender</string>
     <string name="central_venda_commodities_intro">Venda de commodities</string>

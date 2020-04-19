@@ -51,6 +51,6 @@
         android:background="@drawable/shape_background_image"
         android:padding="10dp"
         android:translationY="-30dp"
-        app:srcCompat="@drawable/wheat" />
+        app:srcCompat="@drawable/agroplus_logo" />
 
 </FrameLayout>
