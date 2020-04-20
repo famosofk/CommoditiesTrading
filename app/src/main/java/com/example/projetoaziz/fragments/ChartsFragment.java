@@ -44,8 +44,8 @@ import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
  * A simple {@link Fragment} subclass.
  */
 public class ChartsFragment extends Fragment {
+    private Usuario aluno;
 
-    //private static int[] FABINHO_COLORS = {rgb("#bb002f"), rgb("#d50000"), rgb("#ff5722"), rgb("#fbc02d"), rgb("#ffeb3b"), rgb("#00c853"), rgb("#00838f"), rgb("#1976d2"), rgb("#536dfe"), rgb("#303f9f"),};
     private static int[] FABINHO_COLORS = {rgb("#f44336"),
             rgb("#9c27b0"),
             rgb("#3f51b5"),
@@ -67,6 +67,7 @@ public class ChartsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_charts, container, false);
+        recuperarEstudante(getCurrentUser());
         recuperarProfessor(getCurrentUser());
 
         final BarChart mbar = v.findViewById(R.id.barChart);
@@ -107,22 +108,21 @@ public class ChartsFragment extends Fragment {
                 dezMelhores.add(list.get(i));
             }
         }
-
-
+        dezMelhores.add(aluno);
         List<BarEntry> entries = new ArrayList<>();
         List<BarEntry> entries2 = new ArrayList<>();
         List<LegendEntry> legendEntries = new ArrayList<>();
         for (int i = 0; i < dezMelhores.size(); i++) {
             Usuario usuario = dezMelhores.get(i);
             entries.add(new BarEntry(i, usuario.getPatrimonio()));
-            entries2.add(new BarEntry(i, usuario.getPatrimonio() / usuario.getPatrimonioAnterior()));
+            entries2.add(new BarEntry(i, (usuario.getPatrimonio() / usuario.getPatrimonioAnterior()) - 1));
             LegendEntry legendEntry = new LegendEntry();
             legendEntry.label = usuario.getNome();
-            legendEntry.formColor = FABINHO_COLORS[i % 6];
+            legendEntry.formColor = FABINHO_COLORS[i % 7];
             legendEntries.add(legendEntry);
         }
-        BarDataSet set = new BarDataSet(entries, "Jogadores");
-        BarDataSet set2 = new BarDataSet(entries2, "Jogadores");
+        BarDataSet set = new BarDataSet(entries, "Patrimônio");
+        BarDataSet set2 = new BarDataSet(entries2, "Variação");
         set.setColors(FABINHO_COLORS);
         set2.setColors(FABINHO_COLORS);
         BarData data = new BarData(set);
@@ -235,6 +235,27 @@ public class ChartsFragment extends Fragment {
     private FirebaseUser getCurrentUser() {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         return mAuth.getCurrentUser();
+    }
+
+    private void recuperarEstudante(FirebaseUser user) {
+
+        db = FirebaseDatabase.getInstance().getReference().child("aluno").child(user.getDisplayName()).child(Base64Handler.codificarBase64(Objects.requireNonNull(user.getEmail())));
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                    aluno = dataSnapshot.getValue(Usuario.class);
+                    assert aluno != null;
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
     }
 
 

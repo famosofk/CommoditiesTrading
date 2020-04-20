@@ -81,7 +81,7 @@ public class OrdensFragment extends Fragment {
 
     private void recuperarAluno() {
 
-        db = FirebaseDatabase.getInstance().getReference().child("aluno").child(Base64Handler.codificarBase64(Objects.requireNonNull(user.getEmail())));
+        db = FirebaseDatabase.getInstance().getReference().child("aluno").child(user.getDisplayName()).child(Base64Handler.codificarBase64(Objects.requireNonNull(user.getEmail())));
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

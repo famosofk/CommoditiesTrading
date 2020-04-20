@@ -14,7 +14,7 @@ public class Aluno extends Usuario {
     public void salvar() {
 
         DatabaseReference firebaseRef = ConfiguracaoDatabase.getFirebaseDatabase();
-        DatabaseReference usuario = firebaseRef.child("aluno").child(getId());
+        DatabaseReference usuario = firebaseRef.child("aluno").child(professorID).child(getId());
 
         usuario.setValue(this);
 

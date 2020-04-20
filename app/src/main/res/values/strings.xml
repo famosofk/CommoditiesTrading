@@ -24,7 +24,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="valor_commodities">Preço das commodities</string>
+    <string name="valor_commodities">Preço dos produtos</string>
     <string name="comprar_intro">Comprar</string>
     <string name="vender_button_intro">Vender</string>
     <string name="central_venda_commodities_intro">Venda de commodities</string>
@@ -70,7 +70,7 @@
     <string name="fabiano_gomes">Fabiano Gomes</string>
     <string name="john_lucas">John Lucas</string>
     <string name="patricia_souza">Patrícia Souza</string>
-    <string name="patrimonio_chart_intro">Patrimônio</string>
+    <string name="patrimonio_chart_intro">Acumulado</string>
     <string name="variacao_chart_intro">Variação</string>
 
     <string-array name="commodities">
