@@ -206,7 +206,7 @@ public class CotacoesFragment extends Fragment {
 
     private void recuperarProfessor() {
 
-        db = FirebaseDatabase.getInstance().getReference().child("professor").child(Base64Handler.codificarBase64(Objects.requireNonNull(user.getEmail())));
+        db = FirebaseDatabase.getInstance().getReference().child("professor").child(user.getDisplayName()).child(user.getDisplayName());
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

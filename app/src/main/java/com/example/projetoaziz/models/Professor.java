@@ -20,7 +20,7 @@ public class Professor extends Usuario implements Serializable {
     public void salvar() {
 
         DatabaseReference firebaseRef = ConfiguracaoDatabase.getFirebaseDatabase();
-        DatabaseReference usuario = firebaseRef.child("professor").child(getId());
+        DatabaseReference usuario = firebaseRef.child("professor").child(getId()).child(getId());
         usuario.setValue(this);
 
     }

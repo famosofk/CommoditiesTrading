@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.projetoaziz.R;
 import com.example.projetoaziz.helpers.Base64Handler;
+import com.example.projetoaziz.helpers.ConfiguracaoDatabase;
 import com.example.projetoaziz.helpers.MoneySort;
 import com.example.projetoaziz.models.Professor;
 import com.example.projetoaziz.models.Usuario;
@@ -45,6 +46,7 @@ import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
  */
 public class ChartsFragment extends Fragment {
     private Usuario aluno;
+    private FirebaseUser user;
 
     private static int[] FABINHO_COLORS = {rgb("#f44336"),
             rgb("#9c27b0"),
@@ -67,8 +69,15 @@ public class ChartsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_charts, container, false);
-        recuperarEstudante(getCurrentUser());
-        recuperarProfessor(getCurrentUser());
+
+        user = ConfiguracaoDatabase.getFirebaseAutenticacao().getCurrentUser();
+
+        recuperarEstudante(user);
+        recuperarProfessor(user);
+
+
+
+
 
         final BarChart mbar = v.findViewById(R.id.barChart);
         final BarChart mbar2 = v.findViewById(R.id.barChart2);
@@ -98,6 +107,7 @@ public class ChartsFragment extends Fragment {
 
     @SuppressLint("ResourceAsColor")
     private void plotarGraficos(List<Usuario> list) {
+        Collections.sort(list, new MoneySort());
         BarChart mbar = v.findViewById(R.id.barChart);
         BarChart mbar2 = v.findViewById(R.id.barChart2);
         List<Usuario> dezMelhores = new ArrayList<>();
@@ -172,7 +182,7 @@ public class ChartsFragment extends Fragment {
 
         final List<Usuario> list = new ArrayList<>();
         list.add(professor);
-        db = FirebaseDatabase.getInstance().getReference().child("aluno");
+        db = FirebaseDatabase.getInstance().getReference().child("aluno").child(user.getDisplayName());
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -182,9 +192,9 @@ public class ChartsFragment extends Fragment {
                         usuario = dsp.getValue(Usuario.class);
                         list.add(usuario);
                     }
-                    Collections.sort(list, new MoneySort());
-                    plotarGraficos(list);
+
                 }
+                plotarGraficos(list);
             }
 
             @Override
@@ -197,7 +207,7 @@ public class ChartsFragment extends Fragment {
 
         DatabaseReference db;
         if ("professor".equals(Objects.requireNonNull(user.getPhotoUrl()).toString())) {
-            db = FirebaseDatabase.getInstance().getReference().child("professor").child(Base64Handler.codificarBase64(Objects.requireNonNull(user.getEmail())));
+            db = FirebaseDatabase.getInstance().getReference().child("professor").child(user.getDisplayName());
             db.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -239,7 +249,7 @@ public class ChartsFragment extends Fragment {
 
     private void recuperarEstudante(FirebaseUser user) {
 
-        db = FirebaseDatabase.getInstance().getReference().child("aluno").child(user.getDisplayName()).child(Base64Handler.codificarBase64(Objects.requireNonNull(user.getEmail())));
+        db = FirebaseDatabase.getInstance().getReference().child(user.getPhotoUrl().toString()).child(user.getDisplayName()).child(Base64Handler.codificarBase64(Objects.requireNonNull(user.getEmail())));
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

@@ -203,17 +203,18 @@
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:id="@+id/imageView4"
+                            android:id="@+id/imageView15"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            app:srcCompat="@drawable/cotton" />
+                            app:srcCompat="@drawable/peanut" />
 
                         <CheckBox
-                            android:id="@+id/checkBoxAlgodao"
+                            android:id="@+id/checkBoxAmendoim"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/algodao" />
+                            android:text="@string/amendoim" />
                     </LinearLayout>
+
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -222,18 +223,17 @@
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:id="@+id/imageView5"
+                            android:id="@+id/imageView14"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            app:srcCompat="@drawable/rice" />
+                            app:srcCompat="@drawable/ox" />
 
                         <CheckBox
-                            android:id="@+id/checkBoxArroz"
+                            android:id="@+id/checkBoxBezerro"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/arroz" />
+                            android:text="@string/bezerro" />
                     </LinearLayout>
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -317,24 +317,6 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:id="@+id/imageView15"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            app:srcCompat="@drawable/peanut" />
-
-                        <CheckBox
-                            android:id="@+id/checkBoxAmendoim"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/amendoim" />
-                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -343,17 +325,38 @@
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:id="@+id/imageView14"
+                            android:id="@+id/imageView4"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            app:srcCompat="@drawable/ox" />
+                            app:srcCompat="@drawable/cotton" />
 
                         <CheckBox
-                            android:id="@+id/checkBoxBezerro"
+                            android:id="@+id/checkBoxAlgodao"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/bezerro" />
+                            android:text="@string/algodao" />
                     </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/imageView5"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            app:srcCompat="@drawable/rice" />
+
+                        <CheckBox
+                            android:id="@+id/checkBoxArroz"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/arroz" />
+                    </LinearLayout>
+
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -368,12 +371,14 @@
                             android:layout_weight="0"
                             app:srcCompat="@drawable/coffee" />
 
+
                         <CheckBox
                             android:id="@+id/checkBoxCafe"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/cafe" />
                     </LinearLayout>
+
 
                     <LinearLayout
                         android:layout_width="match_parent"

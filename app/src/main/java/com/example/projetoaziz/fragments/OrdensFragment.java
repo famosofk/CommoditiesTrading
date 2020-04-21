@@ -74,6 +74,8 @@ public class OrdensFragment extends Fragment {
                 recuperarAluno();
             } else if (user.getPhotoUrl().toString().equals("professor")) {
                 recuperarProfessor();
+            } else if (user.getPhotoUrl().toString().equals("monitor")) {
+                recuperarMonitor();
             }
         }
         return v;
@@ -81,7 +83,7 @@ public class OrdensFragment extends Fragment {
 
     private void recuperarAluno() {
 
-        db = FirebaseDatabase.getInstance().getReference().child("aluno").child(user.getDisplayName()).child(Base64Handler.codificarBase64(Objects.requireNonNull(user.getEmail())));
+        db = FirebaseDatabase.getInstance().getReference().child("aluno").child(Objects.requireNonNull(user.getDisplayName())).child(Base64Handler.codificarBase64(Objects.requireNonNull(user.getEmail())));
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -109,7 +111,7 @@ public class OrdensFragment extends Fragment {
 
     private void recuperarProfessor() {
 
-        db = FirebaseDatabase.getInstance().getReference().child("professor").child(Base64Handler.codificarBase64(Objects.requireNonNull(user.getEmail())));
+        db = FirebaseDatabase.getInstance().getReference().child("professor").child(user.getDisplayName()).child(Base64Handler.codificarBase64(user.getEmail()));
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -220,6 +222,36 @@ public class OrdensFragment extends Fragment {
                 }
             });
         }
+    }
+
+    private void recuperarMonitor() {
+
+        db = FirebaseDatabase.getInstance().getReference().child("professor").child(Objects.requireNonNull(user.getDisplayName()));
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                    professor = dataSnapshot.getValue(Professor.class);
+                    assert professor != null;
+                    idProfessor = professor.getId();
+                    List<Commodity> listRecuperacao;
+                    listRecuperacao = professor.getListaCommodities();
+                    for (int i = 0; i < listRecuperacao.size(); i++) {
+                        Commodity c = listRecuperacao.get(i);
+                        if (c.getQuantidade() != 0) {
+                            listProfessor.add(c);
+                        }
+                    }
+                    popularTela();
+                } else {
+                    Toast.makeText(getActivity(), "Registro não encontrado.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
     }
 
 }

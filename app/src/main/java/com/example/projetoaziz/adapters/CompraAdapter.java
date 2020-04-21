@@ -53,12 +53,7 @@ public class CompraAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
         holder.preco.setText(String.format("%.2f", commodity.getValor()));
         holder.unidade.setText(commodity.getUnidade());
         String NOME = commodity.getNome();
-        if (commodity.getValor() != 0) {
-            int maximo = (int) (u.getCreditos() / commodity.getValor());
-            if (maximo > 0) {
-                holder.quantidade.setHint(Integer.toString(maximo));
-            }
-        }
+
         switch (NOME) {
             case "Algodão":
                 holder.icone.setImageResource(R.drawable.cotton);

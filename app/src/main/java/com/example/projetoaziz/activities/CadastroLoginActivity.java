@@ -288,7 +288,9 @@ public class CadastroLoginActivity extends AppCompatActivity {
                             if (user != null) {
                                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                         .setPhotoUri(uri)
+                                        .setDisplayName(professorCadastrando.getId())
                                         .build();
+
                                 user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
