@@ -23,7 +23,7 @@ public class Usuario implements Serializable {
         creditos = (float) 100000.00;
         listaCommodities = new ArrayList<>();
         patrimonio = (float) 100000.00;
-        patrimonioAnterior = 1;
+        patrimonioAnterior = (float) 100000.00;
     }
 
     public void atualizarPatrimonio() {
