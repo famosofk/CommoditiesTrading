@@ -19,12 +19,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.projetoaziz.R;
 import com.example.projetoaziz.adapters.ListagemProfessorAdapter;
 import com.example.projetoaziz.adapters.RecyclerItemClickListener;
+import com.example.projetoaziz.helpers.Base64Handler;
 import com.example.projetoaziz.helpers.ConfiguracaoDatabase;
 import com.example.projetoaziz.models.Aluno;
 import com.example.projetoaziz.models.Commodity;
+import com.example.projetoaziz.models.ListaCommodities;
 import com.example.projetoaziz.models.Monitor;
 import com.example.projetoaziz.models.Professor;
-import com.example.projetoaziz.models.RegisterData;
+import com.example.projetoaziz.models.Turma;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -37,11 +39,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class CadastroLoginActivity extends AppCompatActivity {
 
@@ -136,7 +135,7 @@ public class CadastroLoginActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
-                                            startActivity(new Intent(CadastroLoginActivity.this, MainActivity.class));
+                                            startActivity(new Intent(CadastroLoginActivity.this, SelecionarTurmaActivity.class));
                                             finish();
                                         }
                                     }
@@ -153,121 +152,130 @@ public class CadastroLoginActivity extends AppCompatActivity {
     }
 
     public void criarProfessor(View view) {
+        Professor professorCadastrando = new Professor();
         progressBar = findViewById(R.id.layoutProgressBar1);
         progressBar.setVisibility(View.VISIBLE);
         EditText editNome = findViewById(R.id.nomeCadastroProfessor);
+        professorCadastrando.setNome(editNome.getText().toString());
         EditText editEmail = findViewById(R.id.emailCadastroProfessor);
         EditText editUniversidade = findViewById(R.id.universidadeCadastroProfessor);
         EditText editSobrenome = findViewById(R.id.sobrenomeCadastroProfessor);
-        EditText editCogido = findViewById(R.id.editCodigoMonitor);
-        String EMAIL = editEmail.getText().toString().trim().toLowerCase();
-        String UNIVERSIDADE = editUniversidade.getText().toString().trim().toUpperCase();
-
-        Professor professorCadastrando = new Professor();
-        professorCadastrando.setEmail(EMAIL);
-        professorCadastrando.setNome(editNome.getText().toString());
-        professorCadastrando.setUniversidade(UNIVERSIDADE);
         professorCadastrando.setSobrenome(editSobrenome.getText().toString());
+        EditText editCogido = findViewById(R.id.editCodigoMonitor);
         professorCadastrando.setCodigoMonitor(editCogido.getText().toString().trim());
-        professorCadastrando.atualizarID();
-        professorCadastrando.setListaCommodities(criarListaCommoditiesProfessor());
+        String EMAIL = editEmail.getText().toString().trim().toLowerCase();
+        professorCadastrando.setEmail(EMAIL);
+        String UNIVERSIDADE = editUniversidade.getText().toString().trim().toUpperCase();
+        professorCadastrando.setUniversidade(UNIVERSIDADE);
 
-        efetuarCadastroProfessor(professorCadastrando);
+        professorCadastrando.atualizarID();
+
+        Turma turma = new Turma();
+        String nomeTurma1 = professorCadastrando.getNome() + professorCadastrando.getSobrenome() + "Turma1";
+        turma.setNome(nomeTurma1.trim());
+        turma.setListaCommodities(criarListaCommoditiesProfessor());
+        turma.atualizarID();
+        turma.setIdProfessor(professorCadastrando.getId());
+        List<String> lista = new ArrayList<>();
+        lista.add(turma.getId());
+        professorCadastrando.setListaTurmas(lista);
+        efetuarCadastroProfessor(professorCadastrando, turma, turma.getId(), professorCadastrando.getId());
 
 
     }
 
-    private List<Commodity> criarListaCommoditiesProfessor() {
-        List<Commodity> list = new ArrayList<>();
+    private ListaCommodities criarListaCommoditiesProfessor() {
+        ListaCommodities list = new ListaCommodities();
+        list.setCreditos((float) 100000.00);
         CheckBox acucar = findViewById(R.id.sugarBox);
         if (acucar.isChecked()) {
             Commodity commodity = new Commodity("Açúcar", (float) 0.00);
             commodity.setUnidade("R$/kg");
-            list.add(commodity);
+            list.getListaCommodities().add(commodity);
         }
         CheckBox algodao = findViewById(R.id.checkBoxAlgodao);
         if (algodao.isChecked()) {
             Commodity commodity = new Commodity("Algodão", (float) 0.00);
             commodity.setUnidade("R$/lb");
-            list.add(commodity);
+            list.getListaCommodities().add(commodity);
         }
         CheckBox amendoim = findViewById(R.id.checkBoxAmendoim);
         if (amendoim.isChecked()) {
             Commodity commodity = new Commodity("Amendoim", (float) 0.00);
             commodity.setUnidade("R$/sc");
-            list.add(commodity);
+            list.getListaCommodities().add(commodity);
         }
         CheckBox arroz = findViewById(R.id.checkBoxArroz);
         if (arroz.isChecked()) {
             Commodity commodity = new Commodity("Arroz", (float) 0.00);
             commodity.setUnidade("R$/sc");
-            list.add(commodity);
+            list.getListaCommodities().add(commodity);
         }
         CheckBox bezerro = findViewById(R.id.checkBoxBezerro);
         if (bezerro.isChecked()) {
             Commodity commodity = new Commodity("Bezerro", (float) 0.00);
             commodity.setUnidade("R$/cab");
-            list.add(commodity);
+            list.getListaCommodities().add(commodity);
         }
         CheckBox boi = findViewById(R.id.checkBoxBoi);
         if (boi.isChecked()) {
             Commodity commodity = new Commodity("Boi gordo", (float) 0.00);
             commodity.setUnidade("R$/@");
-            list.add(commodity);
+            list.getListaCommodities().add(commodity);
         }
         CheckBox cafe = findViewById(R.id.checkBoxCafe);
         if (cafe.isChecked()) {
             Commodity commodity = new Commodity("Café", (float) 0.00);
             commodity.setUnidade("R$/sc");
-            list.add(commodity);
+            list.getListaCommodities().add(commodity);
         }
         CheckBox feijao = findViewById(R.id.checkBoxFeijao);
         if (feijao.isChecked()) {
             Commodity commodity = new Commodity("Feijão", (float) 0.00);
             commodity.setUnidade("R$/sc");
-            list.add(commodity);
+            list.getListaCommodities().add(commodity);
         }
         CheckBox frango = findViewById(R.id.checkBoxFrango);
         if (frango.isChecked()) {
             Commodity commodity = new Commodity("Frango", (float) 0.00);
             commodity.setUnidade("R$/kg");
-            list.add(commodity);
+            list.getListaCommodities().add(commodity);
         }
         CheckBox milho = findViewById(R.id.checkBoxMilho);
         if (milho.isChecked()) {
             Commodity commodity = new Commodity("Milho", (float) 0.00);
             commodity.setUnidade("R$/sc");
-            list.add(commodity);
+            list.getListaCommodities().add(commodity);
         }
         CheckBox soja = findViewById(R.id.checkBoxSoja);
         if (soja.isChecked()) {
             Commodity commodity = new Commodity("Soja", (float) 0.00);
             commodity.setUnidade("R$/sc");
-            list.add(commodity);
+            list.getListaCommodities().add(commodity);
         }
         CheckBox suino = findViewById(R.id.checkBoxSuino);
         if (suino.isChecked()) {
             Commodity commodity = new Commodity("Suíno", (float) 0.00);
             commodity.setUnidade("R$/kg");
-            list.add(commodity);
+            list.getListaCommodities().add(commodity);
         }
         CheckBox sorgo = findViewById(R.id.checkBoxSorgo);
         if (sorgo.isChecked()) {
             Commodity commodity = new Commodity("Sorgo", (float) 0.00);
             commodity.setUnidade("R$/sc");
-            list.add(commodity);
+            list.getListaCommodities().add(commodity);
         }
         CheckBox trigo = findViewById(R.id.checkBoxTrigo);
         if (trigo.isChecked()) {
             Commodity commodity = new Commodity("Trigo", (float) 0.00);
             commodity.setUnidade("R$/t");
-            list.add(commodity);
+            list.getListaCommodities().add(commodity);
         }
 
         return list;
     }
 
-    private void efetuarCadastroProfessor(final Professor professorCadastrando) {
+    private void efetuarCadastroProfessor(final Professor professorCadastrando, final Turma turmas, final String caminho, final String idProfessor) {
 
         EditText editSenha = findViewById(R.id.senhaCadastroProfessor);
         mAuth.createUserWithEmailAndPassword(professorCadastrando.getEmail(), editSenha.getText().toString())
@@ -275,16 +283,13 @@ public class CadastroLoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            professorCadastrando.salvar();
 
-                            DatabaseReference firebaseRef = ConfiguracaoDatabase.getFirebaseDatabase();
-                            String nomeSobrenome = professorCadastrando.getNome() + " " + professorCadastrando.getSobrenome();
-                            DatabaseReference universidade = firebaseRef.child("universidades").child(professorCadastrando.getUniversidade()).child(nomeSobrenome);
-                            String currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
-                            RegisterData data = new RegisterData(currentDate);
-                            universidade.setValue(data);
-                            Uri uri = Uri.parse("professor");
+                            professorCadastrando.salvar();
+                            final Uri uri = Uri.parse("professor");
                             FirebaseUser user = mAuth.getCurrentUser();
+
+                            DatabaseReference ref = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(Base64Handler.codificarBase64(user.getEmail())).child(caminho);
+                            ref.setValue(turmas.getListaCommodities());
                             if (user != null) {
                                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                         .setPhotoUri(uri)
@@ -295,7 +300,9 @@ public class CadastroLoginActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
-                                            startActivity(new Intent(CadastroLoginActivity.this, MainActivity.class));
+                                            DatabaseReference turma = ConfiguracaoDatabase.getFirebaseDatabase().child("turmas").child(caminho);
+                                            turma.setValue(turmas);
+                                            startActivity(new Intent(CadastroLoginActivity.this, SelecionarTurmaActivity.class));
                                             finish();
                                         }
                                     }
@@ -380,8 +387,6 @@ public class CadastroLoginActivity extends AppCompatActivity {
         for (Commodity c : aluno.getListaCommodities()) {
             c.setQuantidade(0);
         }
-
-
             efetuarCadastroAluno(aluno);
         } else {
             progressBar.setVisibility(View.GONE);
@@ -402,10 +407,7 @@ public class CadastroLoginActivity extends AppCompatActivity {
                             aluno.salvar();
                             DatabaseReference firebaseRef = ConfiguracaoDatabase.getFirebaseDatabase();
                             String nomeSobrenome = aluno.getMatricula() + "-" + aluno.getNome() + "-" + aluno.getSobrenome();
-                            DatabaseReference turma = firebaseRef.child("turmas").child(aluno.getUniversidade()).child(professorSelecionado.getNome() + professorSelecionado.getSobrenome()).child(nomeSobrenome);
-                            String currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
-                            RegisterData registrarTurma = new RegisterData(currentDate);
-                            turma.setValue(registrarTurma);
+
                             Uri uri = Uri.parse("aluno");
                             FirebaseUser user = mAuth.getCurrentUser();
                             if (user != null) {
@@ -417,7 +419,7 @@ public class CadastroLoginActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
-                                            startActivity(new Intent(CadastroLoginActivity.this, MainActivity.class));
+                                            startActivity(new Intent(CadastroLoginActivity.this, SelecionarTurmaActivity.class));
                                             finish();
                                         }
                                     }
@@ -449,7 +451,7 @@ public class CadastroLoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Intent i = new Intent(CadastroLoginActivity.this, MainActivity.class);
+                            Intent i = new Intent(CadastroLoginActivity.this, SelecionarTurmaActivity.class);
                             startActivity(i);
                             finish();
 
@@ -473,7 +475,7 @@ public class CadastroLoginActivity extends AppCompatActivity {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            Intent main = new Intent(CadastroLoginActivity.this, MainActivity.class);
+            Intent main = new Intent(CadastroLoginActivity.this, SelecionarTurmaActivity.class);
             startActivity(main);
             finish();
         }

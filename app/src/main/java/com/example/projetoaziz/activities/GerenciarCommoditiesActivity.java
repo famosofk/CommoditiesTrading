@@ -294,9 +294,9 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
         professor.setListaCommodities(listProfessor);
         CheckBox visibility = findViewById(R.id.visibilitycheckBox);
         if (visibility.isChecked()) {
-            professor.setVisibility(true);
+            //  professor.setVisibility(true);
         } else {
-            professor.setVisibility(false);
+            // professor.setVisibility(false);
         }
         professor.atualizarPatrimonio();
         professor.salvar();

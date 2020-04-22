@@ -72,6 +72,7 @@
     <string name="patricia_souza">Patrícia Souza</string>
     <string name="patrimonio_chart_intro">Acumulado</string>
     <string name="variacao_chart_intro">Variação</string>
+    <string name="selecione_turma_intro">Selecionar uma turma</string>
 
     <string-array name="commodities">
         <item name="Algodão" />

@@ -18,12 +18,14 @@ public class Usuario implements Serializable {
     private String matricula;
     private float patrimonio;
     private float patrimonioAnterior;
+    private List<String> listaTurmas;
 
     public Usuario() {
         creditos = (float) 100000.00;
         listaCommodities = new ArrayList<>();
         patrimonio = (float) 100000.00;
         patrimonioAnterior = (float) 100000.00;
+        listaTurmas = new ArrayList<>();
     }
 
     public void atualizarPatrimonio() {
@@ -35,6 +37,14 @@ public class Usuario implements Serializable {
             patrimonioAnterior = patrimonio;
             patrimonio = value;
         }
+    }
+
+    public List<String> getListaTurmas() {
+        return listaTurmas;
+    }
+
+    public void setListaTurmas(List<String> listaTurmas) {
+        this.listaTurmas = listaTurmas;
     }
 
     public float getPatrimonio() {

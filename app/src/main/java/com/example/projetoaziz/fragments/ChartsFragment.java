@@ -182,7 +182,7 @@ public class ChartsFragment extends Fragment {
 
         final List<Usuario> list = new ArrayList<>();
         list.add(professor);
-        db = FirebaseDatabase.getInstance().getReference().child("aluno").child(user.getDisplayName());
+        db = FirebaseDatabase.getInstance().getReference().child(user.getPhotoUrl().toString()).child(user.getDisplayName());
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

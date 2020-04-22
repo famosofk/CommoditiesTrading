@@ -9,12 +9,11 @@ public class Professor extends Usuario implements Serializable {
 
 
     private String codigoMonitor;
-    private Boolean visibility;
 
 
     public Professor() {
         setMatricula("Professor");
-        setVisibility(false);
+
     }
 
     public void salvar() {
@@ -26,13 +25,7 @@ public class Professor extends Usuario implements Serializable {
     }
 
 
-    public Boolean getVisibility() {
-        return visibility;
-    }
 
-    public void setVisibility(Boolean visibility) {
-        this.visibility = visibility;
-    }
 
     public String getCodigoMonitor() {
         return codigoMonitor;

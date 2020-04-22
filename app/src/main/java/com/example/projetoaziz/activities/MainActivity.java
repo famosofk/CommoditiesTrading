@@ -22,7 +22,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class MainActivity extends AppCompatActivity {
-
+    String caminho = "";
+    CotacoesFragment cotacoes;
+    OrdensFragment ordens;
+    ChartsFragment charts;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,11 +33,25 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarPrincipal);
         toolbar.setTitle("Agroplus Preços");
         setSupportActionBar(toolbar);
+        cotacoes = new CotacoesFragment();
+        ordens = new OrdensFragment();
+        charts = new ChartsFragment();
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            caminho = bundle.getString("idTurma");
+            Bundle bundle2 = new Bundle();
+            bundle2.putString("idTurma", caminho);
+            cotacoes.setArguments(bundle2);
+            ordens.setArguments(bundle2);
+            charts.setArguments(bundle2);
+
+        }
 
         configuraNavigationBottom();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.viewPager, new CotacoesFragment()).commit();
+        fragmentTransaction.replace(R.id.viewPager, cotacoes).commit();
     }
 
 
@@ -88,48 +105,28 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     private void habilitarNavegacao(BottomNavigationViewEx viewEx) {
+
         viewEx.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                OrdensFragment ordens = null;
-                CotacoesFragment cotacoes = null;
-                ChartsFragment chart = null;
+
+
                 switch (menuItem.getItemId()) {
                     case R.id.navigation_cavalos:
-                        cotacoes = new CotacoesFragment();
                         fragmentTransaction.replace(R.id.viewPager, cotacoes).commit();
-                        /*if (ordens != null) {
-                            fragmentTransaction.remove(ordens).commit();
-                        }
-                        if (chart != null) {
-                            fragmentTransaction.remove(chart).commit();
-                        }*/
-
                         return true;
 
                     case R.id.navigation_receitas:
-                        ordens = new OrdensFragment();
                         fragmentTransaction.replace(R.id.viewPager, ordens).commit();
-                        /*if (cotacoes != null) {
-                            fragmentTransaction.remove(cotacoes).commit();
-                        }
-                        if (chart != null) {
-                            fragmentTransaction.remove(chart).commit();
-                        }*/
                         return true;
 
                     case R.id.navigation_relatorios:
-                        chart = new ChartsFragment();
-                        fragmentTransaction.replace(R.id.viewPager, chart).commit();
-                     /*   if (ordens != null) {
-                            fragmentTransaction.remove(ordens).commit();
-                        }
-                        if (cotacoes != null) {
-                            fragmentTransaction.remove(cotacoes).commit();
-                        } */
+                        fragmentTransaction.replace(R.id.viewPager, charts).commit();
                         return true;
 
                 }
