@@ -19,9 +19,11 @@ public class PosseAdapter extends RecyclerView.Adapter<PossesViewholder> {
     private List<Commodity> list;
     private Context c;
 
+
     public PosseAdapter(List<Commodity> list, Context c) {
         this.list = list;
         this.c = c;
+
 
     }
 

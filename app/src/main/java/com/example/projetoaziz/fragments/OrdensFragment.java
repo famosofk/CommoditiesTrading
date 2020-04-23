@@ -9,19 +9,27 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projetoaziz.R;
 import com.example.projetoaziz.activities.CadastroLoginActivity;
+import com.example.projetoaziz.adapters.OrdensAdapter;
 import com.example.projetoaziz.adapters.PosseAdapter;
+import com.example.projetoaziz.helpers.Base64Handler;
 import com.example.projetoaziz.helpers.ConfiguracaoDatabase;
 import com.example.projetoaziz.models.Commodity;
+import com.example.projetoaziz.models.ListaCommodities;
 import com.example.projetoaziz.models.Ordens;
+import com.example.projetoaziz.models.Usuario;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +41,11 @@ import java.util.Objects;
 public class OrdensFragment extends Fragment {
 
     private View v;
+    private Usuario usuario;
     private DatabaseReference db;
     private FirebaseUser user;
     private RecyclerView recyclerOrdens;
+    private ListaCommodities lista;
     private List<Commodity> listProfessor = new ArrayList<>();
     private List<Ordens> listaOrdens = new ArrayList<>();
     private String caminho;
@@ -49,7 +59,6 @@ public class OrdensFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_ordens, container, false);
-
         FirebaseAuth mauth = ConfiguracaoDatabase.getFirebaseAutenticacao();
         user = mauth.getCurrentUser();
         if (user == null) {
@@ -60,6 +69,9 @@ public class OrdensFragment extends Fragment {
         } else {
             Bundle bundle = getArguments();
             caminho = bundle.getString("idTurma");
+            userRecoveryData();
+            userRecoveryList();
+            userRecoveryOrders();
 
         }
         return v;
@@ -69,30 +81,12 @@ public class OrdensFragment extends Fragment {
 
     @SuppressLint("DefaultLocale")
     private void popularTela() {
-        TextView nome = v.findViewById(R.id.nomeOrdens);
-        TextView creditos = v.findViewById(R.id.creditoOrdens);
-        String NOME = "";
-        String CREDITOS = "$ ";
-    /*    if (aluno != null) {
-            NOME = aluno.getNome() + " " + aluno.getSobrenome();
-            CREDITOS = CREDITOS.concat(String.format("%.2f", aluno.getCreditos()));
-        }
-        if (professor != null) {
-            NOME = professor.getNome() + " " + professor.getSobrenome();
-            CREDITOS = CREDITOS.concat(String.format("%.2f", professor.getCreditos()));
-        }*/
-        nome.setText(NOME);
-        creditos.setText(CREDITOS);
-        RecyclerView recyclerPropriedades = v.findViewById(R.id.recyclerPosses);
-        PosseAdapter adapter = new PosseAdapter(listProfessor, getActivity());
-        recyclerPropriedades.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerPropriedades.setAdapter(adapter);
-        popularOrdens();
+
     }
 
     private void popularOrdens() {
-        recyclerOrdens = v.findViewById(R.id.recylerOrdens);
-/*
+    /*    recyclerOrdens = v.findViewById(R.id.recylerOrdens);
+
         if (Objects.requireNonNull(user.getPhotoUrl()).toString().equals("aluno")) {
             db = FirebaseDatabase.getInstance().getReference().child("ordens").child(idProfessor).child(aluno.getId());
             db.addValueEventListener(new ValueEventListener() {
@@ -152,6 +146,109 @@ public class OrdensFragment extends Fragment {
             });
         } */
     }
+
+    private void userRecoveryData() {
+        DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child(user.getPhotoUrl().toString()).child(Base64Handler.codificarBase64(user.getEmail()));
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    usuario = dataSnapshot.getValue(Usuario.class);
+                    popularDadosUsuario();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void userRecoveryList() {
+        DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(Base64Handler.codificarBase64(user.getEmail())).child(caminho);
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    lista = dataSnapshot.getValue(ListaCommodities.class);
+                    popularDadosLista();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void userRecoveryOrders() {
+
+        DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("ordens").child(caminho).child(Base64Handler.codificarBase64(user.getEmail()));
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Ordens recuperada = null;
+                if (dataSnapshot != null) {
+                    for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                        recuperada = dsp.getValue(Ordens.class);
+                        listaOrdens.add(recuperada);
+                    }
+                    popularDadosOrdens();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void popularDadosUsuario() {
+
+        TextView nome = v.findViewById(R.id.nomeOrdens);
+
+        String NOME = "";
+
+        if (usuario != null) {
+            NOME = usuario.getNome() + " " + usuario.getSobrenome();
+
+        }
+        nome.setText(NOME);
+
+
+        popularOrdens();
+
+    }
+
+    private void popularDadosOrdens() {
+        recyclerOrdens = v.findViewById(R.id.recylerOrdens);
+        OrdensAdapter adapter = new OrdensAdapter(listaOrdens, getActivity());
+        recyclerOrdens.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerOrdens.setAdapter(adapter);
+    }
+
+    private void popularDadosLista() {
+        TextView creditos = v.findViewById(R.id.creditoOrdens);
+        String CREDITOS = "$ ";
+        String valor = CREDITOS.concat(String.format("%.2f", lista.getCreditos()));
+        creditos.setText(valor);
+        RecyclerView recyclerPropriedades = v.findViewById(R.id.recyclerPosses);
+        List<Commodity> posses = new ArrayList<>();
+        for (int i = 0; i < lista.getListaCommodities().size(); i++) {
+            if (lista.getListaCommodities().get(i).getQuantidade() != 0) {
+                posses.add(lista.getListaCommodities().get(i));
+            }
+        }
+        PosseAdapter adapter = new PosseAdapter(posses, getActivity());
+        recyclerPropriedades.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerPropriedades.setAdapter(adapter);
+
+    }
+
 
 
 
