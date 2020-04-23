@@ -9,17 +9,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projetoaziz.R;
-import com.example.projetoaziz.models.Professor;
+import com.example.projetoaziz.models.Usuario;
 import com.example.projetoaziz.viewholders.ListagemProfessorViewHolder;
 
 import java.util.List;
 
 public class ListagemProfessorAdapter extends RecyclerView.Adapter<ListagemProfessorViewHolder> {
 
-    private List<Professor> list;
+    private List<Usuario> list;
     private Context c;
 
-    public ListagemProfessorAdapter(List<Professor> list, Context c) {
+    public ListagemProfessorAdapter(List<Usuario> list, Context c) {
         this.list = list;
         this.c = c;
     }
@@ -33,7 +33,7 @@ public class ListagemProfessorAdapter extends RecyclerView.Adapter<ListagemProfe
 
     @Override
     public void onBindViewHolder(@NonNull ListagemProfessorViewHolder holder, int position) {
-        Professor p = list.get(position);
+        Usuario p = list.get(position);
         holder.nomeProfessor.setText(p.getNome());
         holder.sobrenomeProfessor.setText(p.getSobrenome());
         holder.universidadeProfessor.setText(p.getUniversidade());

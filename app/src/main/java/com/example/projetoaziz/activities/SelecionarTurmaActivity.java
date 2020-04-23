@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.projetoaziz.R;
 import com.example.projetoaziz.adapters.RecyclerItemClickListener;
 import com.example.projetoaziz.adapters.TurmaAdapter;
-import com.example.projetoaziz.helpers.Base64Handler;
 import com.example.projetoaziz.helpers.ConfiguracaoDatabase;
 import com.example.projetoaziz.models.Usuario;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,8 +41,7 @@ public class SelecionarTurmaActivity extends AppCompatActivity {
     }
 
     private void recuperarUsuario(FirebaseUser user) {
-        DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child(user.getPhotoUrl().toString()).child(user.getDisplayName())
-                .child(Base64Handler.codificarBase64(user.getEmail()));
+        DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child(user.getPhotoUrl().toString()).child(user.getDisplayName());
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

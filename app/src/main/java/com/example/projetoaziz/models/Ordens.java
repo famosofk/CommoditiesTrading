@@ -1,11 +1,12 @@
 package com.example.projetoaziz.models;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
 
-public class Ordens {
+public class Ordens implements Serializable {
 
     String idDono;
     String idOrdem;

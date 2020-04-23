@@ -3,7 +3,9 @@ package com.example.projetoaziz.models;
 import com.example.projetoaziz.helpers.ConfiguracaoDatabase;
 import com.google.firebase.database.DatabaseReference;
 
-public class Monitor extends Professor {
+import java.io.Serializable;
+
+public class Monitor extends Professor implements Serializable {
 
     private String matricula;
     private String idProfessor;

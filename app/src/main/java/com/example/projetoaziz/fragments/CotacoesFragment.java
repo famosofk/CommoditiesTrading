@@ -22,7 +22,6 @@ import com.example.projetoaziz.helpers.ConfiguracaoDatabase;
 import com.example.projetoaziz.models.Commodity;
 import com.example.projetoaziz.models.ListaCommodities;
 import com.example.projetoaziz.models.Turma;
-import com.example.projetoaziz.models.Usuario;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -39,12 +38,10 @@ import java.util.Objects;
  */
 public class CotacoesFragment extends Fragment {
 
-    private Usuario usuario = new Usuario();
-    private String idProfessor = null, caminho = "";
-    private DatabaseReference db;
+    private String caminho = "";
     private FirebaseUser user;
     private View v;
-    private List<Commodity> listCommodities;
+    private ListaCommodities recuperada;
     private Turma turma;
 
     public CotacoesFragment() {
@@ -70,6 +67,9 @@ public class CotacoesFragment extends Fragment {
                 if (!user.getPhotoUrl().toString().equals("aluno")) {
                         Intent i = new Intent(getActivity(), GerenciarCommoditiesActivity.class);
                         i.putExtra("acao", 3);
+                    i.putExtra("lista", recuperada);
+                    i.putExtra("caminho", caminho);
+                    i.putExtra("turma", turma);
                         startActivity(i);
                         Objects.requireNonNull(getActivity()).finish();
                 }
@@ -111,38 +111,15 @@ public class CotacoesFragment extends Fragment {
     }
 
     private void getTurma() {
-        db = FirebaseDatabase.getInstance().getReference().child("turmas").child(caminho);
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("turmas").child(caminho);
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
                     turma = dataSnapshot.getValue(Turma.class);
                     if (turma != null) {
-                        recuperarUsuario();
+                        recuperarLista();
                     }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void recuperarUsuario() {
-        db = ConfiguracaoDatabase.getFirebaseDatabase().child(user.getPhotoUrl().toString()).child(user.getDisplayName()).child(Base64Handler.codificarBase64(user.getEmail()));
-        db.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null) {
-                    usuario = dataSnapshot.getValue(Usuario.class);
-                    recuperarLista();
-                } else {
-                    Toast.makeText(getActivity(), "Registro não encontrado.", Toast.LENGTH_SHORT).show();
-                    FirebaseAuth auth = ConfiguracaoDatabase.getFirebaseAutenticacao();
-                    auth.signOut();
-                    getActivity().finish();
                 }
             }
 
@@ -166,6 +143,21 @@ public class CotacoesFragment extends Fragment {
         for (int i = 0; i < list.size(); i++) {
             lista.getListaCommodities().get(i).setValor(list.get(i).getValor());
         }
+        if (lista.getPatrimonio() == 0) {
+            lista.setPatrimonio(turma.getListaCommodities().getCreditos());
+        } else {
+            if (lista.getPatrimonio() != lista.getPatrimonioAnterior()) {
+                float value = lista.getCreditos();
+                for (int i = 0; i < list.size(); i++) {
+                    value += lista.getListaCommodities().get(i).getValor() * lista.getListaCommodities().get(i).getQuantidade();
+                }
+                if (value != lista.getPatrimonio()) {
+                    lista.setPatrimonioAnterior(lista.getPatrimonio());
+                    lista.setPatrimonio(value);
+                }
+            }
+        }
+
         DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(Base64Handler.codificarBase64(user.getEmail())).child(caminho);
         db.setValue(lista);
         fazerListagem(lista);
@@ -177,7 +169,7 @@ public class CotacoesFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
-                    ListaCommodities recuperada = dataSnapshot.getValue(ListaCommodities.class);
+                    recuperada = dataSnapshot.getValue(ListaCommodities.class);
                     atualizarLista(recuperada);
                 }
             }
@@ -196,6 +188,8 @@ public class CotacoesFragment extends Fragment {
     private void transicaoTelaCompra() {
         Intent i = new Intent(getActivity(), GerenciarCommoditiesActivity.class);
         i.putExtra("acao", 1);
+        i.putExtra("lista", recuperada);
+        i.putExtra("caminho", caminho);
         startActivity(i);
         Objects.requireNonNull(getActivity()).finish();
     }
@@ -203,6 +197,8 @@ public class CotacoesFragment extends Fragment {
     private void transicaoTelaVenda() {
         Intent i = new Intent(getActivity(), GerenciarCommoditiesActivity.class);
         i.putExtra("acao", 2);
+        i.putExtra("lista", recuperada);
+        i.putExtra("caminho", caminho);
         startActivity(i);
         Objects.requireNonNull(getActivity()).finish();
     }

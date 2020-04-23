@@ -13,28 +13,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projetoaziz.R;
 import com.example.projetoaziz.models.Commodity;
-import com.example.projetoaziz.models.Usuario;
+import com.example.projetoaziz.models.ListaCommodities;
 import com.example.projetoaziz.viewholders.CompraVendaViewHolder;
-
-import java.util.List;
 
 public class CompraAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
 
     float diferenca = 0;
-    private List<Commodity> listCompras;
-    private int[] originais, quantidades;
+    private ListaCommodities listCompras;
+    private int[] quantidades;
     private Context c;
-    private Usuario u;
 
-    public CompraAdapter(List<Commodity> listCompras, Context c, Usuario u) {
+
+    public CompraAdapter(ListaCommodities listCompras, Context c) {
         this.listCompras = listCompras;
         this.c = c;
-        this.u = u;
-        originais = new int[listCompras.size()];
-        quantidades = new int[listCompras.size()];
-        for (int i = 0; i < listCompras.size(); i++) {
-            originais[i] = listCompras.get(i).getQuantidade();
+        quantidades = new int[listCompras.getListaCommodities().size()];
+        for (int i = 0; i < listCompras.getListaCommodities().size(); i++) {
             quantidades[i] = 0;
+            listCompras.getListaCommodities().get(i).setQuantidade(0);
         }
     }
 
@@ -48,11 +44,12 @@ public class CompraAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull final CompraVendaViewHolder holder, final int position) {
 
-        Commodity commodity = listCompras.get(position);
+        Commodity commodity = listCompras.getListaCommodities().get(position);
         holder.nome.setText(commodity.getNome());
         holder.preco.setText(String.format("%.2f", commodity.getValor()));
         holder.unidade.setText(commodity.getUnidade());
         String NOME = commodity.getNome();
+        holder.quantidade.setText("0");
 
         switch (NOME) {
             case "Algodão":
@@ -110,15 +107,15 @@ public class CompraAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
             @Override
             public void afterTextChanged(Editable s) {
                 if (!s.toString().isEmpty()) {
-                    Commodity nova = listCompras.get(position);
+                    Commodity nova = listCompras.getListaCommodities().get(position);
                     int quantidadeAntiga = nova.getQuantidade();
                     quantidades[position] = Integer.parseInt(s.toString());
-                    nova.setQuantidade(originais[position] + Integer.parseInt(s.toString()));
+                    nova.setQuantidade(Integer.parseInt(s.toString()));
                     float gasto = calcularGastoTotal();
-                    float creditos = u.getCreditos();
+                    float creditos = listCompras.getCreditos();
                     if (creditos > gasto) {
-                        listCompras.remove(position);
-                        listCompras.add(position, nova);
+                        listCompras.getListaCommodities().remove(position);
+                        listCompras.getListaCommodities().add(position, nova);
                         float diferenca = creditos - gasto;
                         Toast.makeText(c, "Saldo restante: " + diferenca, Toast.LENGTH_SHORT).show();
 
@@ -128,8 +125,6 @@ public class CompraAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
                     }
                 } else {
                     quantidades[position] = 0;
-                    float diferenca = u.getCreditos() - calcularGastoTotal();
-                    Toast.makeText(c, "Saldo restante: " + diferenca, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -139,18 +134,14 @@ public class CompraAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
 
     @Override
     public int getItemCount() {
-        return listCompras.size();
-    }
-
-    public int[] getOriginais() {
-        return originais;
+        return listCompras.getListaCommodities().size();
     }
 
 
     public float calcularGastoTotal() {
         float value = 0;
-        for (int i = 0; i < listCompras.size(); i++)
-            value += quantidades[i] * listCompras.get(i).getValor();
+        for (int i = 0; i < listCompras.getListaCommodities().size(); i++)
+            value += quantidades[i] * listCompras.getListaCommodities().get(i).getValor();
         return value;
     }
 }

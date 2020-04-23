@@ -1,6 +1,8 @@
 package com.example.projetoaziz.models;
 
-public class Commodity {
+import java.io.Serializable;
+
+public class Commodity implements Serializable {
 
     private String nome;
     private float valor;

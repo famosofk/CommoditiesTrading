@@ -1,6 +1,8 @@
 package com.example.projetoaziz.models;
 
 import com.example.projetoaziz.helpers.Base64Handler;
+import com.example.projetoaziz.helpers.ConfiguracaoDatabase;
+import com.google.firebase.database.DatabaseReference;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ public class Usuario implements Serializable {
     private String nome;
     private String sobrenome;
     private String email;
+    private String codigoMonitor = null;
     private String universidade;
     private List<Commodity> listaCommodities;
     private float creditos;
@@ -37,6 +40,19 @@ public class Usuario implements Serializable {
             patrimonioAnterior = patrimonio;
             patrimonio = value;
         }
+    }
+
+    public void salvar(String tipo, String id) {
+        DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child(tipo).child(id);
+        db.setValue(this);
+    }
+
+    public String getCodigoMonitor() {
+        return codigoMonitor;
+    }
+
+    public void setCodigoMonitor(String codigoMonitor) {
+        this.codigoMonitor = codigoMonitor;
     }
 
     public List<String> getListaTurmas() {

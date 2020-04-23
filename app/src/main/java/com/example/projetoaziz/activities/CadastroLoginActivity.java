@@ -27,6 +27,7 @@ import com.example.projetoaziz.models.ListaCommodities;
 import com.example.projetoaziz.models.Monitor;
 import com.example.projetoaziz.models.Professor;
 import com.example.projetoaziz.models.Turma;
+import com.example.projetoaziz.models.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -45,8 +46,8 @@ import java.util.List;
 public class CadastroLoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    private Professor professorSelecionado = null;
-    private List<Professor> listaProfessores = new ArrayList<>();
+    private Usuario professorSelecionado = null;
+    private List<Usuario> listaProfessores = new ArrayList<>();
     private LinearLayout progressBar;
 
     @Override
@@ -152,7 +153,7 @@ public class CadastroLoginActivity extends AppCompatActivity {
     }
 
     public void criarProfessor(View view) {
-        Professor professorCadastrando = new Professor();
+        Usuario professorCadastrando = new Professor();
         progressBar = findViewById(R.id.layoutProgressBar1);
         progressBar.setVisibility(View.VISIBLE);
         EditText editNome = findViewById(R.id.nomeCadastroProfessor);
@@ -190,7 +191,7 @@ public class CadastroLoginActivity extends AppCompatActivity {
         CheckBox acucar = findViewById(R.id.sugarBox);
         if (acucar.isChecked()) {
             Commodity commodity = new Commodity("Açúcar", (float) 0.00);
-            commodity.setUnidade("R$/kg");
+            commodity.setUnidade("R$/sc");
             list.getListaCommodities().add(commodity);
         }
         CheckBox algodao = findViewById(R.id.checkBoxAlgodao);
@@ -275,7 +276,7 @@ public class CadastroLoginActivity extends AppCompatActivity {
         return list;
     }
 
-    private void efetuarCadastroProfessor(final Professor professorCadastrando, final Turma turmas, final String caminho, final String idProfessor) {
+    private void efetuarCadastroProfessor(final Usuario professorCadastrando, final Turma turmas, final String caminho, final String idProfessor) {
 
         EditText editSenha = findViewById(R.id.senhaCadastroProfessor);
         mAuth.createUserWithEmailAndPassword(professorCadastrando.getEmail(), editSenha.getText().toString())
@@ -284,8 +285,9 @@ public class CadastroLoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
 
-                            professorCadastrando.salvar();
+
                             final Uri uri = Uri.parse("professor");
+                            professorCadastrando.salvar(uri.toString(), professorCadastrando.getId());
                             FirebaseUser user = mAuth.getCurrentUser();
 
                             DatabaseReference ref = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(Base64Handler.codificarBase64(user.getEmail())).child(caminho);
@@ -452,6 +454,7 @@ public class CadastroLoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Intent i = new Intent(CadastroLoginActivity.this, SelecionarTurmaActivity.class);
+
                             startActivity(i);
                             finish();
 

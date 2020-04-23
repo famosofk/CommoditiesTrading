@@ -1,9 +1,13 @@
 package com.example.projetoaziz.models;
 
+import com.example.projetoaziz.helpers.ConfiguracaoDatabase;
+import com.google.firebase.database.DatabaseReference;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListaCommodities {
+public class ListaCommodities implements Serializable {
 
     private float creditos;
     private float patrimonio;
@@ -12,6 +16,13 @@ public class ListaCommodities {
 
     public ListaCommodities() {
     }
+
+    public void salvar(String caminho, String id) {
+        DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(id).child(caminho);
+        db.setValue(this);
+    }
+
+
 
     public float getCreditos() {
         return creditos;

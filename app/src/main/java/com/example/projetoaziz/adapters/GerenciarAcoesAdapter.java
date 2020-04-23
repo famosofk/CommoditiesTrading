@@ -12,16 +12,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projetoaziz.R;
 import com.example.projetoaziz.models.Commodity;
+import com.example.projetoaziz.models.ListaCommodities;
 import com.example.projetoaziz.viewholders.CompraVendaViewHolder;
-
-import java.util.List;
 
 public class GerenciarAcoesAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
 
-    List<Commodity> list;
+    ListaCommodities list;
     Context c;
 
-    public GerenciarAcoesAdapter(List<Commodity> list, Context c) {
+    public GerenciarAcoesAdapter(ListaCommodities list, Context c) {
         this.list = list;
         this.c = c;
     }
@@ -35,7 +34,7 @@ public class GerenciarAcoesAdapter extends RecyclerView.Adapter<CompraVendaViewH
 
     @Override
     public void onBindViewHolder(@NonNull final CompraVendaViewHolder holder, final int position) {
-        Commodity commodity = list.get(position);
+        Commodity commodity = list.getListaCommodities().get(position);
         String NOME = commodity.getNome();
         String VALORRECUPERADO = String.format("%.2f", commodity.getValor());
         String VALOR = VALORRECUPERADO.replace(',', '.');
@@ -101,10 +100,10 @@ public class GerenciarAcoesAdapter extends RecyclerView.Adapter<CompraVendaViewH
             @Override
             public void afterTextChanged(Editable s) {
                 if (!s.toString().isEmpty()) {
-                    Commodity nova = list.get(position);
+                    Commodity nova = list.getListaCommodities().get(position);
                     nova.setValor(Float.parseFloat(s.toString()));
-                    list.remove(position);
-                    list.add(position, nova);
+                    list.getListaCommodities().remove(position);
+                    list.getListaCommodities().add(position, nova);
                 }
             }
         });
@@ -112,6 +111,6 @@ public class GerenciarAcoesAdapter extends RecyclerView.Adapter<CompraVendaViewH
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return list.getListaCommodities().size();
     }
 }

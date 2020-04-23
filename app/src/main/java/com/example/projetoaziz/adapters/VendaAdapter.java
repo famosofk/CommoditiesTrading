@@ -13,27 +13,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projetoaziz.R;
 import com.example.projetoaziz.models.Commodity;
-import com.example.projetoaziz.models.Usuario;
+import com.example.projetoaziz.models.ListaCommodities;
 import com.example.projetoaziz.viewholders.CompraVendaViewHolder;
-
-import java.util.List;
 
 public class VendaAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
 
-    private List<Commodity> listCompras;
+    private ListaCommodities listCompras;
     private Context c;
-    private Usuario u;
+
     private int maximo = 0;
     private int[] quantidades, originais;
 
-    public VendaAdapter(List<Commodity> listCompras, Context c, Usuario u) {
+    public VendaAdapter(ListaCommodities listCompras, Context c) {
         this.listCompras = listCompras;
         this.c = c;
-        this.u = u;
-        originais = new int[listCompras.size()];
-        quantidades = new int[listCompras.size()];
-        for (int i = 0; i < listCompras.size(); i++) {
-            originais[i] = listCompras.get(i).getQuantidade();
+
+        originais = new int[listCompras.getListaCommodities().size()];
+        quantidades = new int[listCompras.getListaCommodities().size()];
+        for (int i = 0; i < listCompras.getListaCommodities().size(); i++) {
+            originais[i] = listCompras.getListaCommodities().get(i).getQuantidade();
             quantidades[i] = 0;
         }
     }
@@ -47,7 +45,7 @@ public class VendaAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final CompraVendaViewHolder holder, final int position) {
-        Commodity commodity = listCompras.get(position);
+        Commodity commodity = listCompras.getListaCommodities().get(position);
 
         holder.nome.setText(commodity.getNome());
         holder.preco.setText(Float.toString(commodity.getValor()));
@@ -115,14 +113,14 @@ public class VendaAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
             public void afterTextChanged(Editable s) {
 
                 if (!s.toString().isEmpty()) {
-                    Commodity nova = listCompras.get(position);
+                    Commodity nova = listCompras.getListaCommodities().get(position);
                     maximo = Integer.parseInt(holder.quantidade.getHint().toString());
                     int valorNovo = Integer.parseInt(s.toString());
 
                     nova.setQuantidade(originais[position] - valorNovo);
                     if (valorNovo <= maximo) {
-                        listCompras.remove(position);
-                        listCompras.add(position, nova);
+                        listCompras.getListaCommodities().remove(position);
+                        listCompras.getListaCommodities().add(position, nova);
                         quantidades[position] = valorNovo;
                         Toast.makeText(c, "Valor da venda: " + calcularLucroTotal(), Toast.LENGTH_SHORT).show();
                     } else {
@@ -139,7 +137,7 @@ public class VendaAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
     @Override
     public int getItemCount() {
 
-        return listCompras.size();
+        return listCompras.getListaCommodities().size();
     }
 
     public int[] getOriginais() {
@@ -149,8 +147,8 @@ public class VendaAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
 
     public float calcularLucroTotal() {
         float value = 0;
-        for (int i = 0; i < listCompras.size(); i++)
-            value += quantidades[i] * listCompras.get(i).getValor();
+        for (int i = 0; i < listCompras.getListaCommodities().size(); i++)
+            value += quantidades[i] * listCompras.getListaCommodities().get(i).getValor();
         return value;
     }
 

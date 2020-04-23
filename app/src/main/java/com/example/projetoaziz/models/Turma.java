@@ -2,7 +2,9 @@ package com.example.projetoaziz.models;
 
 import com.example.projetoaziz.helpers.Base64Handler;
 
-public class Turma {
+import java.io.Serializable;
+
+public class Turma implements Serializable {
 
     private String id;
     private String nome;
