@@ -14,7 +14,7 @@ import com.example.projetoaziz.R;
 import com.example.projetoaziz.helpers.Base64Handler;
 import com.example.projetoaziz.helpers.ConfiguracaoDatabase;
 import com.example.projetoaziz.helpers.MoneySort;
-import com.example.projetoaziz.models.Professor;
+import com.example.projetoaziz.models.ListaCommodities;
 import com.example.projetoaziz.models.Usuario;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Description;
@@ -30,13 +30,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
 
@@ -47,6 +45,7 @@ import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
 public class ChartsFragment extends Fragment {
     private Usuario aluno;
     private FirebaseUser user;
+    private List<ListaCommodities> listaCommodities = new ArrayList<>();
 
     private static int[] FABINHO_COLORS = {rgb("#f44336"),
             rgb("#9c27b0"),
@@ -58,6 +57,7 @@ public class ChartsFragment extends Fragment {
 
     private View v;
     private DatabaseReference db;
+    private String caminho;
 
     public ChartsFragment() {
         // Required empty public constructor
@@ -69,13 +69,11 @@ public class ChartsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_charts, container, false);
-
         user = ConfiguracaoDatabase.getFirebaseAutenticacao().getCurrentUser();
+        Bundle bundle = getArguments();
+        caminho = bundle.getString("idTurma");
 
-        recuperarEstudante(user);
-        recuperarProfessor(user);
-
-
+        recuperarListas();
 
 
 
@@ -106,26 +104,18 @@ public class ChartsFragment extends Fragment {
     }
 
     @SuppressLint("ResourceAsColor")
-    private void plotarGraficos(List<Usuario> list) {
-        Collections.sort(list, new MoneySort());
+    private void plotarGraficos(List<ListaCommodities> list) {
+
         BarChart mbar = v.findViewById(R.id.barChart);
         BarChart mbar2 = v.findViewById(R.id.barChart2);
-        List<Usuario> dezMelhores = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            if (i == 6) {
-                break;
-            } else {
-                dezMelhores.add(list.get(i));
-            }
-        }
-        dezMelhores.add(aluno);
         List<BarEntry> entries = new ArrayList<>();
         List<BarEntry> entries2 = new ArrayList<>();
         List<LegendEntry> legendEntries = new ArrayList<>();
-        for (int i = 0; i < dezMelhores.size(); i++) {
-            Usuario usuario = dezMelhores.get(i);
+        for (int i = 0; i < list.size(); i++) {
+            ListaCommodities usuario = list.get(i);
             entries.add(new BarEntry(i, usuario.getPatrimonio()));
-            entries2.add(new BarEntry(i, (usuario.getPatrimonio() / usuario.getPatrimonioAnterior()) - 1));
+            float value = usuario.getPatrimonio() / usuario.getPatrimonioAnterior();
+            entries2.add(new BarEntry(i, (value - 1)));
             LegendEntry legendEntry = new LegendEntry();
             legendEntry.label = usuario.getNome();
             legendEntry.formColor = FABINHO_COLORS[i % 7];
@@ -178,95 +168,58 @@ public class ChartsFragment extends Fragment {
         db = null;
     }
 
-    private void recuperarListaUsuarios(Professor professor) {
-
-        final List<Usuario> list = new ArrayList<>();
-        list.add(professor);
-        db = FirebaseDatabase.getInstance().getReference().child(user.getPhotoUrl().toString()).child(user.getDisplayName());
+    private void recuperarListas() {
+        DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(caminho);
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Usuario usuario;
-                if (dataSnapshot.getValue() != null) {
+                if (dataSnapshot != null) {
                     for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                        usuario = dsp.getValue(Usuario.class);
-                        list.add(usuario);
+                        listaCommodities.add(dsp.getValue(ListaCommodities.class));
                     }
+                    Collections.sort(listaCommodities, new MoneySort());
+                    while (listaCommodities.size() > 7) {
+                        listaCommodities.remove(7);
+                    }
+                    recuperarListaUsuario(listaCommodities);
 
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void recuperarListaUsuario(final List<ListaCommodities> list) {
+        DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(caminho).child(Base64Handler.codificarBase64(user.getEmail()));
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    list.add(dataSnapshot.getValue(ListaCommodities.class));
                 }
                 plotarGraficos(list);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }
 
-    private void recuperarProfessor(final FirebaseUser user) {
 
-        DatabaseReference db;
-        if ("professor".equals(Objects.requireNonNull(user.getPhotoUrl()).toString())) {
-            db = FirebaseDatabase.getInstance().getReference().child("professor").child(user.getDisplayName());
-            db.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.getValue() != null) {
-                        Professor professor = dataSnapshot.getValue(Professor.class);
-                        recuperarListaUsuarios(professor);
 
-                    }
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                }
-            });
-        } else {
-
-            db = FirebaseDatabase.getInstance().getReference().child("professor").child(Objects.requireNonNull(user.getDisplayName()));
-            db.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.getValue() != null) {
-                        Professor professor = dataSnapshot.getValue(Professor.class);
-                        recuperarListaUsuarios(professor);
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                }
-            });
-        }
-    }
 
     private FirebaseUser getCurrentUser() {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         return mAuth.getCurrentUser();
     }
 
-    private void recuperarEstudante(FirebaseUser user) {
 
-        db = FirebaseDatabase.getInstance().getReference().child(user.getPhotoUrl().toString()).child(user.getDisplayName()).child(Base64Handler.codificarBase64(Objects.requireNonNull(user.getEmail())));
-        db.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() != null) {
-                    aluno = dataSnapshot.getValue(Usuario.class);
-                    assert aluno != null;
-
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-
-    }
 
 
 }

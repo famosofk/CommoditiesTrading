@@ -1,23 +1,14 @@
 package com.example.projetoaziz.helpers;
 
-import com.example.projetoaziz.models.Commodity;
-import com.example.projetoaziz.models.Usuario;
+import com.example.projetoaziz.models.ListaCommodities;
 
 import java.util.Comparator;
 
-public class MoneySort implements Comparator<Usuario> {
+public class MoneySort implements Comparator<ListaCommodities> {
     @Override
-    public int compare(Usuario o1, Usuario o2) {
+    public int compare(ListaCommodities o1, ListaCommodities o2) {
 
-        float patrimonio1 = o1.getCreditos();
-        float patrimonio2 = o2.getCreditos();
-        for (Commodity commodity : o1.getListaCommodities()) {
-            patrimonio1 += commodity.getQuantidade() * commodity.getValor();
-        }
-        for (Commodity commodity : o2.getListaCommodities()) {
-            patrimonio2 += commodity.getQuantidade() * commodity.getValor();
-        }
-        float diferenca = patrimonio1 - patrimonio2;
+        float diferenca = o1.getPatrimonio() - o2.getPatrimonio();
         if (diferenca > 0) {
             return -1;
         } else if (diferenca < 0) {

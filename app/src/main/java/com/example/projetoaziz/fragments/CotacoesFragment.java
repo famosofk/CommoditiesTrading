@@ -158,13 +158,13 @@ public class CotacoesFragment extends Fragment {
             }
         }
 
-        DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(Base64Handler.codificarBase64(user.getEmail())).child(caminho);
+        DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(caminho).child(Base64Handler.codificarBase64(user.getEmail()));
         db.setValue(lista);
         fazerListagem(lista);
     }
 
     private void recuperarLista() {
-        DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(Base64Handler.codificarBase64(user.getEmail())).child(caminho);
+        DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(caminho).child(Base64Handler.codificarBase64(user.getEmail()));
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

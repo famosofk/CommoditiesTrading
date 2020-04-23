@@ -180,6 +180,7 @@ public class CadastroLoginActivity extends AppCompatActivity {
         List<String> lista = new ArrayList<>();
         lista.add(turma.getId());
         professorCadastrando.setListaTurmas(lista);
+        turma.getListaCommodities().setNome(professorCadastrando.getNome());
         efetuarCadastroProfessor(professorCadastrando, turma, turma.getId(), professorCadastrando.getId());
 
 
@@ -290,7 +291,7 @@ public class CadastroLoginActivity extends AppCompatActivity {
                             professorCadastrando.salvar(uri.toString(), professorCadastrando.getId());
                             FirebaseUser user = mAuth.getCurrentUser();
 
-                            DatabaseReference ref = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(Base64Handler.codificarBase64(user.getEmail())).child(caminho);
+                            DatabaseReference ref = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(caminho).child(Base64Handler.codificarBase64(user.getEmail()));
                             ref.setValue(turmas.getListaCommodities());
                             if (user != null) {
                                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
