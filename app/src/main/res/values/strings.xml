@@ -73,6 +73,10 @@
     <string name="patrimonio_chart_intro">Acumulado</string>
     <string name="variacao_chart_intro">Variação</string>
     <string name="selecione_turma_intro">Selecionar uma turma</string>
+    <string name="sem_turma_intro">"Você não pertence a uma turma. "</string>
+    <string name="criar_turma_intro">Criar </string>
+    <string name="participar_turma">Participar</string>
+    <string name="selecionar_acao">O que deseja fazer?</string>
 
     <string-array name="commodities">
         <item name="Algodão" />

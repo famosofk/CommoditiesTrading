@@ -81,12 +81,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menuSair:
+            case R.id.sairTurma:
                 deslogarUsuario();
                 break;
-            case R.id.menuSobre:
+            case R.id.sobreTurma:
                 startActivity(new Intent(MainActivity.this, SobreActivity.class));
                 break;
+
         }
 
         return super.onOptionsItemSelected(item);

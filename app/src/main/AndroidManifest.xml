@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.SelecionarTurmaActivity"></activity>
+        <activity android:name=".activities.GerenciarTurmasActivity"></activity>
+        <activity android:name=".activities.SelecionarTurmaActivity" />
         <activity android:name=".activities.SobreActivity" />
         <activity android:name=".activities.GerenciarCommoditiesActivity" />
         <activity android:name=".activities.MainActivity" />

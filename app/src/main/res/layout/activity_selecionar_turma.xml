@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="65dp"
+            android:fontFamily="@font/roboto_light"
             android:text="@string/selecione_turma_intro"
             android:textAlignment="center"
             android:textColor="@android:color/black"
@@ -27,7 +28,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="120dp"
-            android:padding="10dp" />
+            android:padding="10dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/semTurmaText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="250dp"
+            android:fontFamily="@font/roboto_light"
+            android:text="@string/sem_turma_intro"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="30sp" />
     </FrameLayout>
 
 </ScrollView>
