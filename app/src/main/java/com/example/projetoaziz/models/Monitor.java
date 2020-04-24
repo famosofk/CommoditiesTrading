@@ -5,7 +5,7 @@ import com.google.firebase.database.DatabaseReference;
 
 import java.io.Serializable;
 
-public class Monitor extends Professor implements Serializable {
+public class Monitor extends Usuario implements Serializable {
 
     private String matricula;
     private String idProfessor;

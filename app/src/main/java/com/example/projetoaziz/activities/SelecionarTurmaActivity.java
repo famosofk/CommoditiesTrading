@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.projetoaziz.R;
 import com.example.projetoaziz.adapters.RecyclerItemClickListener;
 import com.example.projetoaziz.adapters.TurmaAdapter;
+import com.example.projetoaziz.helpers.Base64Handler;
 import com.example.projetoaziz.helpers.ConfiguracaoDatabase;
 import com.example.projetoaziz.models.Usuario;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,7 +47,7 @@ public class SelecionarTurmaActivity extends AppCompatActivity {
     }
 
     private void recuperarUsuario(FirebaseUser user) {
-        DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child(user.getPhotoUrl().toString()).child(user.getDisplayName());
+        DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child(user.getPhotoUrl().toString()).child(Base64Handler.codificarBase64(user.getEmail()));
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -62,9 +63,9 @@ public class SelecionarTurmaActivity extends AppCompatActivity {
     }
 
     private void fazerListagem(final Usuario usuario) {
+        TextView semTurma = findViewById(R.id.semTurmaText);
         if (usuario.getListaTurmas().size() != 0) {
-            TextView semTurma = findViewById(R.id.semTurmaText);
-            semTurma.setVisibility(View.VISIBLE);
+            semTurma.setVisibility(View.GONE);
             adapter = new TurmaAdapter(usuario.getListaTurmas(), this);
             recycler.setLayoutManager(new LinearLayoutManager(this));
             recycler.setAdapter(adapter);
@@ -79,6 +80,8 @@ public class SelecionarTurmaActivity extends AppCompatActivity {
                 }
             }));
 
+        } else {
+            semTurma.setVisibility(View.VISIBLE);
         }
 
 
@@ -94,14 +97,15 @@ public class SelecionarTurmaActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menuSair:
+            case R.id.sairTurma:
                 deslogarUsuario();
                 break;
-            case R.id.menuSobre:
+            case R.id.sobreTurma:
                 startActivity(new Intent(SelecionarTurmaActivity.this, SobreActivity.class));
                 break;
             case R.id.adicionarTurma:
                 startActivity(new Intent(SelecionarTurmaActivity.this, GerenciarTurmasActivity.class));
+                finish();
                 break;
 
         }

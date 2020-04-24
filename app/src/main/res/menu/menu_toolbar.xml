@@ -15,5 +15,9 @@
         android:id="@+id/menuSobre"
         android:title="Sobre"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/menuTurmas"
+        android:title="Turmas"
+        app:showAsAction="never" />
 
 </menu>

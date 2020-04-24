@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +17,6 @@ import com.example.projetoaziz.R;
 import com.example.projetoaziz.fragments.ChartsFragment;
 import com.example.projetoaziz.fragments.CotacoesFragment;
 import com.example.projetoaziz.fragments.OrdensFragment;
-import com.example.projetoaziz.helpers.ConfiguracaoDatabase;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
@@ -56,25 +56,16 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void deslogarUsuario() {
-        FirebaseAuth mauth = ConfiguracaoDatabase.getFirebaseAutenticacao();
-        try {
-            if (mauth.getCurrentUser() != null) {
-                mauth.signOut();
-            }
-            Intent i = new Intent(MainActivity.this, CadastroLoginActivity.class);
-            startActivity(i);
-            finish();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        auth.signOut();
+        startActivity(new Intent(MainActivity.this, CadastroLoginActivity.class));
+        finish();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_toolbar, menu);
-
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -84,10 +75,19 @@ public class MainActivity extends AppCompatActivity {
             case R.id.sairTurma:
                 deslogarUsuario();
                 break;
+
             case R.id.sobreTurma:
                 startActivity(new Intent(MainActivity.this, SobreActivity.class));
                 break;
 
+            case R.id.menuAdministracao:
+                Toast.makeText(this, "Em breve...", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.menuTurmas:
+                startActivity(new Intent(MainActivity.this, SelecionarTurmaActivity.class));
+                finish();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
