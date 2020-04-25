@@ -2,12 +2,13 @@ package com.example.projetoaziz.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,10 +40,12 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
     Usuario usuario;
     SelecionarTurmaAdapter adapter;
     List<Turma> list = new ArrayList<>();
+    TextView toast;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gerenciar_turmas);
+        toast = findViewById(R.id.toastProvisorio);
         FirebaseAuth mauth = ConfiguracaoDatabase.getFirebaseAutenticacao();
         user = mauth.getCurrentUser();
         DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child(user.getPhotoUrl().toString()).child(Base64Handler.codificarBase64(user.getEmail()));
@@ -73,6 +76,7 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
 
     public void criarTurma(View view) {
         Turma turma = new Turma();
+        EditText senhaMonitor = findViewById(R.id.senhaMonitorCadastroTurma);
         EditText nome = findViewById(R.id.nomeTurmaCadastro);
         EditText creditos = findViewById(R.id.creditosTurmaCadastro);
         EditText senha = findViewById(R.id.senhaTurmaCadastro);
@@ -83,7 +87,9 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
         ListaCommodities lista = criarListaCommoditiesProfessor();
         lista.setCreditos(Float.parseFloat(creditos.getText().toString()));
         lista.setPatrimonio(lista.getCreditos());
+        turma.setSenhaMonitor(senhaMonitor.getText().toString());
         turma.setListaCommodities(lista);
+        turma.getMonitores().add(usuario.getId());
         turma.setSenha(senha.getText().toString());
         if (requerSenha.isChecked()) {
             turma.setRequerSenha(true);
@@ -220,8 +226,7 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
     }
 
     private void fazerListagemTurmas() {
-
-        LinearLayout selecionarTurma = findViewById(R.id.selecionarTurma);
+        final LinearLayout selecionarTurma = findViewById(R.id.selecionarTurma);
         selecionarTurma.setVisibility(View.VISIBLE);
         RecyclerView recycler = findViewById(R.id.selecionarTurmaRecycler);
         recycler.setLayoutManager(new LinearLayoutManager(this));
@@ -232,6 +237,7 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             public void onItemClick(View view, int position) {
                 final CardView confirmation = findViewById(R.id.confirmationPopUp);
                 confirmation.setVisibility(View.VISIBLE);
+                selecionarTurma.setVisibility(View.INVISIBLE);
                 final Turma turma = list.get(position);
                 EditText senhaSalaConfirmation = findViewById(R.id.senhaSalaConfirmation);
                 if (turma.getRequerSenha()) {
@@ -243,12 +249,14 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
                 confirmar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        toast.setText("");
                         if (turma.getRequerSenha()) {
                             EditText senhaSalaConfirmation = findViewById(R.id.senhaSalaConfirmation);
                             if (senhaSalaConfirmation.getText().toString().equals(turma.getSenha())) {
                                 cadastrarUsuarioEmUmaTurma(turma);
+                            } else {
+                                toast.setText("Senha incorreta.");
                             }
-                            Toast.makeText(GerenciarTurmasActivity.this, "Senha incorreta.", Toast.LENGTH_SHORT).show();
                         } else {
                             cadastrarUsuarioEmUmaTurma(turma);
                         }
@@ -259,6 +267,8 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         confirmation.setVisibility(View.GONE);
+                        selecionarTurma.setVisibility(View.VISIBLE);
+                        toast.setText(" ");
                     }
                 });
             }
@@ -266,6 +276,29 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
     }
 
     private void cadastrarUsuarioEmUmaTurma(Turma turma) {
+        CheckBox isMonitor = findViewById(R.id.checkBoxMonitor);
+        EditText senhaMonitor = findViewById(R.id.senhaMonitorParticipar);
+        if (isMonitor.isChecked()) {
+            if (senhaMonitor.getText().toString().equals(turma.getSenhaMonitor())) {
+                toast.setText("");
+                turma.getMonitores().add(usuario.getId());
+                Log.e("monitor: ", "correta.");
+                DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("turmas").child(turma.getId());
+                db.setValue(turma);
+                efetuarCadastroTurma(turma);
+            } else if (senhaMonitor.getText().toString() != turma.getSenhaMonitor()) {
+                toast.setText("Senha de MONITOR incorreta");
+                Log.e("monitor: ", "incorreta");
+            }
+        } else {
+            efetuarCadastroTurma(turma);
+        }
+
+
+
+    }
+
+    private void efetuarCadastroTurma(Turma turma) {
         List<String> list = usuario.getListaTurmas();
         list.add(turma.getId());
         usuario.setListaTurmas(list);
@@ -277,7 +310,6 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
         db.setValue(listaCommodities);
         startActivity(new Intent(GerenciarTurmasActivity.this, SelecionarTurmaActivity.class));
         finish();
-
 
     }
 

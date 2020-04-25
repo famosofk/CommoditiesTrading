@@ -2,6 +2,7 @@ package com.example.projetoaziz.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = findViewById(R.id.toolbarPrincipal);
         toolbar.setTitle("Agroplus Preços");
         setSupportActionBar(toolbar);
@@ -72,16 +74,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.sairTurma:
+            case R.id.menuSair:
                 deslogarUsuario();
                 break;
 
-            case R.id.sobreTurma:
+            case R.id.menuSobre:
                 startActivity(new Intent(MainActivity.this, SobreActivity.class));
                 break;
 
             case R.id.menuAdministracao:
                 Toast.makeText(this, "Em breve...", Toast.LENGTH_SHORT).show();
+                Log.e("administracao", "  aqui");
                 break;
 
             case R.id.menuTurmas:

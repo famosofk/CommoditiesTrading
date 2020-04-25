@@ -27,6 +27,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 public class SelecionarTurmaActivity extends AppCompatActivity {
     private RecyclerView recycler;
     private TurmaAdapter adapter;
@@ -66,7 +70,8 @@ public class SelecionarTurmaActivity extends AppCompatActivity {
         TextView semTurma = findViewById(R.id.semTurmaText);
         if (usuario.getListaTurmas().size() != 0) {
             semTurma.setVisibility(View.GONE);
-            adapter = new TurmaAdapter(usuario.getListaTurmas(), this);
+            Set<String> set = new LinkedHashSet<>(usuario.getListaTurmas());
+            adapter = new TurmaAdapter(new ArrayList<String>(set), this);
             recycler.setLayoutManager(new LinearLayoutManager(this));
             recycler.setAdapter(adapter);
             recycler.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {

@@ -3,6 +3,8 @@ package com.example.projetoaziz.models;
 import com.example.projetoaziz.helpers.Base64Handler;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Turma implements Serializable {
 
@@ -10,13 +12,32 @@ public class Turma implements Serializable {
     private String nome;
     private Boolean requerSenha;
     private String senha;
+    private String senhaMonitor;
     private String idProfessor;
     private ListaCommodities listaCommodities = new ListaCommodities();
     private Boolean visibility;
+    private List<String> monitores;
 
     public Turma() {
         visibility = false;
         requerSenha = false;
+        monitores = new ArrayList<>();
+    }
+
+    public String getSenhaMonitor() {
+        return senhaMonitor;
+    }
+
+    public void setSenhaMonitor(String senhaMonitor) {
+        this.senhaMonitor = senhaMonitor;
+    }
+
+    public List<String> getMonitores() {
+        return monitores;
+    }
+
+    public void setMonitores(List<String> monitores) {
+        this.monitores = monitores;
     }
 
     public ListaCommodities getListaCommodities() {

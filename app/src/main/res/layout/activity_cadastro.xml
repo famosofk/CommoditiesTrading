@@ -24,15 +24,6 @@
         <Button
             android:layout_width="250dp"
             android:layout_height="55dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/button_shape_third"
-            android:onClick="autorizaCadastroMonitor"
-            android:text="@string/monitor_intro"
-            android:textSize="24sp" />
-
-        <Button
-            android:layout_width="250dp"
-            android:layout_height="55dp"
             android:background="@drawable/button_shape_secondary"
             android:onClick="exibirCadastroAluno"
             android:text="@string/aluno_intro"

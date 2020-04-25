@@ -49,9 +49,9 @@
     <string name="confirmar_intro">Confirmar</string>
     <string name="justificativa_intro">JUSTIFICATIVA</string>
     <string name="vender_commodities_intro">Vender</string>
-    <string name="monitor_intro">Monitor</string>
+    <string name="monitor_intro">Monitor?</string>
     <string name="codigo_professor_intro">CÓDIGO PROFESSOR</string>
-    <string name="codigo_monitor_hint">Código fornecido pelo professor</string>
+    <string name="codigo_monitor_hint">Senha de monitor</string>
     <string name="gerenciar_commodities_intro">Atualizar preços</string>
     <string name="visibility_change_intro">Permitir negociação de ordens</string>
     <string name="graficos_intro">Líderes</string>
@@ -86,6 +86,7 @@
     <string name="confirmar_turma_intro">Deseja participar dessa turma?</string>
     <string name="senha_hint_participar_turma">Sala privada. Digite a senha.</string>
     <string name="recusar_intro">Recusar</string>
+    <string name="monitor_cadastro_hint">Permite cadastrar monitores</string>
 
     <string-array name="commodities">
         <item name="Algodão" />

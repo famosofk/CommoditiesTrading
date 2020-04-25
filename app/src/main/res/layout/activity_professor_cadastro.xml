@@ -152,24 +152,7 @@
                 android:inputType="textPassword"
                 android:textAlignment="center" />
 
-            <TextView
-                android:id="@+id/textView11"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:text="@string/codigo_monitor_intro"
-                android:textColor="@color/colorPrimaryDark"
-                android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/editCodigoMonitor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:ems="10"
-                android:hint="Permite cadastrar monitores"
-                android:inputType="textPersonName"
-                android:textAlignment="center" />
 
 
             <Button

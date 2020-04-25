@@ -64,7 +64,13 @@ public class CotacoesFragment extends Fragment {
         editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!user.getPhotoUrl().toString().equals("aluno")) {
+                Boolean monitor = false;
+                for (String id : turma.getMonitores()) {
+                    if (id.equals(Base64Handler.codificarBase64(user.getEmail()))) {
+                        monitor = true;
+                    }
+                }
+                if (monitor) {
                         Intent i = new Intent(getActivity(), GerenciarCommoditiesActivity.class);
                         i.putExtra("acao", 3);
                     i.putExtra("lista", recuperada);

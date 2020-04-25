@@ -14,45 +14,17 @@ public class Usuario implements Serializable {
     private String nome;
     private String sobrenome;
     private String email;
-    private String codigoMonitor = null;
     private String universidade;
-    private List<Commodity> listaCommodities;
-    private float creditos;
     private String matricula;
-    private float patrimonio;
-    private float patrimonioAnterior;
     private List<String> listaTurmas;
 
     public Usuario() {
-        creditos = (float) 100000.00;
-        listaCommodities = new ArrayList<>();
-        patrimonio = (float) 100000.00;
-        patrimonioAnterior = (float) 100000.00;
         listaTurmas = new ArrayList<>();
-    }
-
-    public void atualizarPatrimonio() {
-        float value = getCreditos();
-        for (int i = 0; i < listaCommodities.size(); i++) {
-            value += listaCommodities.get(i).getQuantidade() * listaCommodities.get(i).getValor();
-        }
-        if (patrimonio != value) {
-            patrimonioAnterior = patrimonio;
-            patrimonio = value;
-        }
     }
 
     public void salvar(String tipo, String id) {
         DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child(tipo).child(id);
         db.setValue(this);
-    }
-
-    public String getCodigoMonitor() {
-        return codigoMonitor;
-    }
-
-    public void setCodigoMonitor(String codigoMonitor) {
-        this.codigoMonitor = codigoMonitor;
     }
 
     public List<String> getListaTurmas() {
@@ -61,22 +33,6 @@ public class Usuario implements Serializable {
 
     public void setListaTurmas(List<String> listaTurmas) {
         this.listaTurmas = listaTurmas;
-    }
-
-    public float getPatrimonio() {
-        return patrimonio;
-    }
-
-    public void setPatrimonio(float patrimonio) {
-        this.patrimonio = patrimonio;
-    }
-
-    public float getPatrimonioAnterior() {
-        return patrimonioAnterior;
-    }
-
-    public void setPatrimonioAnterior(float patrimonioAnterior) {
-        this.patrimonioAnterior = patrimonioAnterior;
     }
 
     public void atualizarID() {
@@ -131,20 +87,6 @@ public class Usuario implements Serializable {
         this.universidade = universidade;
     }
 
-    public float getCreditos() {
-        return creditos;
-    }
-
-    public void setCreditos(Float creditos) {
-        this.creditos = creditos;
-    }
 
 
-    public List<Commodity> getListaCommodities() {
-        return listaCommodities;
-    }
-
-    public void setListaCommodities(List<Commodity> listaCommodities) {
-        this.listaCommodities = listaCommodities;
-    }
 }
