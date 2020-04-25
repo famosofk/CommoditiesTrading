@@ -23,37 +23,42 @@ import com.example.projetoaziz.helpers.ConfiguracaoDatabase;
 import com.example.projetoaziz.models.Commodity;
 import com.example.projetoaziz.models.ListaCommodities;
 import com.example.projetoaziz.models.Ordens;
+import com.example.projetoaziz.models.Turma;
 import com.example.projetoaziz.models.Usuario;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class OrdensFragment extends Fragment {
-
+    List<Ordens> fake = new ArrayList<>();
     private View v;
     private Usuario usuario;
     private DatabaseReference db;
     private FirebaseUser user;
     private RecyclerView recyclerOrdens;
     private ListaCommodities lista;
-    private List<Commodity> listProfessor = new ArrayList<>();
+    private Turma turma;
     private List<Ordens> listaOrdens = new ArrayList<>();
     private String caminho;
+
 
     public OrdensFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,9 +74,10 @@ public class OrdensFragment extends Fragment {
         } else {
             Bundle bundle = getArguments();
             caminho = bundle.getString("idTurma");
+            getTurma();
             userRecoveryData();
             userRecoveryList();
-            userRecoveryOrders();
+
 
         }
         return v;
@@ -220,15 +226,58 @@ public class OrdensFragment extends Fragment {
         nome.setText(NOME);
 
 
-        popularOrdens();
+        userRecoveryOrders();
 
     }
 
     private void popularDadosOrdens() {
-        recyclerOrdens = v.findViewById(R.id.recylerOrdens);
-        OrdensAdapter adapter = new OrdensAdapter(listaOrdens, getActivity());
-        recyclerOrdens.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerOrdens.setAdapter(adapter);
+        Boolean monitor = false;
+
+        for (String id : turma.getMonitores()) {
+            if (id.equals(usuario.getId())) {
+                monitor = true;
+            }
+        }
+
+        if (monitor) {
+            DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("ordens").child(caminho);
+            db.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Ordens recuperada;
+                    listaOrdens.clear();
+                    for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                        for (DataSnapshot dsp3 : dsp.getChildren()) {
+                            recuperada = dsp3.getValue(Ordens.class);
+                            assert recuperada != null;
+                            listaOrdens.add(recuperada);
+                        }
+                    }
+
+                    Collections.reverse(listaOrdens);
+                    Set<Ordens> set = new LinkedHashSet<>(listaOrdens);
+                    recyclerOrdens = v.findViewById(R.id.recylerOrdens);
+                    OrdensAdapter adapter = new OrdensAdapter(new ArrayList<Ordens>(set), getActivity());
+                    recyclerOrdens.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    recyclerOrdens.setAdapter(adapter);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        } else {
+            recyclerOrdens = v.findViewById(R.id.recylerOrdens);
+            OrdensAdapter adapter = new OrdensAdapter(listaOrdens, getActivity());
+            recyclerOrdens.setLayoutManager(new LinearLayoutManager(getActivity()));
+            recyclerOrdens.setAdapter(adapter);
+        }
+
+
+
+
+
     }
 
     private void popularDadosLista() {
@@ -247,6 +296,26 @@ public class OrdensFragment extends Fragment {
         recyclerPropriedades.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerPropriedades.setAdapter(adapter);
 
+    }
+
+    private void getTurma() {
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("turmas").child(caminho);
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    turma = dataSnapshot.getValue(Turma.class);
+                    if (turma != null) {
+                        userRecoveryData();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
 

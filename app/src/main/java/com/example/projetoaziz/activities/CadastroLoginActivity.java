@@ -34,7 +34,6 @@ public class CadastroLoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         setContentView(R.layout.activity_cadastro_login);
 
-
     }
 
 
