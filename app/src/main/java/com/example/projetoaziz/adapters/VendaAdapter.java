@@ -129,6 +129,7 @@ public class VendaAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
                     }
                 } else {
                     quantidades[position] = 0;
+                    listCompras.getListaCommodities().get(position).setQuantidade(originais[position]);
                 }
             }
         });

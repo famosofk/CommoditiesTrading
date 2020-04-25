@@ -106,7 +106,10 @@ public class CompraAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
             }
             @Override
             public void afterTextChanged(Editable s) {
-                if (!s.toString().isEmpty()) {
+                if (s.toString().isEmpty()) {
+                    quantidades[position] = 0;
+                    listCompras.getListaCommodities().get(position).setQuantidade(0);
+                } else {
                     Commodity nova = listCompras.getListaCommodities().get(position);
                     int quantidadeAntiga = nova.getQuantidade();
                     quantidades[position] = Integer.parseInt(s.toString());
@@ -123,8 +126,8 @@ public class CompraAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
                         holder.quantidade.setText(Integer.toString(quantidadeAntiga));
                         quantidades[position] = quantidadeAntiga;
                     }
-                } else {
-                    quantidades[position] = 0;
+
+
                 }
             }
         });
