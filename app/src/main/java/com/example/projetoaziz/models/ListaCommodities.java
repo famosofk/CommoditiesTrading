@@ -14,6 +14,7 @@ public class ListaCommodities implements Serializable {
     private float patrimonioAnterior;
     private List<Commodity> listaCommodities = new ArrayList<>();
     private String nome;
+    private String idDono;
     public ListaCommodities() {
     }
 
@@ -23,6 +24,13 @@ public class ListaCommodities implements Serializable {
         patrimonio = patrimonioAnterior = 100000;
     }
 
+    public String getIdDono() {
+        return idDono;
+    }
+
+    public void setIdDono(String idDono) {
+        this.idDono = idDono;
+    }
 
     public String getNome() {
         return nome;

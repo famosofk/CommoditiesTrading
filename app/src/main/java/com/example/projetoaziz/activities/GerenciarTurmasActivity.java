@@ -98,6 +98,7 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
         DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("turmas").child(turma.getId());
         db.setValue(turma);
         db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(turma.getId()).child(Base64Handler.codificarBase64(user.getEmail()));
+        lista.setIdDono(usuario.getId());
         lista.setNome(usuario.getNome());
         db.setValue(lista);
         List<String> salas = usuario.getListaTurmas();
@@ -306,6 +307,7 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
 
         ListaCommodities listaCommodities = turma.getListaCommodities();
         listaCommodities.setNome(usuario.getNome());
+        listaCommodities.setIdDono(usuario.getId());
         DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(turma.getId()).child(Base64Handler.codificarBase64(user.getEmail()));
         db.setValue(listaCommodities);
         startActivity(new Intent(GerenciarTurmasActivity.this, SelecionarTurmaActivity.class));

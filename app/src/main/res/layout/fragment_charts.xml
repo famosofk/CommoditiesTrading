@@ -39,7 +39,7 @@
         android:id="@+id/barChart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="80dp"
         android:layout_marginBottom="10dp"
         android:background="@color/backgroundPadrao"
         android:padding="5dp" />
@@ -52,6 +52,18 @@
         android:layout_marginBottom="10dp"
         android:background="@color/backgroundPadrao"
         android:padding="5dp"
-        android:visibility="gone" />
+        android:visibility="gone">
+
+    </com.github.mikephil.charting.charts.BarChart>
+
+    <TextView
+        android:id="@+id/textPosicao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:fontFamily="@font/roboto_light"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
 
 </FrameLayout>

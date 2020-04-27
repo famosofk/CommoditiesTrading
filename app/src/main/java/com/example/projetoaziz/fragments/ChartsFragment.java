@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -57,6 +58,7 @@ public class ChartsFragment extends Fragment {
     private View v;
     private DatabaseReference db;
     private String caminho;
+    private int posicao, size;
 
     public ChartsFragment() {
         // Required empty public constructor
@@ -104,7 +106,9 @@ public class ChartsFragment extends Fragment {
 
     @SuppressLint("ResourceAsColor")
     private void plotarGraficos(List<ListaCommodities> list) {
-
+        TextView ranking = v.findViewById(R.id.textPosicao);
+        String POSICAO = "Colocação: " + posicao + "/" + size;
+        ranking.setText(POSICAO);
         BarChart mbar = v.findViewById(R.id.barChart);
         BarChart mbar2 = v.findViewById(R.id.barChart2);
         List<BarEntry> entries = new ArrayList<>();
@@ -175,10 +179,16 @@ public class ChartsFragment extends Fragment {
                     for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                         listaCommodities.add(dsp.getValue(ListaCommodities.class));
                     }
-
+                    size = listaCommodities.size();
+                    for (int i = 0; i < listaCommodities.size(); i++) {
+                        if (listaCommodities.get(i).getIdDono().equals(Base64Handler.codificarBase64(user.getEmail()))) {
+                            posicao = i + 1;
+                            break;
+                        }
+                    }
                     Collections.sort(listaCommodities, new MoneySort());
-                    while (listaCommodities.size() > 7) {
-                        listaCommodities.remove(7);
+                    while (listaCommodities.size() > 6) {
+                        listaCommodities.remove(6);
                     }
                     recuperarListaUsuario(listaCommodities);
 
