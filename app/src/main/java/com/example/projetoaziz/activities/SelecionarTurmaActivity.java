@@ -111,7 +111,6 @@ public class SelecionarTurmaActivity extends AppCompatActivity {
                 break;
             case R.id.adicionarTurma:
                 startActivity(new Intent(SelecionarTurmaActivity.this, GerenciarTurmasActivity.class));
-                finish();
                 break;
 
         }

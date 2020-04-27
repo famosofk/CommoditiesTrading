@@ -25,7 +25,6 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -176,6 +175,7 @@ public class ChartsFragment extends Fragment {
                     for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                         listaCommodities.add(dsp.getValue(ListaCommodities.class));
                     }
+
                     Collections.sort(listaCommodities, new MoneySort());
                     while (listaCommodities.size() > 7) {
                         listaCommodities.remove(7);
@@ -209,16 +209,6 @@ public class ChartsFragment extends Fragment {
             }
         });
     }
-
-
-
-
-    private FirebaseUser getCurrentUser() {
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        return mAuth.getCurrentUser();
-    }
-
-
 
 
 }

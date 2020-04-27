@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/navigation_cavalos"
-        android:icon="@drawable/ic_teste_icon"
+        android:icon="@drawable/ic_monetization_on_black_24dp"
         android:title="Cotações" />
 
 
@@ -15,7 +15,7 @@
 
     <item
         android:id="@+id/navigation_relatorios"
-        android:icon="@drawable/ic_show_chart_black_24dp"
+        android:icon="@drawable/ic_teste_icon"
         android:title="Gráficos" />
 
 </menu>

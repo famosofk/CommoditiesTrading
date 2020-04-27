@@ -65,19 +65,24 @@ public class CotacoesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Boolean monitor = false;
-                for (String id : turma.getMonitores()) {
-                    if (id.equals(Base64Handler.codificarBase64(user.getEmail()))) {
-                        monitor = true;
+
+                if (turma.getMonitores() != null) {
+                    for (String id : turma.getMonitores()) {
+                        if (id.equals(Base64Handler.codificarBase64(user.getEmail()))) {
+                            monitor = true;
+                        }
                     }
-                }
-                if (monitor) {
+
+                    if (monitor) {
                         Intent i = new Intent(getActivity(), GerenciarCommoditiesActivity.class);
                         i.putExtra("acao", 3);
-                    i.putExtra("lista", recuperada);
-                    i.putExtra("caminho", caminho);
-                    i.putExtra("turma", turma);
+                        i.putExtra("lista", recuperada);
+                        i.putExtra("caminho", caminho);
+                        i.putExtra("turma", turma);
                         startActivity(i);
                         Objects.requireNonNull(getActivity()).finish();
+                    }
+
                 }
             }
         });
