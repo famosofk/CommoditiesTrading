@@ -114,8 +114,7 @@ public class ChartsFragment extends Fragment {
         for (int i = 0; i < list.size(); i++) {
             ListaCommodities usuario = list.get(i);
             entries.add(new BarEntry(i, usuario.getPatrimonio()));
-            float value = usuario.getPatrimonio() / usuario.getPatrimonioAnterior();
-            entries2.add(new BarEntry(i, (value - 1)));
+            entries2.add(new BarEntry(i, usuario.getPatrimonio() / usuario.getPatrimonioAnterior()));
             LegendEntry legendEntry = new LegendEntry();
             legendEntry.label = usuario.getNome();
             legendEntry.formColor = FABINHO_COLORS[i % 7];

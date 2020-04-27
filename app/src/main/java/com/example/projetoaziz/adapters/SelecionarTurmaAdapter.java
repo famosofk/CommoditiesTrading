@@ -36,6 +36,9 @@ public class SelecionarTurmaAdapter extends RecyclerView.Adapter<TurmasViewHolde
     public void onBindViewHolder(@NonNull TurmasViewHolder holder, int position) {
         Turma turma = list.get(position);
         holder.nome.setText(Base64Handler.decodificarBase64(turma.getId()));
+        if (turma.getRequerSenha()) {
+            holder.lock.setVisibility(View.GONE);
+        }
     }
 
     @Override

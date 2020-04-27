@@ -35,6 +35,7 @@ public class TurmaAdapter extends RecyclerView.Adapter<TurmasViewHolder> {
     public void onBindViewHolder(@NonNull TurmasViewHolder holder, int position) {
         String TURMA = Base64Handler.decodificarBase64(list.get(position));
         holder.nome.setText(TURMA);
+        holder.lock.setVisibility(View.INVISIBLE);
     }
 
     @Override

@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="250dp"
             android:fontFamily="@font/roboto_light"
-            android:text="@string/sem_turma_intro"
+            android:text="Carregando..."
             android:textAlignment="center"
             android:textColor="@android:color/black"
             android:textSize="30sp" />

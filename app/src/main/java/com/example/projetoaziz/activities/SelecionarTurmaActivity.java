@@ -86,6 +86,7 @@ public class SelecionarTurmaActivity extends AppCompatActivity {
             }));
 
         } else {
+            semTurma.setText(R.string.sem_turma_intro);
             semTurma.setVisibility(View.VISIBLE);
         }
 
