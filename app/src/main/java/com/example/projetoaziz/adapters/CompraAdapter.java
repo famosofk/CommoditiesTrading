@@ -55,11 +55,20 @@ public class CompraAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
             case "Algodão":
                 holder.icone.setImageResource(R.drawable.cotton);
                 break;
-            case "Amendoim":
-                holder.icone.setImageResource(R.drawable.peanut);
+            case "Abóbora":
+                holder.icone.setImageResource(R.drawable.pumpkin);
                 break;
             case "Arroz":
                 holder.icone.setImageResource(R.drawable.rice);
+                break;
+            case "Alface":
+                holder.icone.setImageResource(R.drawable.lettuce);
+                break;
+            case "Banana":
+                holder.icone.setImageResource(R.drawable.banana);
+                break;
+            case "Batata":
+                holder.icone.setImageResource(R.drawable.potato);
                 break;
             case "Bezerro":
                 holder.icone.setImageResource(R.drawable.ox);
@@ -70,20 +79,41 @@ public class CompraAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
             case "Café":
                 holder.icone.setImageResource(R.drawable.coffee);
                 break;
+            case "Cebola":
+                holder.icone.setImageResource(R.drawable.onion);
+                break;
+            case "Cenoura":
+                holder.icone.setImageResource(R.drawable.carrot);
+                break;
             case "Feijão":
                 holder.icone.setImageResource(R.drawable.beans);
                 break;
             case "Frango":
                 holder.icone.setImageResource(R.drawable.chicken);
                 break;
+            case "Goiaba":
+                holder.icone.setImageResource(R.drawable.guava);
+                break;
+            case "Laranja":
+                holder.icone.setImageResource(R.drawable.orange);
+                break;
+            case "Leite":
+                holder.icone.setImageResource(R.drawable.milk);
+                break;
+            case "Limão":
+                holder.icone.setImageResource(R.drawable.lemon);
+                break;
             case "Milho":
                 holder.icone.setImageResource(R.drawable.corn);
                 break;
-            case "Soja":
-                holder.icone.setImageResource(R.drawable.soy);
+            case "Mandioca":
+                holder.icone.setImageResource(R.drawable.mandioca);
                 break;
-            case "Sorgo":
-                holder.icone.setImageResource(R.drawable.sorghum);
+            case "Ovos":
+                holder.icone.setImageResource(R.drawable.egg);
+                break;
+            case "Tomate":
+                holder.icone.setImageResource(R.drawable.tomato);
                 break;
             case "Trigo":
                 holder.icone.setImageResource(R.drawable.wheatdraw);
@@ -106,25 +136,30 @@ public class CompraAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
             }
             @Override
             public void afterTextChanged(Editable s) {
+                int i;
+                for (i = 0; i < listCompras.getListaCommodities().size(); i++) {
+                    if (listCompras.getListaCommodities().get(i).getNome().equals(holder.nome.getText())) {
+                        break;
+                    }
+                }
                 if (s.toString().isEmpty()) {
-                    quantidades[position] = 0;
-                    listCompras.getListaCommodities().get(position).setQuantidade(0);
+                    quantidades[i] = 0;
+                    listCompras.getListaCommodities().get(i).setQuantidade(0);
                 } else {
-                    Commodity nova = listCompras.getListaCommodities().get(position);
+                    Commodity nova = listCompras.getListaCommodities().get(i);
                     int quantidadeAntiga = nova.getQuantidade();
-                    quantidades[position] = Integer.parseInt(s.toString());
+                    quantidades[i] = Integer.parseInt(s.toString());
                     nova.setQuantidade(Integer.parseInt(s.toString()));
                     float gasto = calcularGastoTotal();
                     float creditos = listCompras.getCreditos();
                     if (creditos > gasto) {
-                        listCompras.getListaCommodities().remove(position);
-                        listCompras.getListaCommodities().add(position, nova);
+                        listCompras.getListaCommodities().set(i, nova);
                         float diferenca = creditos - gasto;
                         Toast.makeText(c, "Saldo restante: " + diferenca, Toast.LENGTH_SHORT).show();
 
                     } else {
                         holder.quantidade.setText(Integer.toString(quantidadeAntiga));
-                        quantidades[position] = quantidadeAntiga;
+                        quantidades[i] = quantidadeAntiga;
                     }
 
 

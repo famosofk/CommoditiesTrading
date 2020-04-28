@@ -44,11 +44,20 @@ public class ListagemCotacoesAdapter extends RecyclerView.Adapter<ListagemCotaco
             case "Algodão":
                 holder.icone.setImageResource(R.drawable.cotton);
                 break;
-            case "Amendoim":
-                holder.icone.setImageResource(R.drawable.peanut);
+            case "Abóbora":
+                holder.icone.setImageResource(R.drawable.pumpkin);
                 break;
             case "Arroz":
                 holder.icone.setImageResource(R.drawable.rice);
+                break;
+            case "Alface":
+                holder.icone.setImageResource(R.drawable.lettuce);
+                break;
+            case "Banana":
+                holder.icone.setImageResource(R.drawable.banana);
+                break;
+            case "Batata":
+                holder.icone.setImageResource(R.drawable.potato);
                 break;
             case "Bezerro":
                 holder.icone.setImageResource(R.drawable.ox);
@@ -59,20 +68,41 @@ public class ListagemCotacoesAdapter extends RecyclerView.Adapter<ListagemCotaco
             case "Café":
                 holder.icone.setImageResource(R.drawable.coffee);
                 break;
+            case "Cebola":
+                holder.icone.setImageResource(R.drawable.onion);
+                break;
+            case "Cenoura":
+                holder.icone.setImageResource(R.drawable.carrot);
+                break;
             case "Feijão":
                 holder.icone.setImageResource(R.drawable.beans);
                 break;
             case "Frango":
                 holder.icone.setImageResource(R.drawable.chicken);
                 break;
+            case "Goiaba":
+                holder.icone.setImageResource(R.drawable.guava);
+                break;
+            case "Laranja":
+                holder.icone.setImageResource(R.drawable.orange);
+                break;
+            case "Leite":
+                holder.icone.setImageResource(R.drawable.milk);
+                break;
+            case "Limão":
+                holder.icone.setImageResource(R.drawable.lemon);
+                break;
             case "Milho":
                 holder.icone.setImageResource(R.drawable.corn);
                 break;
-            case "Soja":
-                holder.icone.setImageResource(R.drawable.soy);
+            case "Mandioca":
+                holder.icone.setImageResource(R.drawable.mandioca);
                 break;
-            case "Sorgo":
-                holder.icone.setImageResource(R.drawable.sorghum);
+            case "Ovos":
+                holder.icone.setImageResource(R.drawable.egg);
+                break;
+            case "Tomate":
+                holder.icone.setImageResource(R.drawable.tomato);
                 break;
             case "Trigo":
                 holder.icone.setImageResource(R.drawable.wheatdraw);

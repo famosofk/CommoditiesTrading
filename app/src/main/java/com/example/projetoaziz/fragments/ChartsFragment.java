@@ -15,6 +15,7 @@ import com.example.projetoaziz.R;
 import com.example.projetoaziz.helpers.Base64Handler;
 import com.example.projetoaziz.helpers.ConfiguracaoDatabase;
 import com.example.projetoaziz.helpers.MoneySort;
+import com.example.projetoaziz.helpers.VariationSort;
 import com.example.projetoaziz.models.ListaCommodities;
 import com.example.projetoaziz.models.Usuario;
 import com.github.mikephil.charting.charts.BarChart;
@@ -70,6 +71,7 @@ public class ChartsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_charts, container, false);
+        db = null;
         user = ConfiguracaoDatabase.getFirebaseAutenticacao().getCurrentUser();
         Bundle bundle = getArguments();
         caminho = bundle.getString("idTurma");
@@ -105,68 +107,76 @@ public class ChartsFragment extends Fragment {
     }
 
     @SuppressLint("ResourceAsColor")
-    private void plotarGraficos(List<ListaCommodities> list) {
+    private void plotarGraficos(List<ListaCommodities> seteAcumulado, List<ListaCommodities> seteVariacao) {
         TextView ranking = v.findViewById(R.id.textPosicao);
         String POSICAO = "Colocação: " + posicao + "/" + size;
         ranking.setText(POSICAO);
-        BarChart mbar = v.findViewById(R.id.barChart);
-        BarChart mbar2 = v.findViewById(R.id.barChart2);
-        List<BarEntry> entries = new ArrayList<>();
-        List<BarEntry> entries2 = new ArrayList<>();
+        BarChart patrimonioBarChart = v.findViewById(R.id.barChart);
+        BarChart variacaoBarChart = v.findViewById(R.id.barChart2);
+        List<BarEntry> patrimonioEntries = new ArrayList<>();
+        List<BarEntry> variacaoEntries = new ArrayList<>();
         List<LegendEntry> legendEntries = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            ListaCommodities usuario = list.get(i);
-            entries.add(new BarEntry(i, usuario.getPatrimonio()));
-            entries2.add(new BarEntry(i, usuario.getPatrimonio() / usuario.getPatrimonioAnterior()));
+        for (int i = 0; i < seteAcumulado.size(); i++) {
+            ListaCommodities usuario = seteAcumulado.get(i);
+            patrimonioEntries.add(new BarEntry(i, usuario.getPatrimonio()));
             LegendEntry legendEntry = new LegendEntry();
             legendEntry.label = usuario.getNome();
             legendEntry.formColor = FABINHO_COLORS[i % 7];
             legendEntries.add(legendEntry);
         }
-        BarDataSet set = new BarDataSet(entries, "Patrimônio");
-        BarDataSet set2 = new BarDataSet(entries2, "Variação");
-        set.setColors(FABINHO_COLORS);
-        set2.setColors(FABINHO_COLORS);
-        BarData data = new BarData(set);
-        YAxis yAxisRight = mbar.getAxisRight();
+        for (int i = 0; i < seteVariacao.size(); i++) {
+            ListaCommodities usuario = seteVariacao.get(i);
+            variacaoEntries.add(new BarEntry(i, usuario.getPatrimonio() / usuario.getPatrimonioAnterior()));
+            LegendEntry legendEntry = new LegendEntry();
+            legendEntry.label = usuario.getNome();
+            legendEntry.formColor = FABINHO_COLORS[i % 7];
+            legendEntries.add(legendEntry);
+        }
+
+        BarDataSet patrimonioDataSet = new BarDataSet(patrimonioEntries, "Patrimônio");
+        BarDataSet variacaoDataSet = new BarDataSet(variacaoEntries, "Variação");
+        patrimonioDataSet.setColors(FABINHO_COLORS);
+        variacaoDataSet.setColors(FABINHO_COLORS);
+        BarData patrimonioBarData = new BarData(patrimonioDataSet);
+        YAxis yAxisRight = patrimonioBarChart.getAxisRight();
         yAxisRight.setEnabled(false);
-        YAxis yAxisLeft = mbar.getAxisLeft();
+        YAxis yAxisLeft = patrimonioBarChart.getAxisLeft();
         yAxisLeft.setEnabled(false);
-        XAxis xAxis = mbar.getXAxis();
+        XAxis xAxis = patrimonioBarChart.getXAxis();
         xAxis.setEnabled(false);
-        data.setBarWidth(0.9f);
-        mbar.setDrawValueAboveBar(true);
-        mbar.fitScreen();
-        Description description = mbar.getDescription();
+        patrimonioBarData.setBarWidth(0.9f);
+        patrimonioBarChart.setDrawValueAboveBar(true);
+        patrimonioBarChart.fitScreen();
+        Description description = patrimonioBarChart.getDescription();
         description.setEnabled(false);
-        Legend legend = mbar.getLegend();
+        Legend legend = patrimonioBarChart.getLegend();
         legend.setCustom(legendEntries);
         legend.setTextSize(10);
-        mbar.setDrawGridBackground(false);
-        mbar.setDrawBorders(false);
-        mbar.setFitBars(true);
-        mbar.setData(data);
-        mbar.invalidate();
-        BarData data2 = new BarData(set2);
-        YAxis yAxisRight2 = mbar2.getAxisRight();
+        patrimonioBarChart.setDrawGridBackground(false);
+        patrimonioBarChart.setDrawBorders(false);
+        patrimonioBarChart.setFitBars(true);
+        patrimonioBarChart.setData(patrimonioBarData);
+        patrimonioBarChart.invalidate();
+        BarData variacaoBarData = new BarData(variacaoDataSet);
+        YAxis yAxisRight2 = variacaoBarChart.getAxisRight();
         yAxisRight2.setEnabled(false);
-        YAxis yAxisLeft2 = mbar2.getAxisLeft();
+        YAxis yAxisLeft2 = variacaoBarChart.getAxisLeft();
         yAxisLeft2.setEnabled(false);
-        XAxis xAxis2 = mbar2.getXAxis();
+        XAxis xAxis2 = variacaoBarChart.getXAxis();
         xAxis2.setEnabled(false);
-        data2.setBarWidth(0.9f);
-        mbar2.setDrawValueAboveBar(true);
-        mbar2.fitScreen();
-        Description description2 = mbar2.getDescription();
+        variacaoBarData.setBarWidth(0.9f);
+        variacaoBarChart.setDrawValueAboveBar(true);
+        variacaoBarChart.fitScreen();
+        Description description2 = variacaoBarChart.getDescription();
         description2.setEnabled(false);
-        Legend legend2 = mbar2.getLegend();
+        Legend legend2 = variacaoBarChart.getLegend();
         legend2.setCustom(legendEntries);
         legend2.setTextSize(10);
-        mbar2.setDrawGridBackground(false);
-        mbar2.setDrawBorders(false);
-        mbar2.setFitBars(true);
-        mbar2.setData(data2);
-        mbar2.invalidate();
+        variacaoBarChart.setDrawGridBackground(false);
+        variacaoBarChart.setDrawBorders(false);
+        variacaoBarChart.setFitBars(true);
+        variacaoBarChart.setData(variacaoBarData);
+        variacaoBarChart.invalidate();
         db = null;
     }
 
@@ -186,11 +196,16 @@ public class ChartsFragment extends Fragment {
                             break;
                         }
                     }
+                    List<ListaCommodities> variacao = new ArrayList<>(listaCommodities);
                     Collections.sort(listaCommodities, new MoneySort());
+                    Collections.sort(variacao, new VariationSort());
                     while (listaCommodities.size() > 6) {
                         listaCommodities.remove(6);
                     }
-                    recuperarListaUsuario(listaCommodities);
+                    while (variacao.size() > 6) {
+                        listaCommodities.remove(6);
+                    }
+                    recuperarListaUsuario(listaCommodities, variacao);
 
                 }
             }
@@ -202,15 +217,16 @@ public class ChartsFragment extends Fragment {
         });
     }
 
-    private void recuperarListaUsuario(final List<ListaCommodities> list) {
+    private void recuperarListaUsuario(final List<ListaCommodities> patrimonio, final List<ListaCommodities> variacao) {
         DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(caminho).child(Base64Handler.codificarBase64(user.getEmail()));
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
-                    list.add(dataSnapshot.getValue(ListaCommodities.class));
+                    patrimonio.add(dataSnapshot.getValue(ListaCommodities.class));
+                    variacao.add(dataSnapshot.getValue(ListaCommodities.class));
                 }
-                plotarGraficos(list);
+                plotarGraficos(patrimonio, variacao);
             }
 
             @Override

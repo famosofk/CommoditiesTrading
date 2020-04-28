@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,7 +38,6 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
     DatabaseReference db;
     FirebaseUser user;
     FirebaseAuth mauth;
-    String idProfessor;
     RecyclerView recycler;
     CompraAdapter adapterCompras;
     VendaAdapter adapterVendas;
@@ -98,7 +96,6 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
                 db = FirebaseDatabase.getInstance().getReference().child("ordens").child(caminho).child(ordem.getIdDono()).push();
                 float gasto = adapterCompras.calcularGastoTotal();
                 list.setCreditos(list.getCreditos() - gasto);
-                if (user.getPhotoUrl().equals("professor") || !ordem.getJustificativa().equals("")) {
 
                 db.setValue(ordem);
                     list.salvar(caminho, ordem.getIdDono());
@@ -106,9 +103,7 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
                     i.putExtra("idTurma", caminho);
                     startActivity(i);
                 finish();
-            } else {
-                    Toast.makeText(GerenciarCommoditiesActivity.this, "Preencha a justificativa.", Toast.LENGTH_SHORT).show();
-                }
+
             }
         });
 
@@ -144,8 +139,8 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
     private void editarCommodities() {
         setContentView(R.layout.gerenciar_commodities);
         recycler = findViewById(R.id.recyclerGerenciarCommodities);
-        adapterGerenciar = new GerenciarAcoesAdapter(list, getApplicationContext());
-        recycler.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        adapterGerenciar = new GerenciarAcoesAdapter(list, this);
+        recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setAdapter(adapterGerenciar);
         Button gerenciar = findViewById(R.id.confirmarGerenciarButton);
         gerenciar.setOnClickListener(new View.OnClickListener() {
@@ -230,6 +225,8 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
         } else {
             turma.setVisibility(false);
         }
+
+
         DatabaseReference listaAtualizada = ConfiguracaoDatabase.getFirebaseDatabase().child("turmas").child(caminho);
         turma.setListaCommodities(list);
         listaAtualizada.setValue(turma);

@@ -2,6 +2,7 @@ package com.example.projetoaziz.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,7 @@ public class CotacoesFragment extends Fragment {
     private View v;
     private ListaCommodities recuperada;
     private Turma turma;
+    private DatabaseReference dataChange;
 
     public CotacoesFragment() {
         // Required empty public constructor
@@ -80,7 +82,7 @@ public class CotacoesFragment extends Fragment {
                         i.putExtra("caminho", caminho);
                         i.putExtra("turma", turma);
                         startActivity(i);
-                        Objects.requireNonNull(getActivity()).finish();
+                        getActivity().finish();
                     }
 
                 }
@@ -150,13 +152,16 @@ public class CotacoesFragment extends Fragment {
     }
 
     private void atualizarLista(ListaCommodities lista) {
+        dataChange = null;
+        Boolean troca = false;
         List<Commodity> list = turma.getListaCommodities().getListaCommodities();
         for (int i = 0; i < list.size(); i++) {
-            lista.getListaCommodities().get(i).setValor(list.get(i).getValor());
+            if (list.get(i).getValor() != lista.getListaCommodities().get(i).getValor()) {
+                lista.getListaCommodities().get(i).setValor(list.get(i).getValor());
+                troca = true;
+            }
         }
-        if (lista.getPatrimonio() == 0) {
-            lista.setPatrimonio(turma.getListaCommodities().getCreditos());
-        } else {
+        if (troca) {
             if (lista.getPatrimonio() != lista.getPatrimonioAnterior()) {
                 float value = lista.getCreditos();
                 for (int i = 0; i < list.size(); i++) {
@@ -167,21 +172,28 @@ public class CotacoesFragment extends Fragment {
                     lista.setPatrimonio(value);
                 }
             }
-        }
 
+            DatabaseReference dr = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(caminho).child(Base64Handler.codificarBase64(user.getEmail()));
+            dr.setValue(list);
+        }
         DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(caminho).child(Base64Handler.codificarBase64(user.getEmail()));
         db.setValue(lista);
         fazerListagem(lista);
     }
 
     private void recuperarLista() {
-        DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(caminho).child(Base64Handler.codificarBase64(user.getEmail()));
-        db.addValueEventListener(new ValueEventListener() {
+        dataChange = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(caminho).child(Base64Handler.codificarBase64(user.getEmail()));
+        dataChange.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
-                    recuperada = dataSnapshot.getValue(ListaCommodities.class);
-                    atualizarLista(recuperada);
+                    try {
+                        recuperada = dataSnapshot.getValue(ListaCommodities.class);
+                        atualizarLista(recuperada);
+                    } catch (Exception e) {
+                        Log.e("deu ruim", "");
+                    }
+
                 }
             }
 
@@ -213,5 +225,6 @@ public class CotacoesFragment extends Fragment {
         startActivity(i);
         Objects.requireNonNull(getActivity()).finish();
     }
+
 
 }

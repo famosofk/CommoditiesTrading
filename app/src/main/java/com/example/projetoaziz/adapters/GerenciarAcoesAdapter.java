@@ -19,10 +19,15 @@ public class GerenciarAcoesAdapter extends RecyclerView.Adapter<CompraVendaViewH
 
     ListaCommodities list;
     Context c;
+    float[] atualizado;
 
     public GerenciarAcoesAdapter(ListaCommodities list, Context c) {
         this.list = list;
         this.c = c;
+        atualizado = new float[list.getListaCommodities().size()];
+        for (int i = 0; i < list.getListaCommodities().size(); i++) {
+            atualizado[i] = 0;
+        }
     }
 
     @NonNull
@@ -47,11 +52,20 @@ public class GerenciarAcoesAdapter extends RecyclerView.Adapter<CompraVendaViewH
             case "Algodão":
                 holder.icone.setImageResource(R.drawable.cotton);
                 break;
-            case "Amendoim":
-                holder.icone.setImageResource(R.drawable.peanut);
+            case "Abóbora":
+                holder.icone.setImageResource(R.drawable.pumpkin);
                 break;
             case "Arroz":
                 holder.icone.setImageResource(R.drawable.rice);
+                break;
+            case "Alface":
+                holder.icone.setImageResource(R.drawable.lettuce);
+                break;
+            case "Banana":
+                holder.icone.setImageResource(R.drawable.banana);
+                break;
+            case "Batata":
+                holder.icone.setImageResource(R.drawable.potato);
                 break;
             case "Bezerro":
                 holder.icone.setImageResource(R.drawable.ox);
@@ -62,20 +76,41 @@ public class GerenciarAcoesAdapter extends RecyclerView.Adapter<CompraVendaViewH
             case "Café":
                 holder.icone.setImageResource(R.drawable.coffee);
                 break;
+            case "Cebola":
+                holder.icone.setImageResource(R.drawable.onion);
+                break;
+            case "Cenoura":
+                holder.icone.setImageResource(R.drawable.carrot);
+                break;
             case "Feijão":
                 holder.icone.setImageResource(R.drawable.beans);
                 break;
             case "Frango":
                 holder.icone.setImageResource(R.drawable.chicken);
                 break;
+            case "Goiaba":
+                holder.icone.setImageResource(R.drawable.guava);
+                break;
+            case "Laranja":
+                holder.icone.setImageResource(R.drawable.orange);
+                break;
+            case "Leite":
+                holder.icone.setImageResource(R.drawable.milk);
+                break;
+            case "Limão":
+                holder.icone.setImageResource(R.drawable.lemon);
+                break;
             case "Milho":
                 holder.icone.setImageResource(R.drawable.corn);
                 break;
-            case "Soja":
-                holder.icone.setImageResource(R.drawable.soy);
+            case "Mandioca":
+                holder.icone.setImageResource(R.drawable.mandioca);
                 break;
-            case "Sorgo":
-                holder.icone.setImageResource(R.drawable.sorghum);
+            case "Ovos":
+                holder.icone.setImageResource(R.drawable.egg);
+                break;
+            case "Tomate":
+                holder.icone.setImageResource(R.drawable.tomato);
                 break;
             case "Trigo":
                 holder.icone.setImageResource(R.drawable.wheatdraw);
@@ -86,6 +121,7 @@ public class GerenciarAcoesAdapter extends RecyclerView.Adapter<CompraVendaViewH
             case "Suíno":
                 holder.icone.setImageResource(R.drawable.pig);
                 break;
+
         }
 
         holder.quantidade.addTextChangedListener(new TextWatcher() {
@@ -100,13 +136,24 @@ public class GerenciarAcoesAdapter extends RecyclerView.Adapter<CompraVendaViewH
             @Override
             public void afterTextChanged(Editable s) {
                 if (!s.toString().isEmpty()) {
-                    Commodity nova = list.getListaCommodities().get(position);
+                    int i;
+                    for (i = 0; i < list.getListaCommodities().size(); i++) {
+                        if (list.getListaCommodities().get(i).getNome().equals(holder.nome.getText())) {
+                            break;
+                        }
+                    }
+                    Commodity nova = list.getListaCommodities().get(i);
+
                     nova.setValor(Float.parseFloat(s.toString()));
-                    list.getListaCommodities().remove(position);
-                    list.getListaCommodities().add(position, nova);
+                    list.getListaCommodities().set(i, nova);
+                    atualizado[i] = Float.parseFloat(s.toString());
                 }
             }
         });
+    }
+
+    public float[] getAtualizado() {
+        return atualizado;
     }
 
     @Override
