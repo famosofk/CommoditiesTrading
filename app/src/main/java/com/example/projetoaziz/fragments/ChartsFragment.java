@@ -192,7 +192,7 @@ public class ChartsFragment extends Fragment {
                     size = listaCommodities.size();
                     for (int i = 0; i < listaCommodities.size(); i++) {
                         if (listaCommodities.get(i).getIdDono().equals(Base64Handler.codificarBase64(user.getEmail()))) {
-                            posicao = i + 1;
+                            posicao = i;
                             break;
                         }
                     }

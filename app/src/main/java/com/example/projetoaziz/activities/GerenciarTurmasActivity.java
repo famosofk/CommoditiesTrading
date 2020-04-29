@@ -9,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -85,29 +86,40 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
         turma.setId(Base64Handler.codificarBase64(nome.getText().toString()));
         turma.setIdProfessor(Base64Handler.codificarBase64(user.getEmail()));
         ListaCommodities lista = criarListaCommoditiesProfessor();
-        lista.setCreditos(Float.parseFloat(creditos.getText().toString()));
-        lista.setPatrimonio(lista.getCreditos());
-        lista.setPatrimonioAnterior(lista.getCreditos());
-        turma.setSenhaMonitor(senhaMonitor.getText().toString());
-        turma.setListaCommodities(lista);
-        turma.getMonitores().add(usuario.getId());
-        turma.setSenha(senha.getText().toString());
-        if (requerSenha.isChecked()) {
-            turma.setRequerSenha(true);
+        if (lista.getListaCommodities().size() > 10) {
+            Toast.makeText(this, "Não é possível criar turmas com mais de 10 commodities.", Toast.LENGTH_SHORT).show();
+        } else {
+            if (!creditos.getText().toString().isEmpty()) {
+                if (!nome.getText().toString().isEmpty()) {
+                    lista.setCreditos(Float.parseFloat(creditos.getText().toString()));
+                    lista.setPatrimonio(lista.getCreditos());
+                    lista.setPatrimonioAnterior(lista.getCreditos());
+                    turma.setSenhaMonitor(senhaMonitor.getText().toString());
+                    turma.setListaCommodities(lista);
+                    turma.getMonitores().add(usuario.getId());
+                    turma.setSenha(senha.getText().toString());
+                    if (requerSenha.isChecked()) {
+                        turma.setRequerSenha(true);
+                    }
+                    DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("turmas").child(turma.getId());
+                    db.setValue(turma);
+                    db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(turma.getId()).child(Base64Handler.codificarBase64(user.getEmail()));
+                    lista.setIdDono(usuario.getId());
+                    lista.setNome(usuario.getNome());
+                    db.setValue(lista);
+                    List<String> salas = usuario.getListaTurmas();
+                    salas.add(turma.getId());
+                    usuario.setListaTurmas(salas);
+                    db = ConfiguracaoDatabase.getFirebaseDatabase().child(user.getPhotoUrl().toString()).child(Base64Handler.codificarBase64(user.getEmail()));
+                    db.setValue(usuario);
+                    finish();
+                } else {
+                    Toast.makeText(this, "Defina o nome da turma, por favor.", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(this, "Defina o valor de créditos iniciais, por favor.", Toast.LENGTH_SHORT).show();
+            }
         }
-
-        DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("turmas").child(turma.getId());
-        db.setValue(turma);
-        db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(turma.getId()).child(Base64Handler.codificarBase64(user.getEmail()));
-        lista.setIdDono(usuario.getId());
-        lista.setNome(usuario.getNome());
-        db.setValue(lista);
-        List<String> salas = usuario.getListaTurmas();
-        salas.add(turma.getId());
-        usuario.setListaTurmas(salas);
-        db = ConfiguracaoDatabase.getFirebaseDatabase().child(user.getPhotoUrl().toString()).child(Base64Handler.codificarBase64(user.getEmail()));
-        db.setValue(usuario);
-        finish();
 
 
     }
@@ -121,6 +133,18 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             Commodity commodity = new Commodity("Açúcar", (float) 0.00);
             commodity.setUnidade("R$/sc");
             list.getListaCommodities().add(commodity);
+        } else {
+            int i;
+            Boolean tem = false;
+            for (i = 0; i < list.getListaCommodities().size(); i++) {
+                if (list.getListaCommodities().get(i).equals("Açúcar")) {
+                    tem = true;
+                    break;
+                }
+            }
+            if (tem) {
+                list.getListaCommodities().remove(i);
+            }
         }
 
         CheckBox abobora = findViewById(R.id.aboboraBox);
@@ -128,6 +152,18 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             Commodity commodity = new Commodity("Abóbora", (float) 0.00);
             commodity.setUnidade("R$/kg");
             list.getListaCommodities().add(commodity);
+        } else {
+            int i;
+            Boolean tem = false;
+            for (i = 0; i < list.getListaCommodities().size(); i++) {
+                if (list.getListaCommodities().get(i).equals("Abóbora")) {
+                    tem = true;
+                    break;
+                }
+            }
+            if (tem) {
+                list.getListaCommodities().remove(i);
+            }
         }
 
         CheckBox alface = findViewById(R.id.checkBoxAlface);
@@ -135,6 +171,18 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             Commodity commodity = new Commodity("Alface", (float) 0.00);
             commodity.setUnidade("R$/kg");
             list.getListaCommodities().add(commodity);
+        } else {
+            int i;
+            Boolean tem = false;
+            for (i = 0; i < list.getListaCommodities().size(); i++) {
+                if (list.getListaCommodities().get(i).equals("Alface")) {
+                    tem = true;
+                    break;
+                }
+            }
+            if (tem) {
+                list.getListaCommodities().remove(i);
+            }
         }
 
         CheckBox algodao = findViewById(R.id.checkBoxAlgodao);
@@ -142,6 +190,18 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             Commodity commodity = new Commodity("Algodão", (float) 0.00);
             commodity.setUnidade("R$/lp");
             list.getListaCommodities().add(commodity);
+        } else {
+            int i;
+            Boolean tem = false;
+            for (i = 0; i < list.getListaCommodities().size(); i++) {
+                if (list.getListaCommodities().get(i).equals("Algodão")) {
+                    tem = true;
+                    break;
+                }
+            }
+            if (tem) {
+                list.getListaCommodities().remove(i);
+            }
         }
 
         CheckBox arroz = findViewById(R.id.checkBoxArroz);
@@ -149,6 +209,18 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             Commodity commodity = new Commodity("Arroz", (float) 0.00);
             commodity.setUnidade("R$/sc");
             list.getListaCommodities().add(commodity);
+        } else {
+            int i;
+            Boolean tem = false;
+            for (i = 0; i < list.getListaCommodities().size(); i++) {
+                if (list.getListaCommodities().get(i).equals("Arroz")) {
+                    tem = true;
+                    break;
+                }
+            }
+            if (tem) {
+                list.getListaCommodities().remove(i);
+            }
         }
 
         CheckBox batata = findViewById(R.id.checkBoxBatata);
@@ -156,6 +228,18 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             Commodity commodity = new Commodity("Batata", (float) 0.00);
             commodity.setUnidade("R$/kg");
             list.getListaCommodities().add(commodity);
+        } else {
+            int i;
+            Boolean tem = false;
+            for (i = 0; i < list.getListaCommodities().size(); i++) {
+                if (list.getListaCommodities().get(i).equals("Batata")) {
+                    tem = true;
+                    break;
+                }
+            }
+            if (tem) {
+                list.getListaCommodities().remove(i);
+            }
         }
 
         CheckBox banana = findViewById(R.id.checkBoxBanana);
@@ -163,6 +247,18 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             Commodity commodity = new Commodity("Banana", (float) 0.00);
             commodity.setUnidade("R$/kg");
             list.getListaCommodities().add(commodity);
+        } else {
+            int i;
+            Boolean tem = false;
+            for (i = 0; i < list.getListaCommodities().size(); i++) {
+                if (list.getListaCommodities().get(i).equals("Banana")) {
+                    tem = true;
+                    break;
+                }
+            }
+            if (tem) {
+                list.getListaCommodities().remove(i);
+            }
         }
 
         CheckBox bezerro = findViewById(R.id.checkBoxBezerro);
@@ -170,6 +266,18 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             Commodity commodity = new Commodity("Bezerro", (float) 0.00);
             commodity.setUnidade("R$/ub");
             list.getListaCommodities().add(commodity);
+        } else {
+            int i;
+            Boolean tem = false;
+            for (i = 0; i < list.getListaCommodities().size(); i++) {
+                if (list.getListaCommodities().get(i).equals("Bezerro")) {
+                    tem = true;
+                    break;
+                }
+            }
+            if (tem) {
+                list.getListaCommodities().remove(i);
+            }
         }
 
         CheckBox boi = findViewById(R.id.checkBoxBoi);
@@ -177,6 +285,18 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             Commodity commodity = new Commodity("Boi gordo", (float) 0.00);
             commodity.setUnidade("R$/@");
             list.getListaCommodities().add(commodity);
+        } else {
+            int i;
+            Boolean tem = false;
+            for (i = 0; i < list.getListaCommodities().size(); i++) {
+                if (list.getListaCommodities().get(i).equals("Boi gordo")) {
+                    tem = true;
+                    break;
+                }
+            }
+            if (tem) {
+                list.getListaCommodities().remove(i);
+            }
         }
 
         CheckBox cafe = findViewById(R.id.checkBoxCoffee);
@@ -184,6 +304,18 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             Commodity commodity = new Commodity("Café", (float) 0.00);
             commodity.setUnidade("R$/sc");
             list.getListaCommodities().add(commodity);
+        } else {
+            int i;
+            Boolean tem = false;
+            for (i = 0; i < list.getListaCommodities().size(); i++) {
+                if (list.getListaCommodities().get(i).equals("Café")) {
+                    tem = true;
+                    break;
+                }
+            }
+            if (tem) {
+                list.getListaCommodities().remove(i);
+            }
         }
 
         CheckBox cebola = findViewById(R.id.checkBoxCebola);
@@ -191,6 +323,18 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             Commodity commodity = new Commodity("Cebola", (float) 0.00);
             commodity.setUnidade("R$/kg");
             list.getListaCommodities().add(commodity);
+        } else {
+            int i;
+            Boolean tem = false;
+            for (i = 0; i < list.getListaCommodities().size(); i++) {
+                if (list.getListaCommodities().get(i).equals("Cebola")) {
+                    tem = true;
+                    break;
+                }
+            }
+            if (tem) {
+                list.getListaCommodities().remove(i);
+            }
         }
 
 
@@ -199,6 +343,18 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             Commodity commodity = new Commodity("Cenoura", (float) 0.00);
             commodity.setUnidade("R$/kg");
             list.getListaCommodities().add(commodity);
+        } else {
+            int i;
+            Boolean tem = false;
+            for (i = 0; i < list.getListaCommodities().size(); i++) {
+                if (list.getListaCommodities().get(i).equals("Cenoura")) {
+                    tem = true;
+                    break;
+                }
+            }
+            if (tem) {
+                list.getListaCommodities().remove(i);
+            }
         }
 
         CheckBox feijao = findViewById(R.id.checkBoxFeijao);
@@ -206,33 +362,96 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             Commodity commodity = new Commodity("Feijão", (float) 0.00);
             commodity.setUnidade("R$/sc");
             list.getListaCommodities().add(commodity);
+        } else {
+            int i;
+            Boolean tem = false;
+            for (i = 0; i < list.getListaCommodities().size(); i++) {
+                if (list.getListaCommodities().get(i).equals("Feijão")) {
+                    tem = true;
+                    break;
+                }
+            }
+            if (tem) {
+                list.getListaCommodities().remove(i);
+            }
         }
+
+
         CheckBox frango = findViewById(R.id.checkBoxChicken);
         if (frango.isChecked()) {
             Commodity commodity = new Commodity("Frango", (float) 0.00);
             commodity.setUnidade("R$/kg");
             list.getListaCommodities().add(commodity);
+        } else {
+            int i;
+            Boolean tem = false;
+            for (i = 0; i < list.getListaCommodities().size(); i++) {
+                if (list.getListaCommodities().get(i).equals("Frango")) {
+                    tem = true;
+                    break;
+                }
+            }
+            if (tem) {
+                list.getListaCommodities().remove(i);
+            }
         }
-
 
         CheckBox goiaba = findViewById(R.id.checkboxGoiaba);
         if (goiaba.isChecked()) {
             Commodity commodity = new Commodity("Goiaba", (float) 0.00);
             commodity.setUnidade("R$/kg");
             list.getListaCommodities().add(commodity);
+        } else {
+            int i;
+            Boolean tem = false;
+            for (i = 0; i < list.getListaCommodities().size(); i++) {
+                if (list.getListaCommodities().get(i).equals("Goiaba")) {
+                    tem = true;
+                    break;
+                }
+            }
+            if (tem) {
+                list.getListaCommodities().remove(i);
+            }
         }
+
         CheckBox laranja = findViewById(R.id.checkBoxLaranja);
         if (laranja.isChecked()) {
             Commodity commodity = new Commodity("Laranja", (float) 0.00);
             commodity.setUnidade("R$/kg");
             list.getListaCommodities().add(commodity);
+        } else {
+            int i;
+            Boolean tem = false;
+            for (i = 0; i < list.getListaCommodities().size(); i++) {
+                if (list.getListaCommodities().get(i).equals("Laranja")) {
+                    tem = true;
+                    break;
+                }
+            }
+            if (tem) {
+                list.getListaCommodities().remove(i);
+            }
         }
+
 
         CheckBox leite = findViewById(R.id.checkBoxLeite);
         if (leite.isChecked()) {
             Commodity commodity = new Commodity("Leite", (float) 0.00);
             commodity.setUnidade("R$/l");
             list.getListaCommodities().add(commodity);
+        } else {
+            int i;
+            Boolean tem = false;
+            for (i = 0; i < list.getListaCommodities().size(); i++) {
+                if (list.getListaCommodities().get(i).equals("Leite")) {
+                    tem = true;
+                    break;
+                }
+            }
+            if (tem) {
+                list.getListaCommodities().remove(i);
+            }
         }
 
         CheckBox limao = findViewById(R.id.checkBoxLimao);
@@ -240,6 +459,18 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             Commodity commodity = new Commodity("Limão", (float) 0.00);
             commodity.setUnidade("R$/kg");
             list.getListaCommodities().add(commodity);
+        } else {
+            int i;
+            Boolean tem = false;
+            for (i = 0; i < list.getListaCommodities().size(); i++) {
+                if (list.getListaCommodities().get(i).equals("Limão")) {
+                    tem = true;
+                    break;
+                }
+            }
+            if (tem) {
+                list.getListaCommodities().remove(i);
+            }
         }
 
         CheckBox mandioca = findViewById(R.id.checkBoxMandioca);
@@ -247,6 +478,18 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             Commodity commodity = new Commodity("Mandioca", (float) 0.00);
             commodity.setUnidade("R$/t");
             list.getListaCommodities().add(commodity);
+        } else {
+            int i;
+            Boolean tem = false;
+            for (i = 0; i < list.getListaCommodities().size(); i++) {
+                if (list.getListaCommodities().get(i).equals("Mandioca")) {
+                    tem = true;
+                    break;
+                }
+            }
+            if (tem) {
+                list.getListaCommodities().remove(i);
+            }
         }
 
         CheckBox milho = findViewById(R.id.checkBoxMilho);
@@ -254,6 +497,18 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             Commodity commodity = new Commodity("Milho", (float) 0.00);
             commodity.setUnidade("R$/sc");
             list.getListaCommodities().add(commodity);
+        } else {
+            int i;
+            Boolean tem = false;
+            for (i = 0; i < list.getListaCommodities().size(); i++) {
+                if (list.getListaCommodities().get(i).equals("Milho")) {
+                    tem = true;
+                    break;
+                }
+            }
+            if (tem) {
+                list.getListaCommodities().remove(i);
+            }
         }
 
         CheckBox ovos = findViewById(R.id.checkBoxOvos);
@@ -261,6 +516,18 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             Commodity commodity = new Commodity("Ovos", (float) 0.00);
             commodity.setUnidade("R$/30dz");
             list.getListaCommodities().add(commodity);
+        } else {
+            int i;
+            Boolean tem = false;
+            for (i = 0; i < list.getListaCommodities().size(); i++) {
+                if (list.getListaCommodities().get(i).equals("Ovos")) {
+                    tem = true;
+                    break;
+                }
+            }
+            if (tem) {
+                list.getListaCommodities().remove(i);
+            }
         }
 
         CheckBox soja = findViewById(R.id.checkBoxSoja);
@@ -268,12 +535,37 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             Commodity commodity = new Commodity("Soja", (float) 0.00);
             commodity.setUnidade("R$/sc");
             list.getListaCommodities().add(commodity);
+        } else {
+            int i;
+            Boolean tem = false;
+            for (i = 0; i < list.getListaCommodities().size(); i++) {
+                if (list.getListaCommodities().get(i).equals("Soja")) {
+                    tem = true;
+                    break;
+                }
+            }
+            if (tem) {
+                list.getListaCommodities().remove(i);
+            }
         }
+
         CheckBox suino = findViewById(R.id.checkBoxSuino);
         if (suino.isChecked()) {
             Commodity commodity = new Commodity("Suíno", (float) 0.00);
             commodity.setUnidade("R$/kg");
             list.getListaCommodities().add(commodity);
+        } else {
+            int i;
+            Boolean tem = false;
+            for (i = 0; i < list.getListaCommodities().size(); i++) {
+                if (list.getListaCommodities().get(i).equals("Suíno")) {
+                    tem = true;
+                    break;
+                }
+            }
+            if (tem) {
+                list.getListaCommodities().remove(i);
+            }
         }
 
         CheckBox tomate = findViewById(R.id.checkBoxTomate);
@@ -281,6 +573,18 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             Commodity commodity = new Commodity("Tomate", (float) 0.00);
             commodity.setUnidade("R$/sc");
             list.getListaCommodities().add(commodity);
+        } else {
+            int i;
+            Boolean tem = false;
+            for (i = 0; i < list.getListaCommodities().size(); i++) {
+                if (list.getListaCommodities().get(i).equals("Tomate")) {
+                    tem = true;
+                    break;
+                }
+            }
+            if (tem) {
+                list.getListaCommodities().remove(i);
+            }
         }
 
 
@@ -289,6 +593,18 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             Commodity commodity = new Commodity("Trigo", (float) 0.00);
             commodity.setUnidade("R$/t");
             list.getListaCommodities().add(commodity);
+        } else {
+            int i;
+            Boolean tem = false;
+            for (i = 0; i < list.getListaCommodities().size(); i++) {
+                if (list.getListaCommodities().get(i).equals("Trigo")) {
+                    tem = true;
+                    break;
+                }
+            }
+            if (tem) {
+                list.getListaCommodities().remove(i);
+            }
         }
 
 

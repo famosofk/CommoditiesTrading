@@ -29,6 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:fontFamily="@font/roboto_light"
+            android:onClick="abrirAgroplus"
             android:text="@string/sobre_intro_value"
             android:textColor="@android:color/black" />
 
