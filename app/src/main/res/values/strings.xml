@@ -59,17 +59,14 @@
     <string name="suino_intro">Suíno</string>
     <string name="sobre_intro">Sobre</string>
     <string name="sobre_equipe_intro">Este aplicativo foi desenvolvido pela Equipe Agro Plus UFV. Clique aqui e conheça um pouco da nossa história. </string>
-    <string name="ufv_intro">Clique aqui e conheça um pouco mais sobre a Universidade Federal de Viçosa</string>
-    <string name="der_intro">Para saber mais sobre o Departamento de Economia Rural da UFV, clique aqui.</string>
-    <string name="jogo_intro">Jogo Preços de Commodities Agricolas</string>
-    <string name="sobre_intro_value">Agroplus Preços se trata de uma ferramenta para utilização em sala de aula, por parte de docentes, com intuito em levar a metodologia de gamification para o ambiente acadêmico.</string>
+    <string name="sobre_intro_value">AgroPlus Preços tem como objetivo estimular futuros profissionais a acompanhar e compreender o comportamento de preços de produtos agrícolas. O aplicativo é um jogo no qual os participantes buscam obter o maior resultado negociando periodicamente um conjunto de produtos. Os participantes têm a opção de justificar suas negociações. O jogo foi concebido como um instrumento didático para atividades em sala de aula da disciplina Administração Rural e capacitações de alunos envolvidos em projetos de extensão rural e pesquisa aplicada da equipe AgroPlus (se possível incluir o link da página) do Departamento de Economia Rural na Universidade Federal de Viçosa.</string>
     <string name="coordenador_intro">Coordenador</string>
     <string name="desenvolvedor_intro">Desenvolvedor</string>
     <string name="equipe_intro">Equipe</string>
-    <string name="aziz_galvao">Prof. Aziz Galvão</string>
-    <string name="fabiano_gomes">Fabiano Gomes</string>
-    <string name="john_lucas">John Lucas</string>
-    <string name="patricia_souza">Patrícia Souza</string>
+    <string name="aziz_galvao">Prof. Aziz Galvão da Silva Júnior (PhD, Professor Titular UFV).</string>
+    <string name="fabiano_gomes">Fabiano Gomes de Melo Júnior (Acadêmico de Ciência da Computação, UFV) </string>
+    <string name="john_lucas">John Lucas Teixeira (Acadêmico do Curso de Agronegócio, UFV)</string>
+    <string name="patricia_souza">Patrícia Barbosa Souza (Acadêmica do Curso de Agronegócio, UFV)</string>
     <string name="patrimonio_chart_intro">Acumulado</string>
     <string name="variacao_chart_intro">Variação</string>
     <string name="selecione_turma_intro">Selecionar turma</string>
@@ -87,6 +84,7 @@
     <string name="senha_hint_participar_turma">Sala privada. Digite a senha.</string>
     <string name="recusar_intro">Recusar</string>
     <string name="monitor_cadastro_hint">Permite cadastrar monitores</string>
+    <string name="participantes_intro">Participantes</string>
 
     <string-array name="commodities">
         <item name="Algodão" />

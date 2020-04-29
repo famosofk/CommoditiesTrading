@@ -35,36 +35,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:fontFamily="@font/roboto_light"
-            android:onClick="abrirAgroplus"
-            android:text="@string/sobre_equipe_intro"
-            android:textColor="@android:color/black" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:fontFamily="@font/roboto_light"
-            android:onClick="abrirDER"
-            android:text="@string/der_intro"
-            android:textColor="@android:color/black" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
             android:fontFamily="@font/roboto_light"
-            android:onClick="abrirUFV"
-            android:text="@string/ufv_intro"
-            android:textColor="@android:color/black" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:fontFamily="@font/roboto_light"
-            android:text="@string/jogo_intro"
+            android:text="@string/equipe_intro"
             android:textAlignment="center"
             android:textColor="@android:color/black"
             android:textSize="18sp"
@@ -117,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:fontFamily="@font/roboto_light"
-            android:text="@string/equipe_intro"
+            android:text="@string/participantes_intro"
             android:textAlignment="center"
             android:textColor="@android:color/black" />
 
