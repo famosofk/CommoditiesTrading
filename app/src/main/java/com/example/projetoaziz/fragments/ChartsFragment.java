@@ -116,6 +116,7 @@ public class ChartsFragment extends Fragment {
         List<BarEntry> patrimonioEntries = new ArrayList<>();
         List<BarEntry> variacaoEntries = new ArrayList<>();
         List<LegendEntry> legendEntries = new ArrayList<>();
+        List<LegendEntry> legendEntries2 = new ArrayList<>();
         for (int i = 0; i < seteAcumulado.size(); i++) {
             ListaCommodities usuario = seteAcumulado.get(i);
             patrimonioEntries.add(new BarEntry(i, usuario.getPatrimonio()));
@@ -127,10 +128,10 @@ public class ChartsFragment extends Fragment {
         for (int i = 0; i < seteVariacao.size(); i++) {
             ListaCommodities usuario = seteVariacao.get(i);
             variacaoEntries.add(new BarEntry(i, usuario.getPatrimonio() / usuario.getPatrimonioAnterior()));
-            LegendEntry legendEntry = new LegendEntry();
-            legendEntry.label = usuario.getNome();
-            legendEntry.formColor = FABINHO_COLORS[i % 7];
-            legendEntries.add(legendEntry);
+            LegendEntry legendEntry2 = new LegendEntry();
+            legendEntry2.label = usuario.getNome();
+            legendEntry2.formColor = FABINHO_COLORS[i % 7];
+            legendEntries2.add(legendEntry2);
         }
 
         BarDataSet patrimonioDataSet = new BarDataSet(patrimonioEntries, "Patrimônio");
@@ -170,17 +171,19 @@ public class ChartsFragment extends Fragment {
         Description description2 = variacaoBarChart.getDescription();
         description2.setEnabled(false);
         Legend legend2 = variacaoBarChart.getLegend();
-        legend2.setCustom(legendEntries);
+        legend2.setCustom(legendEntries2);
         legend2.setTextSize(10);
         variacaoBarChart.setDrawGridBackground(false);
         variacaoBarChart.setDrawBorders(false);
         variacaoBarChart.setFitBars(true);
         variacaoBarChart.setData(variacaoBarData);
         variacaoBarChart.invalidate();
+        listaCommodities.clear();
         db = null;
     }
 
     private void recuperarListas() {
+
         DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(caminho);
         db.addValueEventListener(new ValueEventListener() {
             @Override
@@ -189,16 +192,17 @@ public class ChartsFragment extends Fragment {
                     for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                         listaCommodities.add(dsp.getValue(ListaCommodities.class));
                     }
-                    size = listaCommodities.size();
+                    size = listaCommodities.size() - 1;
+
+                    List<ListaCommodities> variacao = new ArrayList<>(listaCommodities);
+                    Collections.sort(listaCommodities, new MoneySort());
+                    Collections.sort(variacao, new VariationSort());
                     for (int i = 0; i < listaCommodities.size(); i++) {
                         if (listaCommodities.get(i).getIdDono().equals(Base64Handler.codificarBase64(user.getEmail()))) {
                             posicao = i;
                             break;
                         }
                     }
-                    List<ListaCommodities> variacao = new ArrayList<>(listaCommodities);
-                    Collections.sort(listaCommodities, new MoneySort());
-                    Collections.sort(variacao, new VariationSort());
                     while (listaCommodities.size() > 6) {
                         listaCommodities.remove(6);
                     }
@@ -235,6 +239,5 @@ public class ChartsFragment extends Fragment {
             }
         });
     }
-
 
 }

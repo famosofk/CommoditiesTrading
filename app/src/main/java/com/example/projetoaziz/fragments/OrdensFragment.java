@@ -272,6 +272,7 @@ public class OrdensFragment extends Fragment {
             OrdensAdapter adapter = new OrdensAdapter(listaOrdens, getActivity());
             recyclerOrdens.setLayoutManager(new LinearLayoutManager(getActivity()));
             recyclerOrdens.setAdapter(adapter);
+
         }
 
 

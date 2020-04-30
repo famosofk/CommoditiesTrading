@@ -264,7 +264,7 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
         CheckBox bezerro = findViewById(R.id.checkBoxBezerro);
         if (bezerro.isChecked()) {
             Commodity commodity = new Commodity("Bezerro", (float) 0.00);
-            commodity.setUnidade("R$/ub");
+            commodity.setUnidade("R$/un");
             list.getListaCommodities().add(commodity);
         } else {
             int i;

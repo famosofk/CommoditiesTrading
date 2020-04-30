@@ -125,6 +125,8 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
                 db = FirebaseDatabase.getInstance().getReference().child("ordens").child(caminho).child(ordem.getIdDono()).push();
                 db.setValue(ordem);
                 list.setCreditos(adapterVendas.calcularLucroTotal() + list.getCreditos());
+                list.setPatrimonioAnterior(list.getPatrimonio());
+                list.setPatrimonio(list.getPatrimonio() + adapterVendas.calcularLucroTotal());
                 list.salvar(caminho, Base64Handler.codificarBase64(user.getEmail()));
                 Intent i = new Intent(GerenciarCommoditiesActivity.this, MainActivity.class);
                 i.putExtra("idTurma", caminho);
@@ -194,7 +196,7 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
 
             for (int i = 0; i < list.getListaCommodities().size(); i++) {
                 Commodity commodity = list.getListaCommodities().get(i);
-                int diferenca = commodity.getQuantidade() - originais[i];
+                int diferenca = commodity.getQuantidade();
                 if (diferenca != 0) {
                     String transacao = commodity.getNome() + ": " + diferenca + "  ";
                     detalhes = detalhes.concat(transacao);

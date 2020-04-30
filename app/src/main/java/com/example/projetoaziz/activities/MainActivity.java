@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (menuItem.getItemId()) {
                     case R.id.navigation_cavalos:
+
                         fragmentTransaction.replace(R.id.viewPager, cotacoes).commit();
                         return true;
 

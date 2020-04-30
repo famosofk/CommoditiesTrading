@@ -229,7 +229,7 @@
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
-                                app:srcCompat="@drawable/ox" />
+                                app:srcCompat="@drawable/rice" />
 
                             <CheckBox
                                 android:id="@+id/checkBoxArroz"
@@ -265,7 +265,7 @@
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
-                                app:srcCompat="@drawable/beans" />
+                                app:srcCompat="@drawable/cow" />
 
                             <CheckBox
                                 android:id="@+id/checkBoxBoi"

@@ -162,7 +162,6 @@ public class CotacoesFragment extends Fragment {
             }
         }
         if (troca) {
-            if (lista.getPatrimonio() != lista.getPatrimonioAnterior()) {
                 float value = lista.getCreditos();
                 for (int i = 0; i < list.size(); i++) {
                     value += lista.getListaCommodities().get(i).getValor() * lista.getListaCommodities().get(i).getQuantidade();
@@ -171,7 +170,7 @@ public class CotacoesFragment extends Fragment {
                     lista.setPatrimonioAnterior(lista.getPatrimonio());
                     lista.setPatrimonio(value);
                 }
-            }
+
 
             DatabaseReference dr = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(caminho).child(Base64Handler.codificarBase64(user.getEmail()));
             dr.setValue(list);
