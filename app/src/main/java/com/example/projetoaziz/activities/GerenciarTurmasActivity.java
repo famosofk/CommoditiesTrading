@@ -76,7 +76,7 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
     }
 
     public void criarTurma(View view) {
-        Turma turma = new Turma();
+        final Turma turma = new Turma();
         EditText senhaMonitor = findViewById(R.id.senhaMonitorCadastroTurma);
         EditText nome = findViewById(R.id.nomeTurmaCadastro);
         EditText creditos = findViewById(R.id.creditosTurmaCadastro);
@@ -85,7 +85,7 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
         turma.setNome(nome.getText().toString());
         turma.setId(Base64Handler.codificarBase64(nome.getText().toString()));
         turma.setIdProfessor(Base64Handler.codificarBase64(user.getEmail()));
-        ListaCommodities lista = criarListaCommoditiesProfessor();
+        final ListaCommodities lista = criarListaCommoditiesProfessor();
         if (lista.getListaCommodities().size() > 10) {
             Toast.makeText(this, "Não é possível criar turmas com mais de 10 commodities.", Toast.LENGTH_SHORT).show();
         } else {
@@ -101,18 +101,33 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
                     if (requerSenha.isChecked()) {
                         turma.setRequerSenha(true);
                     }
-                    DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("turmas").child(turma.getId());
-                    db.setValue(turma);
-                    db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(turma.getId()).child(Base64Handler.codificarBase64(user.getEmail()));
-                    lista.setIdDono(usuario.getId());
-                    lista.setNome(usuario.getNome());
-                    db.setValue(lista);
-                    List<String> salas = usuario.getListaTurmas();
-                    salas.add(turma.getId());
-                    usuario.setListaTurmas(salas);
-                    db = ConfiguracaoDatabase.getFirebaseDatabase().child(user.getPhotoUrl().toString()).child(Base64Handler.codificarBase64(user.getEmail()));
-                    db.setValue(usuario);
-                    finish();
+                    final DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("turmas").child(turma.getId());
+                    db.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                Toast.makeText(GerenciarTurmasActivity.this, "Não foi possível criar. Altere o nome da sala.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                db.setValue(turma);
+                                DatabaseReference db2 = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(turma.getId()).child(Base64Handler.codificarBase64(user.getEmail()));
+                                lista.setIdDono(usuario.getId());
+                                lista.setNome(usuario.getNome());
+                                db2.setValue(lista);
+                                List<String> salas = usuario.getListaTurmas();
+                                salas.add(turma.getId());
+                                usuario.setListaTurmas(salas);
+                                db2 = ConfiguracaoDatabase.getFirebaseDatabase().child(user.getPhotoUrl().toString()).child(Base64Handler.codificarBase64(user.getEmail()));
+                                db2.setValue(usuario);
+                                finish();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
                 } else {
                     Toast.makeText(this, "Defina o nome da turma, por favor.", Toast.LENGTH_SHORT).show();
                 }
