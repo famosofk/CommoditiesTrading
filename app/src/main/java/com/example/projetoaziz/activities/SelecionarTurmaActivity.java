@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -67,12 +68,16 @@ public class SelecionarTurmaActivity extends AppCompatActivity {
     }
 
     private void fazerListagem(final Usuario usuario) {
+
+
+
         TextView semTurma = findViewById(R.id.semTurmaText);
         if (usuario.getListaTurmas().size() != 0) {
             semTurma.setVisibility(View.GONE);
             Set<String> set = new LinkedHashSet<>(usuario.getListaTurmas());
             adapter = new TurmaAdapter(new ArrayList<String>(set), this);
             recycler.setLayoutManager(new LinearLayoutManager(this));
+            new ItemTouchHelper(itemTouchSimpleCallBack).attachToRecyclerView(recycler);
             recycler.setAdapter(adapter);
             recycler.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
                 @Override
@@ -124,6 +129,19 @@ public class SelecionarTurmaActivity extends AppCompatActivity {
         startActivity(new Intent(SelecionarTurmaActivity.this, CadastroLoginActivity.class));
         finish();
     }
+
+    ItemTouchHelper.SimpleCallback itemTouchSimpleCallBack = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+        //    usuario.getListaTurmas().remove(viewHolder.getAdapterPosition());
+            adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+        }
+    };
 
 
 }
