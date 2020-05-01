@@ -49,8 +49,8 @@ public class CompraAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
         holder.preco.setText(String.format("%.2f", commodity.getValor()));
         holder.unidade.setText(commodity.getUnidade());
         String NOME = commodity.getNome();
-        holder.quantidade.setText("0");
-
+        int value = (int) (listCompras.getCreditos() / commodity.getValor()  );
+        holder.quantidade.setHint(Integer.toString(value));
         switch (NOME) {
             case "Algodão":
                 holder.icone.setImageResource(R.drawable.cotton);
@@ -118,6 +118,10 @@ public class CompraAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
             case "Trigo":
                 holder.icone.setImageResource(R.drawable.wheatdraw);
                 break;
+            case "Soja":
+                holder.icone.setImageResource(R.drawable.soy);
+                break;
+
             case "Açúcar":
                 holder.icone.setImageResource(R.drawable.sugar);
                 break;

@@ -122,6 +122,10 @@ public class VendaAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
             case "Açúcar":
                 holder.icone.setImageResource(R.drawable.sugar);
                 break;
+
+            case "Soja":
+                holder.icone.setImageResource(R.drawable.soy);
+                break;
             case "Suíno":
                 holder.icone.setImageResource(R.drawable.pig);
                 break;

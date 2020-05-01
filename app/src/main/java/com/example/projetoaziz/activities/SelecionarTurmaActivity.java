@@ -7,6 +7,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import com.example.projetoaziz.adapters.RecyclerItemClickListener;
 import com.example.projetoaziz.adapters.TurmaAdapter;
 import com.example.projetoaziz.helpers.Base64Handler;
 import com.example.projetoaziz.helpers.ConfiguracaoDatabase;
+import com.example.projetoaziz.models.Turma;
 import com.example.projetoaziz.models.Usuario;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,6 +38,7 @@ public class SelecionarTurmaActivity extends AppCompatActivity {
     private RecyclerView recycler;
     private TurmaAdapter adapter;
     private Usuario usuario;
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +50,7 @@ public class SelecionarTurmaActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FirebaseAuth mauth = ConfiguracaoDatabase.getFirebaseAutenticacao();
-        FirebaseUser user = mauth.getCurrentUser();
+        user = mauth.getCurrentUser();
         recuperarUsuario(user);
     }
 
@@ -82,11 +85,28 @@ public class SelecionarTurmaActivity extends AppCompatActivity {
             recycler.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    String caminho = usuario.getListaTurmas().get(position);
-                    Intent i = new Intent(SelecionarTurmaActivity.this, MainActivity.class);
-                    i.putExtra("idTurma", caminho);
-                    startActivity(i);
-                    finish();
+                  final String caminho = usuario.getListaTurmas().get(position);
+
+                    DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("turmas").child(caminho);
+                    db.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists()){
+                                Intent i = new Intent(SelecionarTurmaActivity.this, MainActivity.class);
+                                i.putExtra("idTurma", caminho);
+                                startActivity(i);
+                                finish();
+                            }else{
+                                Toast.makeText(SelecionarTurmaActivity.this, "Turma foi excluída. Arraste para o lado para removê-la de sua lista.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
                 }
             }));
 
@@ -113,9 +133,11 @@ public class SelecionarTurmaActivity extends AppCompatActivity {
                 break;
             case R.id.sobreTurma:
                 startActivity(new Intent(SelecionarTurmaActivity.this, SobreActivity.class));
+                finish();
                 break;
             case R.id.adicionarTurma:
                 startActivity(new Intent(SelecionarTurmaActivity.this, GerenciarTurmasActivity.class));
+                finish();
                 break;
 
         }
@@ -138,8 +160,32 @@ public class SelecionarTurmaActivity extends AppCompatActivity {
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-        //    usuario.getListaTurmas().remove(viewHolder.getAdapterPosition());
+            final String value = usuario.getListaTurmas().get(viewHolder.getAdapterPosition());
+            usuario.getListaTurmas().remove(viewHolder.getAdapterPosition());
             adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+            DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child(user.getPhotoUrl().toString()).child(user.getDisplayName());
+            db.setValue(usuario);
+            db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(value);
+            db.child(user.getDisplayName()).removeValue();
+            db = ConfiguracaoDatabase.getFirebaseDatabase().child("turmas").child(value);
+            db.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Turma turma = dataSnapshot.getValue(Turma.class);
+                    if (dataSnapshot.exists()) {
+                        if (turma.getIdProfessor().equals(user.getDisplayName())) {
+                            DatabaseReference excluir = ConfiguracaoDatabase.getFirebaseDatabase().child("turmas").child(value);
+                            excluir.removeValue();
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+            Toast.makeText(SelecionarTurmaActivity.this, "Turma apagada.", Toast.LENGTH_SHORT).show();
         }
     };
 

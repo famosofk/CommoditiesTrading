@@ -118,6 +118,8 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
                                 usuario.setListaTurmas(salas);
                                 db2 = ConfiguracaoDatabase.getFirebaseDatabase().child(user.getPhotoUrl().toString()).child(Base64Handler.codificarBase64(user.getEmail()));
                                 db2.setValue(usuario);
+                                Intent i = new Intent(GerenciarTurmasActivity.this, SelecionarTurmaActivity.class);
+                                startActivity(i);
                                 finish();
                             }
                         }

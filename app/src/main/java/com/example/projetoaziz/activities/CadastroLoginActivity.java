@@ -79,6 +79,9 @@ public class CadastroLoginActivity extends AppCompatActivity {
     private void efetuarCadastroUsuario(final Usuario professorCadastrando) {
 
         EditText editSenha = findViewById(R.id.senhaCadastroProfessor);
+        if (editSenha.getText().toString().isEmpty()) {
+            Toast.makeText(this, "Preencha a senha.", Toast.LENGTH_SHORT).show();
+        }else{
         mAuth.createUserWithEmailAndPassword(professorCadastrando.getEmail(), editSenha.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -109,7 +112,7 @@ public class CadastroLoginActivity extends AppCompatActivity {
                         }
                     }
                 });
-
+    }
     }
 
 
