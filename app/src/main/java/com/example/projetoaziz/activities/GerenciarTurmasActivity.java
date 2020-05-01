@@ -35,6 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class GerenciarTurmasActivity extends AppCompatActivity {
     FirebaseUser user;
@@ -53,7 +54,7 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null) {
+                if (dataSnapshot.exists()) {
                     usuario = dataSnapshot.getValue(Usuario.class);
                 }
             }
@@ -156,9 +157,9 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             list.getListaCommodities().add(commodity);
         } else {
             int i;
-            Boolean tem = false;
+            boolean tem = false;
             for (i = 0; i < list.getListaCommodities().size(); i++) {
-                if (list.getListaCommodities().get(i).equals("Açúcar")) {
+                if (list.getListaCommodities().get(i).getNome().equals("Açúcar")) {
                     tem = true;
                     break;
                 }
@@ -175,9 +176,9 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             list.getListaCommodities().add(commodity);
         } else {
             int i;
-            Boolean tem = false;
+            boolean tem = false;
             for (i = 0; i < list.getListaCommodities().size(); i++) {
-                if (list.getListaCommodities().get(i).equals("Abóbora")) {
+                if (list.getListaCommodities().get(i).getNome().equals("Abóbora")) {
                     tem = true;
                     break;
                 }
@@ -194,9 +195,9 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             list.getListaCommodities().add(commodity);
         } else {
             int i;
-            Boolean tem = false;
+            boolean tem = false;
             for (i = 0; i < list.getListaCommodities().size(); i++) {
-                if (list.getListaCommodities().get(i).equals("Alface")) {
+                if (list.getListaCommodities().get(i).getNome().equals("Alface")) {
                     tem = true;
                     break;
                 }
@@ -213,9 +214,9 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             list.getListaCommodities().add(commodity);
         } else {
             int i;
-            Boolean tem = false;
+            boolean tem = false;
             for (i = 0; i < list.getListaCommodities().size(); i++) {
-                if (list.getListaCommodities().get(i).equals("Algodão")) {
+                if (list.getListaCommodities().get(i).getNome().equals("Algodão")) {
                     tem = true;
                     break;
                 }
@@ -232,9 +233,9 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             list.getListaCommodities().add(commodity);
         } else {
             int i;
-            Boolean tem = false;
+            boolean tem = false;
             for (i = 0; i < list.getListaCommodities().size(); i++) {
-                if (list.getListaCommodities().get(i).equals("Arroz")) {
+                if (list.getListaCommodities().get(i).getNome().equals("Arroz")) {
                     tem = true;
                     break;
                 }
@@ -251,9 +252,9 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             list.getListaCommodities().add(commodity);
         } else {
             int i;
-            Boolean tem = false;
+            boolean tem = false;
             for (i = 0; i < list.getListaCommodities().size(); i++) {
-                if (list.getListaCommodities().get(i).equals("Batata")) {
+                if (list.getListaCommodities().get(i).getNome().equals("Batata")) {
                     tem = true;
                     break;
                 }
@@ -270,9 +271,9 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             list.getListaCommodities().add(commodity);
         } else {
             int i;
-            Boolean tem = false;
+            boolean tem = false;
             for (i = 0; i < list.getListaCommodities().size(); i++) {
-                if (list.getListaCommodities().get(i).equals("Banana")) {
+                if (list.getListaCommodities().get(i).getNome().equals("Banana")) {
                     tem = true;
                     break;
                 }
@@ -289,9 +290,9 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             list.getListaCommodities().add(commodity);
         } else {
             int i;
-            Boolean tem = false;
+            boolean tem = false;
             for (i = 0; i < list.getListaCommodities().size(); i++) {
-                if (list.getListaCommodities().get(i).equals("Bezerro")) {
+                if (list.getListaCommodities().get(i).getNome().equals("Bezerro")) {
                     tem = true;
                     break;
                 }
@@ -308,9 +309,9 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             list.getListaCommodities().add(commodity);
         } else {
             int i;
-            Boolean tem = false;
+            boolean tem = false;
             for (i = 0; i < list.getListaCommodities().size(); i++) {
-                if (list.getListaCommodities().get(i).equals("Boi gordo")) {
+                if (list.getListaCommodities().get(i).getNome().equals("Boi gordo")) {
                     tem = true;
                     break;
                 }
@@ -327,9 +328,9 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             list.getListaCommodities().add(commodity);
         } else {
             int i;
-            Boolean tem = false;
+            boolean tem = false;
             for (i = 0; i < list.getListaCommodities().size(); i++) {
-                if (list.getListaCommodities().get(i).equals("Café")) {
+                if (list.getListaCommodities().get(i).getNome().equals("Café")) {
                     tem = true;
                     break;
                 }
@@ -346,9 +347,9 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             list.getListaCommodities().add(commodity);
         } else {
             int i;
-            Boolean tem = false;
+            boolean tem = false;
             for (i = 0; i < list.getListaCommodities().size(); i++) {
-                if (list.getListaCommodities().get(i).equals("Cebola")) {
+                if (list.getListaCommodities().get(i).getNome().equals("Cebola")) {
                     tem = true;
                     break;
                 }
@@ -366,9 +367,9 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             list.getListaCommodities().add(commodity);
         } else {
             int i;
-            Boolean tem = false;
+            boolean tem = false;
             for (i = 0; i < list.getListaCommodities().size(); i++) {
-                if (list.getListaCommodities().get(i).equals("Cenoura")) {
+                if (list.getListaCommodities().get(i).getNome().equals("Cenoura")) {
                     tem = true;
                     break;
                 }
@@ -385,9 +386,9 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             list.getListaCommodities().add(commodity);
         } else {
             int i;
-            Boolean tem = false;
+            boolean tem = false;
             for (i = 0; i < list.getListaCommodities().size(); i++) {
-                if (list.getListaCommodities().get(i).equals("Feijão")) {
+                if (list.getListaCommodities().get(i).getNome().equals("Feijão")) {
                     tem = true;
                     break;
                 }
@@ -405,9 +406,9 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             list.getListaCommodities().add(commodity);
         } else {
             int i;
-            Boolean tem = false;
+            boolean tem = false;
             for (i = 0; i < list.getListaCommodities().size(); i++) {
-                if (list.getListaCommodities().get(i).equals("Frango")) {
+                if (list.getListaCommodities().get(i).getNome().equals("Frango")) {
                     tem = true;
                     break;
                 }
@@ -424,9 +425,9 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             list.getListaCommodities().add(commodity);
         } else {
             int i;
-            Boolean tem = false;
+            boolean tem = false;
             for (i = 0; i < list.getListaCommodities().size(); i++) {
-                if (list.getListaCommodities().get(i).equals("Goiaba")) {
+                if (list.getListaCommodities().get(i).getNome().equals("Goiaba")) {
                     tem = true;
                     break;
                 }
@@ -443,9 +444,9 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             list.getListaCommodities().add(commodity);
         } else {
             int i;
-            Boolean tem = false;
+            boolean tem = false;
             for (i = 0; i < list.getListaCommodities().size(); i++) {
-                if (list.getListaCommodities().get(i).equals("Laranja")) {
+                if (list.getListaCommodities().get(i).getNome().equals("Laranja")) {
                     tem = true;
                     break;
                 }
@@ -463,9 +464,9 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             list.getListaCommodities().add(commodity);
         } else {
             int i;
-            Boolean tem = false;
+            boolean tem = false;
             for (i = 0; i < list.getListaCommodities().size(); i++) {
-                if (list.getListaCommodities().get(i).equals("Leite")) {
+                if (list.getListaCommodities().get(i).getNome().equals("Leite")) {
                     tem = true;
                     break;
                 }
@@ -482,9 +483,9 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             list.getListaCommodities().add(commodity);
         } else {
             int i;
-            Boolean tem = false;
+            boolean tem = false;
             for (i = 0; i < list.getListaCommodities().size(); i++) {
-                if (list.getListaCommodities().get(i).equals("Limão")) {
+                if (list.getListaCommodities().get(i).getNome().equals("Limão")) {
                     tem = true;
                     break;
                 }
@@ -501,9 +502,9 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             list.getListaCommodities().add(commodity);
         } else {
             int i;
-            Boolean tem = false;
+            boolean tem = false;
             for (i = 0; i < list.getListaCommodities().size(); i++) {
-                if (list.getListaCommodities().get(i).equals("Mandioca")) {
+                if (list.getListaCommodities().get(i).getNome().equals("Mandioca")) {
                     tem = true;
                     break;
                 }
@@ -520,9 +521,9 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             list.getListaCommodities().add(commodity);
         } else {
             int i;
-            Boolean tem = false;
+            boolean tem = false;
             for (i = 0; i < list.getListaCommodities().size(); i++) {
-                if (list.getListaCommodities().get(i).equals("Milho")) {
+                if (list.getListaCommodities().get(i).getNome().equals("Milho")) {
                     tem = true;
                     break;
                 }
@@ -539,9 +540,9 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             list.getListaCommodities().add(commodity);
         } else {
             int i;
-            Boolean tem = false;
+            boolean tem = false;
             for (i = 0; i < list.getListaCommodities().size(); i++) {
-                if (list.getListaCommodities().get(i).equals("Ovos")) {
+                if (list.getListaCommodities().get(i).getNome().equals("Ovos")) {
                     tem = true;
                     break;
                 }
@@ -558,9 +559,9 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             list.getListaCommodities().add(commodity);
         } else {
             int i;
-            Boolean tem = false;
+            boolean tem = false;
             for (i = 0; i < list.getListaCommodities().size(); i++) {
-                if (list.getListaCommodities().get(i).equals("Soja")) {
+                if (list.getListaCommodities().get(i).getNome().equals("Soja")) {
                     tem = true;
                     break;
                 }
@@ -577,9 +578,9 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             list.getListaCommodities().add(commodity);
         } else {
             int i;
-            Boolean tem = false;
+            boolean tem = false;
             for (i = 0; i < list.getListaCommodities().size(); i++) {
-                if (list.getListaCommodities().get(i).equals("Suíno")) {
+                if (list.getListaCommodities().get(i).getNome().equals("Suíno")) {
                     tem = true;
                     break;
                 }
@@ -596,9 +597,9 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             list.getListaCommodities().add(commodity);
         } else {
             int i;
-            Boolean tem = false;
+            boolean tem = false;
             for (i = 0; i < list.getListaCommodities().size(); i++) {
-                if (list.getListaCommodities().get(i).equals("Tomate")) {
+                if (list.getListaCommodities().get(i).getNome().equals("Tomate")) {
                     tem = true;
                     break;
                 }
@@ -616,9 +617,9 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             list.getListaCommodities().add(commodity);
         } else {
             int i;
-            Boolean tem = false;
+            boolean tem = false;
             for (i = 0; i < list.getListaCommodities().size(); i++) {
-                if (list.getListaCommodities().get(i).equals("Trigo")) {
+                if (list.getListaCommodities().get(i).getNome().equals("Trigo")) {
                     tem = true;
                     break;
                 }
@@ -641,7 +642,7 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
             db.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot != null) {
+                    if (dataSnapshot.exists()) {
                         for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                             Turma turma = dsp.getValue(Turma.class);
                             list.add(turma);
@@ -720,7 +721,7 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
                 DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("turmas").child(turma.getId());
                 db.setValue(turma);
                 efetuarCadastroTurma(turma);
-            } else if (senhaMonitor.getText().toString() != turma.getSenhaMonitor()) {
+            } else if (!senhaMonitor.getText().toString().equals(turma.getSenhaMonitor())) {
                 toast.setText("Senha de MONITOR incorreta");
                 Log.e("monitor: ", "incorreta");
             }
@@ -736,7 +737,7 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
         List<String> list = usuario.getListaTurmas();
         list.add(turma.getId());
         usuario.setListaTurmas(list);
-        usuario.salvar(user.getPhotoUrl().toString(), Base64Handler.codificarBase64(user.getEmail()));
+        usuario.salvar(user.getPhotoUrl().toString(), Base64Handler.codificarBase64(Objects.requireNonNull(user.getEmail())));
 
         ListaCommodities listaCommodities = turma.getListaCommodities();
         listaCommodities.setNome(usuario.getNome());
