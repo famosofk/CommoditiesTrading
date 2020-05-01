@@ -152,6 +152,23 @@
                 android:inputType="textPassword"
                 android:textAlignment="center" />
 
+            <TextView
+                android:id="@+id/textVerificacao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/codigo_professor_intro"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/verificacaoProfessor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/codigo_monitor_hint"
+                android:inputType="textPassword"
+                android:textAlignment="center" />
+
 
 
 

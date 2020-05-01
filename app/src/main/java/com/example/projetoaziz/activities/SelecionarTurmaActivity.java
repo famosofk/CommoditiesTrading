@@ -1,5 +1,6 @@
 package com.example.projetoaziz.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -39,6 +41,7 @@ public class SelecionarTurmaActivity extends AppCompatActivity {
     private TurmaAdapter adapter;
     private Usuario usuario;
     private FirebaseUser user;
+    private AlertDialog alerta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,34 +163,57 @@ public class SelecionarTurmaActivity extends AppCompatActivity {
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            final String value = usuario.getListaTurmas().get(viewHolder.getAdapterPosition());
-            usuario.getListaTurmas().remove(viewHolder.getAdapterPosition());
-            adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
-            DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child(user.getPhotoUrl().toString()).child(user.getDisplayName());
-            db.setValue(usuario);
-            db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(value);
-            db.child(user.getDisplayName()).removeValue();
-            db = ConfiguracaoDatabase.getFirebaseDatabase().child("turmas").child(value);
-            db.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Turma turma = dataSnapshot.getValue(Turma.class);
-                    if (dataSnapshot.exists()) {
-                        if (turma.getIdProfessor().equals(user.getDisplayName())) {
-                            DatabaseReference excluir = ConfiguracaoDatabase.getFirebaseDatabase().child("turmas").child(value);
-                            excluir.removeValue();
-                            adapter.notifyDataSetChanged();
-                        }
-                    }
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                }
-            });
-            Toast.makeText(SelecionarTurmaActivity.this, "Turma apagada.", Toast.LENGTH_SHORT).show();
+            exemplo_simples(viewHolder.getAdapterPosition());
         }
     };
+
+    private void exemplo_simples(final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Exclusão de turma");
+        builder.setMessage("Deseja mesmo apagar essa turma e os dados referentes a ela em sua conta?");
+        builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+                final String value = usuario.getListaTurmas().get(position);
+                usuario.getListaTurmas().remove(position);
+                DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child(user.getPhotoUrl().toString()).child(user.getDisplayName());
+                db.setValue(usuario);
+                db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(value);
+                db.child(user.getDisplayName()).removeValue();
+                db = ConfiguracaoDatabase.getFirebaseDatabase().child("ordens").child(value).child(user.getDisplayName());
+                db.removeValue();
+                db = ConfiguracaoDatabase.getFirebaseDatabase().child("turmas").child(value);
+                db.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Turma turma = dataSnapshot.getValue(Turma.class);
+                        if (dataSnapshot.exists()) {
+                            if (turma.getIdProfessor().equals(user.getDisplayName())) {
+                                DatabaseReference excluir = ConfiguracaoDatabase.getFirebaseDatabase().child("turmas").child(value);
+                                excluir.removeValue();
+
+                                adapter.notifyItemRemoved(position);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
+
+            }
+        });
+        builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) { Toast.makeText(SelecionarTurmaActivity.this, "Ação cancelada.", Toast.LENGTH_SHORT).show();
+            adapter.notifyDataSetChanged();}});
+        alerta = builder.create();
+        alerta.show();
+    }
+
 
 
 }

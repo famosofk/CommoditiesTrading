@@ -156,7 +156,7 @@ public class CompraAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
                     nova.setQuantidade(Integer.parseInt(s.toString()));
                     float gasto = calcularGastoTotal();
                     float creditos = listCompras.getCreditos();
-                    if (creditos > gasto) {
+                    if (creditos >= gasto) {
                         listCompras.getListaCommodities().set(i, nova);
                         float diferenca = creditos - gasto;
                         Toast.makeText(c, "Saldo restante: " + diferenca, Toast.LENGTH_SHORT).show();

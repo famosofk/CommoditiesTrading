@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -46,6 +47,10 @@ public class CadastroLoginActivity extends AppCompatActivity {
     public void exibirCadastroAluno(View view) {
         setContentView(R.layout.activity_professor_cadastro);
         tipoCadastrado = "aluno";
+        EditText verificacao = findViewById(R.id.verificacaoProfessor);
+        TextView textverificacao = findViewById(R.id.textVerificacao);
+        verificacao.setVisibility(View.GONE);
+        textverificacao.setVisibility(View.GONE);
 
     }
 
@@ -69,7 +74,19 @@ public class CadastroLoginActivity extends AppCompatActivity {
         professorCadastrando.setUniversidade(UNIVERSIDADE);
         professorCadastrando.atualizarID();
 
-        efetuarCadastroUsuario(professorCadastrando);
+        if(tipoCadastrado.equals("professor")){
+            EditText verificacao = findViewById(R.id.verificacaoProfessor);
+            if(!verificacao.getText().toString().equals("6167726f2b")){
+                Toast.makeText(this, "Senha de professor incorreta.", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
+            }else{
+                efetuarCadastroUsuario(professorCadastrando);
+            }
+        }else{
+            efetuarCadastroUsuario(professorCadastrando);
+        }
+
+
 
 
 
@@ -77,6 +94,8 @@ public class CadastroLoginActivity extends AppCompatActivity {
 
 
     private void efetuarCadastroUsuario(final Usuario professorCadastrando) {
+
+
 
         EditText editSenha = findViewById(R.id.senhaCadastroProfessor);
         if (editSenha.getText().toString().isEmpty()) {

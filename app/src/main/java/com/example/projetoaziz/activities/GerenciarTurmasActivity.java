@@ -69,10 +69,14 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
 
 
     public void exibirCriarTurma(View view) {
-        LinearLayout selecao = findViewById(R.id.selectorAction);
-        selecao.setVisibility(View.GONE);
-        LinearLayout cadastrarTurma = findViewById(R.id.cadastrarTurma);
-        cadastrarTurma.setVisibility(View.VISIBLE);
+        if(user.getPhotoUrl().equals("professor")) {
+            LinearLayout selecao = findViewById(R.id.selectorAction);
+            selecao.setVisibility(View.GONE);
+            LinearLayout cadastrarTurma = findViewById(R.id.cadastrarTurma);
+            cadastrarTurma.setVisibility(View.VISIBLE);}
+          else{
+            Toast.makeText(this, "Apenas professores podem criar turma.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void criarTurma(View view) {
@@ -629,25 +633,28 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
     }
 
     public void exibirSelecionarTurma(View view) {
-        LinearLayout selecao = findViewById(R.id.selectorAction);
-        selecao.setVisibility(View.GONE);
-        DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("turmas");
-        db.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null) {
-                    for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                        Turma turma = dsp.getValue(Turma.class);
-                        list.add(turma);
-                    }
-                    fazerListagemTurmas();
-                }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
+
+            LinearLayout selecao = findViewById(R.id.selectorAction);
+            selecao.setVisibility(View.GONE);
+            DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("turmas");
+            db.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot != null) {
+                        for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                            Turma turma = dsp.getValue(Turma.class);
+                            list.add(turma);
+                        }
+                        fazerListagemTurmas();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
+
 
 
     }
