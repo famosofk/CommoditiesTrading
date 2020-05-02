@@ -70,13 +70,13 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
 
 
     public void exibirCriarTurma(View view) {
-        if(user.getPhotoUrl().equals("professor")) {
+        if(user.getPhotoUrl().toString().equals("professor")) {
             LinearLayout selecao = findViewById(R.id.selectorAction);
             selecao.setVisibility(View.GONE);
             LinearLayout cadastrarTurma = findViewById(R.id.cadastrarTurma);
             cadastrarTurma.setVisibility(View.VISIBLE);}
           else{
-            Toast.makeText(this, "Apenas professores podem criar turma.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Apenas professores podem criar turma." , Toast.LENGTH_SHORT).show();
         }
     }
 

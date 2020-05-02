@@ -90,68 +90,7 @@ public class OrdensFragment extends Fragment {
 
     }
 
-    private void popularOrdens() {
-    /*    recyclerOrdens = v.findViewById(R.id.recylerOrdens);
 
-        if (Objects.requireNonNull(user.getPhotoUrl()).toString().equals("aluno")) {
-            db = FirebaseDatabase.getInstance().getReference().child("ordens").child(idProfessor).child(aluno.getId());
-            db.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Ordens recuperada;
-                    for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                        recuperada = dsp.getValue(Ordens.class);
-                        listaOrdens.add(recuperada);
-                    }
-                    OrdensAdapter adapter = new OrdensAdapter(listaOrdens, getActivity());
-                    recyclerOrdens.setLayoutManager(new LinearLayoutManager(getActivity()));
-                    recyclerOrdens.setAdapter(adapter);
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                }
-            });
-        } else if (user.getPhotoUrl().toString().equals("professor")) {
-            db = FirebaseDatabase.getInstance().getReference().child("ordens").child(idProfessor).child(professor.getId());
-            db.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Ordens recuperada;
-                    for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                        recuperada = dsp.getValue(Ordens.class);
-                        listaOrdens.add(recuperada);
-                    }
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                }
-            });
-            db = FirebaseDatabase.getInstance().getReference().child("ordens").child(idProfessor);
-            db.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Ordens recuperada;
-                    for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                        for (DataSnapshot dsp3 : dsp.getChildren()) {
-                            recuperada = dsp3.getValue(Ordens.class);
-                            assert recuperada != null;
-                            if (!(recuperada.getIdDono().equals(professor.getId()))) {
-                                listaOrdens.add(recuperada);
-                            }
-                        }
-                    }
-                    OrdensAdapter adapter = new OrdensAdapter(listaOrdens, getActivity());
-                    recyclerOrdens.setLayoutManager(new LinearLayoutManager(getActivity()));
-                    recyclerOrdens.setAdapter(adapter);
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                }
-            });
-        } */
-    }
 
     private void userRecoveryData() {
         DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child(user.getPhotoUrl().toString()).child(Base64Handler.codificarBase64(user.getEmail()));
@@ -319,7 +258,9 @@ public class OrdensFragment extends Fragment {
         });
     }
 
-
-
-
+    @Override
+    public void onPause() {
+        super.onPause();
+        listaOrdens.clear();
+    }
 }
