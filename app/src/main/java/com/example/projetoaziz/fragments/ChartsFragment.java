@@ -203,10 +203,10 @@ public class ChartsFragment extends Fragment {
                             break;
                         }
                     }
-                    while (listaCommodities.size() > 6) {
+                    while (listaCommodities.size() > 7) {
                         listaCommodities.remove(6);
                     }
-                    while (variacao.size() > 6) {
+                    while (variacao.size() > 7) {
                         listaCommodities.remove(6);
                     }
                     recuperarListaUsuario(listaCommodities, variacao);
