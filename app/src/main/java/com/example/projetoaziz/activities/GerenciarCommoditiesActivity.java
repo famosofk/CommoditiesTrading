@@ -232,10 +232,10 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
         DatabaseReference listaAtualizada = ConfiguracaoDatabase.getFirebaseDatabase().child("turmas").child(caminho);
         turma.setListaCommodities(list);
         listaAtualizada.setValue(turma);
-        Intent i = new Intent(GerenciarCommoditiesActivity.this, MainActivity.class);
+        /*Intent i = new Intent(GerenciarCommoditiesActivity.this, MainActivity.class);
         i.putExtra("idTurma", caminho);
         startActivity(i);
-        finish();
+        finish(); */
     }
 
 }
