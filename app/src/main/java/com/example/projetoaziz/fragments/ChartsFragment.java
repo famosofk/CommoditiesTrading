@@ -207,7 +207,7 @@ public class ChartsFragment extends Fragment {
                         listaCommodities.remove(6);
                     }
                     while (variacao.size() > 6) {
-                        listaCommodities.remove(6);
+                        variacao.remove(6);
                     }
                     recuperarListaUsuario(listaCommodities, variacao);
 

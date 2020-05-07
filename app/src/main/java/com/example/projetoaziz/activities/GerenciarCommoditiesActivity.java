@@ -47,6 +47,7 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
     String caminho;
     int[] originais;
     Turma turma;
+    float creditosIniciais;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,7 +142,7 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
     private void editarCommodities() {
         setContentView(R.layout.gerenciar_commodities);
         recycler = findViewById(R.id.recyclerGerenciarCommodities);
-        adapterGerenciar = new GerenciarAcoesAdapter(list, this);
+        adapterGerenciar = new GerenciarAcoesAdapter(turma.getListaCommodities(), this);
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setAdapter(adapterGerenciar);
         Button gerenciar = findViewById(R.id.confirmarGerenciarButton);
@@ -230,12 +231,12 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
 
 
         DatabaseReference listaAtualizada = ConfiguracaoDatabase.getFirebaseDatabase().child("turmas").child(caminho);
-        turma.setListaCommodities(list);
+        turma.setListaCommodities(turma.getListaCommodities());
         listaAtualizada.setValue(turma);
-        /*Intent i = new Intent(GerenciarCommoditiesActivity.this, MainActivity.class);
+        Intent i = new Intent(GerenciarCommoditiesActivity.this, MainActivity.class);
         i.putExtra("idTurma", caminho);
         startActivity(i);
-        finish(); */
+        finish();
     }
 
 }
