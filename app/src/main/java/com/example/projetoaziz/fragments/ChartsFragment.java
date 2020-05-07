@@ -85,12 +85,16 @@ public class ChartsFragment extends Fragment {
 
         Button variacao = v.findViewById(R.id.exibirVariacao);
         Button patrimonio = v.findViewById(R.id.exibirPatrimonio);
+        final TextView colocacao = v.findViewById(R.id.colocacaoText);
 
         variacao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mbar.setVisibility(View.GONE);
                 mbar2.setVisibility(View.VISIBLE);
+
+                colocacao.setVisibility(View.GONE);
+
             }
         });
 
@@ -99,6 +103,7 @@ public class ChartsFragment extends Fragment {
             public void onClick(View v) {
                 mbar.setVisibility(View.VISIBLE);
                 mbar2.setVisibility(View.GONE);
+                colocacao.setVisibility(View.VISIBLE);
             }
         });
 
@@ -117,14 +122,19 @@ public class ChartsFragment extends Fragment {
         List<BarEntry> variacaoEntries = new ArrayList<>();
         List<LegendEntry> legendEntries = new ArrayList<>();
         List<LegendEntry> legendEntries2 = new ArrayList<>();
+        String nomes = "";
         for (int i = 0; i < seteAcumulado.size(); i++) {
             ListaCommodities usuario = seteAcumulado.get(i);
             patrimonioEntries.add(new BarEntry(i, usuario.getPatrimonio()));
-            LegendEntry legendEntry = new LegendEntry();
+            nomes += i + ") " + Base64Handler.decodificarBase64(usuario.getIdDono()) + "\n";
+
+            /*LegendEntry legendEntry = new LegendEntry();
             legendEntry.label = usuario.getNome();
             legendEntry.formColor = FABINHO_COLORS[i % 7];
-            legendEntries.add(legendEntry);
+            legendEntries.add(legendEntry); */
         }
+        TextView colocacao = v.findViewById(R.id.colocacaoText);
+        colocacao.setText(nomes);
         for (int i = 0; i < seteVariacao.size(); i++) {
             ListaCommodities usuario = seteVariacao.get(i);
             variacaoEntries.add(new BarEntry(i, usuario.getPatrimonio() / usuario.getPatrimonioAnterior()));
@@ -151,8 +161,9 @@ public class ChartsFragment extends Fragment {
         Description description = patrimonioBarChart.getDescription();
         description.setEnabled(false);
         Legend legend = patrimonioBarChart.getLegend();
-        legend.setCustom(legendEntries);
-        legend.setTextSize(10);
+        legend.setEnabled(false);
+        /*legend.setCustom(legendEntries);
+        legend.setTextSize(10); */
         patrimonioBarChart.setDrawGridBackground(false);
         patrimonioBarChart.setDrawBorders(false);
         patrimonioBarChart.setFitBars(true);

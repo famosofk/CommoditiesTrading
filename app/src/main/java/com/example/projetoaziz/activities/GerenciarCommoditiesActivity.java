@@ -47,7 +47,7 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
     String caminho;
     int[] originais;
     Turma turma;
-    float creditosIniciais;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
