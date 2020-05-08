@@ -14,6 +14,7 @@ public class ListaCommodities implements Serializable {
     private float patrimonioAnterior;
     private List<Commodity> listaCommodities = new ArrayList<>();
     private String nome;
+    private String sobrenome;
     private String idDono;
     public ListaCommodities() {
     }
@@ -22,6 +23,14 @@ public class ListaCommodities implements Serializable {
         DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(caminho).child(id);
         db.setValue(this);
         patrimonio = patrimonioAnterior = 100000;
+    }
+
+    public String getSobrenome() {
+        return sobrenome;
+    }
+
+    public void setSobrenome(String sobrenome) {
+        this.sobrenome = sobrenome;
     }
 
     public String getIdDono() {

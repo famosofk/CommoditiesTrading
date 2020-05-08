@@ -2,6 +2,7 @@ package com.example.projetoaziz.fragments;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,8 +59,9 @@ public class ChartsFragment extends Fragment {
 
     private View v;
     private DatabaseReference db;
-    private String caminho;
+    private String caminho, acumulado, variado;
     private int posicao, size;
+    private TextView colocacao;
 
     public ChartsFragment() {
         // Required empty public constructor
@@ -75,6 +77,7 @@ public class ChartsFragment extends Fragment {
         user = ConfiguracaoDatabase.getFirebaseAutenticacao().getCurrentUser();
         Bundle bundle = getArguments();
         caminho = bundle.getString("idTurma");
+        colocacao = v.findViewById(R.id.colocacaoText);
 
         recuperarListas();
 
@@ -85,15 +88,13 @@ public class ChartsFragment extends Fragment {
 
         Button variacao = v.findViewById(R.id.exibirVariacao);
         Button patrimonio = v.findViewById(R.id.exibirPatrimonio);
-        final TextView colocacao = v.findViewById(R.id.colocacaoText);
 
         variacao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mbar.setVisibility(View.GONE);
                 mbar2.setVisibility(View.VISIBLE);
-
-                colocacao.setVisibility(View.GONE);
+                colocacao.setText(variado);
 
             }
         });
@@ -103,7 +104,7 @@ public class ChartsFragment extends Fragment {
             public void onClick(View v) {
                 mbar.setVisibility(View.VISIBLE);
                 mbar2.setVisibility(View.GONE);
-                colocacao.setVisibility(View.VISIBLE);
+                colocacao.setText(acumulado);
             }
         });
 
@@ -126,15 +127,37 @@ public class ChartsFragment extends Fragment {
         for (int i = 0; i < seteAcumulado.size(); i++) {
             ListaCommodities usuario = seteAcumulado.get(i);
             patrimonioEntries.add(new BarEntry(i, usuario.getPatrimonio()));
-            nomes += i + ") " + Base64Handler.decodificarBase64(usuario.getIdDono()) + "\n";
 
-            /*LegendEntry legendEntry = new LegendEntry();
-            legendEntry.label = usuario.getNome();
-            legendEntry.formColor = FABINHO_COLORS[i % 7];
-            legendEntries.add(legendEntry); */
+            if(i == 0){
+                acumulado += String.format("<strong> <font color=#f44336> %2d ) %s %s </font> </strong> <br/>", i, usuario.getNome(), usuario.getSobrenome());
+            }
+            if(i == 1){
+                acumulado += String.format("<strong> <font color=#9c27b0> %2d ) %s %s </font> </strong> <br/>", i, usuario.getNome(), usuario.getSobrenome());
+
+            }
+            if(i == 2){
+                acumulado += String.format("<strong> <font color=#3f51b5> %2d ) %s %s </font> </strong> <br/>", i, usuario.getNome(), usuario.getSobrenome());
+
+            }
+            if(i == 3){
+                acumulado += String.format("<strong> <font color=#03a9f4> %2d ) %s %s </font> </strong> <br/>", i, usuario.getNome(), usuario.getSobrenome());
+
+            }
+            if(i == 4){
+                acumulado += String.format("<strong> <font color=#009688> %2d ) %s %s </font> </strong> <br/>", i, usuario.getNome(), usuario.getSobrenome());
+
+            }
+            if(i == 5){
+                acumulado += String.format("<strong> <font color=#8bc34a> %2d ) %s %s </font> </strong> <br/>", i, usuario.getNome(), usuario.getSobrenome());
+
+            }
+            if(i == 6){
+                acumulado += String.format("<strong> <font color=#ffeb3b> %2d ) %s %s </font> </strong> <br/>", i, usuario.getNome(), usuario.getSobrenome());
+
+            }
         }
         TextView colocacao = v.findViewById(R.id.colocacaoText);
-        colocacao.setText(nomes);
+        colocacao.setText(Html.fromHtml(nomes));
         for (int i = 0; i < seteVariacao.size(); i++) {
             ListaCommodities usuario = seteVariacao.get(i);
             variacaoEntries.add(new BarEntry(i, usuario.getPatrimonio() / usuario.getPatrimonioAnterior()));

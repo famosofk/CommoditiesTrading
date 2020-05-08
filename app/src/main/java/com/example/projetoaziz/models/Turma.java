@@ -10,6 +10,7 @@ public class Turma implements Serializable {
 
     private String id;
     private String nome;
+
     private Boolean requerSenha;
     private String senha;
     private String senhaMonitor;

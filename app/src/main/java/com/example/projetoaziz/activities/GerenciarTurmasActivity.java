@@ -117,6 +117,7 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
                                 DatabaseReference db2 = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(turma.getId()).child(Base64Handler.codificarBase64(user.getEmail()));
                                 lista.setIdDono(usuario.getId());
                                 lista.setNome(usuario.getNome());
+                                lista.setSobrenome(usuario.getSobrenome());
                                 db2.setValue(lista);
                                 List<String> salas = usuario.getListaTurmas();
                                 salas.add(turma.getId());
