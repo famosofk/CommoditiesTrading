@@ -18,11 +18,9 @@ import com.example.projetoaziz.helpers.ConfiguracaoDatabase;
 import com.example.projetoaziz.helpers.MoneySort;
 import com.example.projetoaziz.helpers.VariationSort;
 import com.example.projetoaziz.models.ListaCommodities;
-import com.example.projetoaziz.models.Usuario;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -45,10 +43,6 @@ import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
  * A simple {@link Fragment} subclass.
  */
 public class ChartsFragment extends Fragment {
-    private Usuario aluno;
-    private FirebaseUser user;
-    private List<ListaCommodities> listaCommodities = new ArrayList<>();
-
     private static int[] FABINHO_COLORS = {rgb("#f44336"),
             rgb("#9c27b0"),
             rgb("#3f51b5"),
@@ -56,7 +50,8 @@ public class ChartsFragment extends Fragment {
             rgb("#009688"),
             rgb("#8bc34a"),
             rgb("#ffeb3b"),};
-
+    private FirebaseUser user;
+    private List<ListaCommodities> listaCommodities = new ArrayList<>();
     private View v;
     private DatabaseReference db;
     private String caminho, acumulado, variado;
@@ -82,7 +77,6 @@ public class ChartsFragment extends Fragment {
         recuperarListas();
 
 
-
         final BarChart mbar = v.findViewById(R.id.barChart);
         final BarChart mbar2 = v.findViewById(R.id.barChart2);
 
@@ -94,7 +88,7 @@ public class ChartsFragment extends Fragment {
             public void onClick(View v) {
                 mbar.setVisibility(View.GONE);
                 mbar2.setVisibility(View.VISIBLE);
-                colocacao.setText(variado);
+                colocacao.setText(Html.fromHtml(variado));
 
             }
         });
@@ -104,7 +98,7 @@ public class ChartsFragment extends Fragment {
             public void onClick(View v) {
                 mbar.setVisibility(View.VISIBLE);
                 mbar2.setVisibility(View.GONE);
-                colocacao.setText(acumulado);
+                colocacao.setText(Html.fromHtml(acumulado));
             }
         });
 
@@ -121,50 +115,72 @@ public class ChartsFragment extends Fragment {
         BarChart variacaoBarChart = v.findViewById(R.id.barChart2);
         List<BarEntry> patrimonioEntries = new ArrayList<>();
         List<BarEntry> variacaoEntries = new ArrayList<>();
-        List<LegendEntry> legendEntries = new ArrayList<>();
-        List<LegendEntry> legendEntries2 = new ArrayList<>();
-        String nomes = "";
+
+        acumulado = "";
         for (int i = 0; i < seteAcumulado.size(); i++) {
             ListaCommodities usuario = seteAcumulado.get(i);
             patrimonioEntries.add(new BarEntry(i, usuario.getPatrimonio()));
-
-            if(i == 0){
+            if (i == 0) {
                 acumulado += String.format("<strong> <font color=#f44336> %2d ) %s %s </font> </strong> <br/>", i, usuario.getNome(), usuario.getSobrenome());
             }
-            if(i == 1){
+            if (i == 1) {
                 acumulado += String.format("<strong> <font color=#9c27b0> %2d ) %s %s </font> </strong> <br/>", i, usuario.getNome(), usuario.getSobrenome());
 
             }
-            if(i == 2){
+            if (i == 2) {
                 acumulado += String.format("<strong> <font color=#3f51b5> %2d ) %s %s </font> </strong> <br/>", i, usuario.getNome(), usuario.getSobrenome());
 
             }
-            if(i == 3){
+            if (i == 3) {
                 acumulado += String.format("<strong> <font color=#03a9f4> %2d ) %s %s </font> </strong> <br/>", i, usuario.getNome(), usuario.getSobrenome());
 
             }
-            if(i == 4){
+            if (i == 4) {
                 acumulado += String.format("<strong> <font color=#009688> %2d ) %s %s </font> </strong> <br/>", i, usuario.getNome(), usuario.getSobrenome());
 
             }
-            if(i == 5){
+            if (i == 5) {
                 acumulado += String.format("<strong> <font color=#8bc34a> %2d ) %s %s </font> </strong> <br/>", i, usuario.getNome(), usuario.getSobrenome());
 
             }
-            if(i == 6){
+            if (i == 6) {
                 acumulado += String.format("<strong> <font color=#ffeb3b> %2d ) %s %s </font> </strong> <br/>", i, usuario.getNome(), usuario.getSobrenome());
 
             }
         }
-        TextView colocacao = v.findViewById(R.id.colocacaoText);
-        colocacao.setText(Html.fromHtml(nomes));
+        variado = "";
         for (int i = 0; i < seteVariacao.size(); i++) {
             ListaCommodities usuario = seteVariacao.get(i);
             variacaoEntries.add(new BarEntry(i, usuario.getPatrimonio() / usuario.getPatrimonioAnterior()));
-            LegendEntry legendEntry2 = new LegendEntry();
-            legendEntry2.label = usuario.getNome();
-            legendEntry2.formColor = FABINHO_COLORS[i % 7];
-            legendEntries2.add(legendEntry2);
+            variado = "";
+            if (i == 0) {
+                variado += String.format("<strong> <font color=#f44336> %2d ) %s %s </font> </strong> <br/>", i, usuario.getNome(), usuario.getSobrenome());
+            }
+            if (i == 1) {
+                variado += String.format("<strong> <font color=#9c27b0> %2d ) %s %s </font> </strong> <br/>", i, usuario.getNome(), usuario.getSobrenome());
+
+            }
+            if (i == 2) {
+                variado += String.format("<strong> <font color=#3f51b5> %2d ) %s %s </font> </strong> <br/>", i, usuario.getNome(), usuario.getSobrenome());
+
+            }
+            if (i == 3) {
+                variado += String.format("<strong> <font color=#03a9f4> %2d ) %s %s </font> </strong> <br/>", i, usuario.getNome(), usuario.getSobrenome());
+
+            }
+            if (i == 4) {
+                variado += String.format("<strong> <font color=#009688> %2d ) %s %s </font> </strong> <br/>", i, usuario.getNome(), usuario.getSobrenome());
+
+            }
+            if (i == 5) {
+                variado += String.format("<strong> <font color=#8bc34a> %2d ) %s %s </font> </strong> <br/>", i, usuario.getNome(), usuario.getSobrenome());
+
+            }
+            if (i == 6) {
+                variado += String.format("<strong> <font color=#ffeb3b> %2d ) %s %s </font> </strong> <br/>", i, usuario.getNome(), usuario.getSobrenome());
+
+            }
+
         }
 
         BarDataSet patrimonioDataSet = new BarDataSet(patrimonioEntries, "Patrimônio");
@@ -185,8 +201,7 @@ public class ChartsFragment extends Fragment {
         description.setEnabled(false);
         Legend legend = patrimonioBarChart.getLegend();
         legend.setEnabled(false);
-        /*legend.setCustom(legendEntries);
-        legend.setTextSize(10); */
+
         patrimonioBarChart.setDrawGridBackground(false);
         patrimonioBarChart.setDrawBorders(false);
         patrimonioBarChart.setFitBars(true);
@@ -205,13 +220,13 @@ public class ChartsFragment extends Fragment {
         Description description2 = variacaoBarChart.getDescription();
         description2.setEnabled(false);
         Legend legend2 = variacaoBarChart.getLegend();
-        legend2.setCustom(legendEntries2);
-        legend2.setTextSize(10);
+        legend2.setEnabled(false);
         variacaoBarChart.setDrawGridBackground(false);
         variacaoBarChart.setDrawBorders(false);
         variacaoBarChart.setFitBars(true);
         variacaoBarChart.setData(variacaoBarData);
         variacaoBarChart.invalidate();
+        colocacao.setText(Html.fromHtml(acumulado));
         listaCommodities.clear();
         db = null;
     }
@@ -222,7 +237,7 @@ public class ChartsFragment extends Fragment {
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null) {
+                if (dataSnapshot.getChildren() != null) {
                     for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                         listaCommodities.add(dsp.getValue(ListaCommodities.class));
                     }
