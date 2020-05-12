@@ -10,8 +10,8 @@ android {
         applicationId "com.example.projetoaziz"
         minSdkVersion 22
         targetSdkVersion 29
-        versionCode 4
-        versionName "8/5/20 - 18:30"
+        versionCode 5
+        versionName "12/5/20 - 12:30"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

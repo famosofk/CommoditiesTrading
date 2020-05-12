@@ -148,11 +148,11 @@ public class ChartsFragment extends Fragment {
 
             }
         }
+
         variado = "";
         for (int i = 0; i < seteVariacao.size(); i++) {
             ListaCommodities usuario = seteVariacao.get(i);
             variacaoEntries.add(new BarEntry(i, usuario.getPatrimonio() / usuario.getPatrimonioAnterior()));
-            variado = "";
             if (i == 0) {
                 variado += String.format("<strong> <font color=#f44336> %2d ) %s %s </font> </strong> <br/>", i, usuario.getNome(), usuario.getSobrenome());
             }
