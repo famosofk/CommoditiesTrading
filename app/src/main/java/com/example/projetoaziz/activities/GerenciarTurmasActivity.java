@@ -742,6 +742,7 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
 
         ListaCommodities listaCommodities = turma.getListaCommodities();
         listaCommodities.setNome(usuario.getNome());
+        listaCommodities.setSobrenome(usuario.getSobrenome());
         listaCommodities.setIdDono(usuario.getId());
         DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(turma.getId()).child(Base64Handler.codificarBase64(user.getEmail()));
         db.setValue(listaCommodities);
