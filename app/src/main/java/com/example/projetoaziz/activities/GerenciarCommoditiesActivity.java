@@ -125,9 +125,11 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
                 ordem.setTipo("venda");
                 db = FirebaseDatabase.getInstance().getReference().child("ordens").child(caminho).child(ordem.getIdDono()).push();
                 db.setValue(ordem);
-                list.setCreditos(adapterVendas.calcularLucroTotal() + list.getCreditos());
-                list.setPatrimonioAnterior(list.getPatrimonio());
-                list.setPatrimonio(list.getPatrimonio() + adapterVendas.calcularLucroTotal());
+
+                list.setCreditos(adapterVendas.calcularLucroTotal() + list.getCreditos()); //ok. tá somando o dinheiro que tenho com o que ganhei
+                list.atualizarPatrimonio();
+                list.setPatrimonio(list.getPatrimonio() + list.getCreditos());
+
                 list.salvar(caminho, Base64Handler.codificarBase64(user.getEmail()));
                 Intent i = new Intent(GerenciarCommoditiesActivity.this, MainActivity.class);
                 i.putExtra("idTurma", caminho);

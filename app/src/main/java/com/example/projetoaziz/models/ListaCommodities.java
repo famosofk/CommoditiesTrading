@@ -25,6 +25,14 @@ public class ListaCommodities implements Serializable {
         patrimonio = patrimonioAnterior = 100000;
     }
 
+    public void atualizarPatrimonio() {
+        float value = 0;
+        for (Commodity com : listaCommodities) {
+            value += com.getValor() * com.getQuantidade();
+        }
+        patrimonio = value;
+    }
+
     public String getSobrenome() {
         return sobrenome;
     }

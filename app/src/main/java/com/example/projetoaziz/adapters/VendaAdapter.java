@@ -184,6 +184,7 @@ public class VendaAdapter extends RecyclerView.Adapter<CompraVendaViewHolder> {
         return originais;
     }
 
+//quantidades representa o tanto que irei vender
 
     public float calcularLucroTotal() {
         float value = 0;
