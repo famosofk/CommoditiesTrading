@@ -34,8 +34,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class GerenciarTurmasActivity extends AppCompatActivity {
     FirebaseUser user;
@@ -119,9 +121,9 @@ public class GerenciarTurmasActivity extends AppCompatActivity {
                                 lista.setNome(usuario.getNome());
                                 lista.setSobrenome(usuario.getSobrenome());
                                 db2.setValue(lista);
-                                List<String> salas = usuario.getListaTurmas();
+                                Set<String> salas = new LinkedHashSet<>(usuario.getListaTurmas());
                                 salas.add(turma.getId());
-                                usuario.setListaTurmas(salas);
+                                usuario.setListaTurmas(new ArrayList<>(salas));
                                 db2 = ConfiguracaoDatabase.getFirebaseDatabase().child(user.getPhotoUrl().toString()).child(Base64Handler.codificarBase64(user.getEmail()));
                                 db2.setValue(usuario);
                                 Intent i = new Intent(GerenciarTurmasActivity.this, SelecionarTurmaActivity.class);

@@ -52,7 +52,7 @@ public class OrdensFragment extends Fragment {
     private RecyclerView recyclerOrdens;
     private ListaCommodities lista;
     private Turma turma;
-    private List<Ordens> listaOrdens = new ArrayList<>();
+    private Set<Ordens> listaOrdens = new LinkedHashSet<>();
     private String caminho;
 
 
@@ -177,7 +177,6 @@ public class OrdensFragment extends Fragment {
                 monitor = true;
             }
         }
-
         if (monitor) {
             DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("ordens").child(caminho);
             db.addValueEventListener(new ValueEventListener() {
@@ -193,26 +192,22 @@ public class OrdensFragment extends Fragment {
                         }
                     }
 
-                    Collections.reverse(listaOrdens);
-                    Set<Ordens> set = new LinkedHashSet<>(listaOrdens);
-                    recyclerOrdens = v.findViewById(R.id.recylerOrdens);
-                    OrdensAdapter adapter = new OrdensAdapter(new ArrayList<Ordens>(set), getActivity());
-                    recyclerOrdens.setLayoutManager(new LinearLayoutManager(getActivity()));
-                    recyclerOrdens.setAdapter(adapter);
+
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
                 }
             });
-        } else {
+        }
+        List<Ordens> lista = new ArrayList<>(listaOrdens);
+        Collections.reverse(lista);
             recyclerOrdens = v.findViewById(R.id.recylerOrdens);
-            OrdensAdapter adapter = new OrdensAdapter(listaOrdens, getActivity());
+        OrdensAdapter adapter = new OrdensAdapter(lista, getActivity());
             recyclerOrdens.setLayoutManager(new LinearLayoutManager(getActivity()));
             recyclerOrdens.setAdapter(adapter);
 
-        }
+
 
 
 
@@ -256,6 +251,12 @@ public class OrdensFragment extends Fragment {
 
             }
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        listaOrdens.clear();
     }
 
     @Override

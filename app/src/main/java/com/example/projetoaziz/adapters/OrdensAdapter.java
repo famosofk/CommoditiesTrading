@@ -13,6 +13,8 @@ import com.example.projetoaziz.R;
 import com.example.projetoaziz.models.Ordens;
 import com.example.projetoaziz.viewholders.OrdensViewholder;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 public class OrdensAdapter extends RecyclerView.Adapter<OrdensViewholder> {
@@ -21,7 +23,7 @@ public class OrdensAdapter extends RecyclerView.Adapter<OrdensViewholder> {
     private Context context;
 
     public OrdensAdapter(List<Ordens> list, Context context) {
-        this.list = list;
+        this.list = new ArrayList<>(new LinkedHashSet<>(list));
         this.context = context;
     }
 
@@ -51,6 +53,6 @@ public class OrdensAdapter extends RecyclerView.Adapter<OrdensViewholder> {
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return list.size() / 2;
     }
 }

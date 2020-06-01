@@ -88,7 +88,9 @@ public class SelecionarTurmaActivity extends AppCompatActivity {
             recycler.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                  final String caminho = usuario.getListaTurmas().get(position);
+
+                    Set<String> lista = new LinkedHashSet<>(usuario.getListaTurmas());
+                    final String caminho = (String) lista.toArray()[position];
 
                     DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("turmas").child(caminho);
                     db.addValueEventListener(new ValueEventListener() {
@@ -174,7 +176,7 @@ public class SelecionarTurmaActivity extends AppCompatActivity {
         builder.setMessage("Deseja mesmo apagar essa turma e os dados referentes a ela em sua conta?");
         builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) {
-                final String value = usuario.getListaTurmas().get(position);
+                final String value = (String) new LinkedHashSet<>(usuario.getListaTurmas()).toArray()[position];
                 usuario.getListaTurmas().remove(position);
                 DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child(user.getPhotoUrl().toString()).child(user.getDisplayName());
                 db.setValue(usuario);
