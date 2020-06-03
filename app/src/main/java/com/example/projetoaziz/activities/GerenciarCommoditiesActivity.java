@@ -114,6 +114,8 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
                             startActivity(i);
                             finish();
                         } else {
+                            db.orderByKey().limitToLast(1);
+                            db.removeValue();
                             Toast.makeText(GerenciarCommoditiesActivity.this, "Erro ao salvar. Tente novamente.", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -143,9 +145,9 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
                 list.setCreditos(adapterVendas.calcularLucroTotal() + list.getCreditos()); //ok. tá somando o dinheiro que tenho com o que ganhei
                 list.atualizarPatrimonio();
                 list.setPatrimonio(list.getPatrimonio() + list.getCreditos());
-                DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child(caminho).child(caminho).child(Base64Handler.codificarBase64(user.getEmail()));
+                DatabaseReference db2 = ConfiguracaoDatabase.getFirebaseDatabase().child(caminho).child(caminho).child(Base64Handler.codificarBase64(user.getEmail()));
                 Toast.makeText(GerenciarCommoditiesActivity.this, "Salvando operação. Aguarde.", Toast.LENGTH_SHORT).show();
-                db.setValue(list).addOnCompleteListener(new OnCompleteListener<Void>() {
+                db2.setValue(list).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
@@ -154,6 +156,8 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
                             startActivity(i);
                             finish();
                         } else {
+                            db.orderByKey().limitToLast(1);
+                            db.removeValue();
                             Toast.makeText(GerenciarCommoditiesActivity.this, "Erro ao salvar. Tente novamente.", Toast.LENGTH_SHORT).show();
                         }
                     }
