@@ -1,6 +1,5 @@
 package com.example.projetoaziz.fragments;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -35,10 +34,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,7 +49,7 @@ public class OrdensFragment extends Fragment {
     private RecyclerView recyclerOrdens;
     private ListaCommodities lista;
     private Turma turma;
-    private Set<Ordens> listaOrdens = new LinkedHashSet<>();
+    private List<Ordens> listaOrdens = new ArrayList<>();
     private String caminho;
 
 
@@ -82,14 +79,6 @@ public class OrdensFragment extends Fragment {
         }
         return v;
     }
-
-
-
-    @SuppressLint("DefaultLocale")
-    private void popularTela() {
-
-    }
-
 
 
     private void userRecoveryData() {
@@ -130,48 +119,7 @@ public class OrdensFragment extends Fragment {
 
     private void userRecoveryOrders() {
 
-        DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("ordens").child(caminho).child(Base64Handler.codificarBase64(user.getEmail()));
-        db.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Ordens recuperada = null;
-                if (dataSnapshot != null) {
-                    for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                        recuperada = dsp.getValue(Ordens.class);
-                        listaOrdens.add(recuperada);
-                    }
-                    popularDadosOrdens();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-    }
-
-    private void popularDadosUsuario() {
-
-        TextView nome = v.findViewById(R.id.nomeOrdens);
-
-        String NOME = "";
-
-        if (usuario != null) {
-            NOME = usuario.getNome() + " " + usuario.getSobrenome();
-
-        }
-        nome.setText(NOME);
-
-
-        userRecoveryOrders();
-
-    }
-
-    private void popularDadosOrdens() {
         Boolean monitor = false;
-
         for (String id : turma.getMonitores()) {
             if (id.equals(usuario.getId())) {
                 monitor = true;
@@ -191,23 +139,58 @@ public class OrdensFragment extends Fragment {
                             listaOrdens.add(recuperada);
                         }
                     }
-                    popularDadosOrdens();
+                    popularOrdens();
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                 }
             });
+        } else {
+            DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("ordens").child(caminho).child(Base64Handler.codificarBase64(user.getEmail()));
+            db.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Ordens recuperada;
+                    if (dataSnapshot != null) {
+                        for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                            recuperada = dsp.getValue(Ordens.class);
+                            listaOrdens.add(recuperada);
+                        }
+                        popularOrdens();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
         }
-        popularOrdens();
+    }
+
+    private void popularDadosUsuario() {
+
+        TextView nome = v.findViewById(R.id.nomeOrdens);
+
+        String NOME = "";
+
+        if (usuario != null) {
+            NOME = usuario.getNome() + " " + usuario.getSobrenome();
+
+        }
+        nome.setText(NOME);
+
+
+        userRecoveryOrders();
 
     }
 
+
     private void popularOrdens() {
-        List<Ordens> lista = new ArrayList<>(listaOrdens);
-        Collections.reverse(lista);
+        Collections.reverse(listaOrdens);
         recyclerOrdens = v.findViewById(R.id.recylerOrdens);
-        OrdensAdapter adapter = new OrdensAdapter(lista, getActivity());
+        OrdensAdapter adapter = new OrdensAdapter(listaOrdens, getActivity());
         recyclerOrdens.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerOrdens.setAdapter(adapter);
 
@@ -257,9 +240,5 @@ public class OrdensFragment extends Fragment {
         listaOrdens.clear();
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        listaOrdens.clear();
-    }
+
 }
