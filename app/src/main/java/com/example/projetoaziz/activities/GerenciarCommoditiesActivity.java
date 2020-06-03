@@ -101,12 +101,7 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
                 db.setValue(ordem);
 
                 list.salvar(caminho, Base64Handler.codificarBase64(user.getEmail()));
-                Intent i = new Intent(GerenciarCommoditiesActivity.this, MainActivity.class);
-                            i.putExtra("idTurma", caminho);
-                            startActivity(i);
-                            finish();
-
-
+                fecharTela();
             }
         });
 
@@ -131,16 +126,9 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
                 list.atualizarPatrimonio();
                 list.setPatrimonio(list.getPatrimonio() + list.getCreditos());
                 list.salvar(caminho, Base64Handler.codificarBase64(user.getEmail()));
-                Intent i = new Intent(GerenciarCommoditiesActivity.this, MainActivity.class);
-                i.putExtra("idTurma", caminho);
-                startActivity(i);
-                finish();
-
-
+                fecharTela();
             }
         });
-
-
     }
 
     private void editarCommodities() {
@@ -237,6 +225,13 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
         DatabaseReference listaAtualizada = ConfiguracaoDatabase.getFirebaseDatabase().child("turmas").child(caminho);
         turma.setListaCommodities(turma.getListaCommodities());
         listaAtualizada.setValue(turma);
+        Intent i = new Intent(GerenciarCommoditiesActivity.this, MainActivity.class);
+        i.putExtra("idTurma", caminho);
+        startActivity(i);
+        finish();
+    }
+
+    private void fecharTela() {
         Intent i = new Intent(GerenciarCommoditiesActivity.this, MainActivity.class);
         i.putExtra("idTurma", caminho);
         startActivity(i);
