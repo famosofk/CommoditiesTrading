@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +24,8 @@ import com.example.projetoaziz.models.ListaCommodities;
 import com.example.projetoaziz.models.Ordens;
 import com.example.projetoaziz.models.Turma;
 import com.example.projetoaziz.models.Usuario;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -99,11 +102,22 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
                 list.setCreditos(list.getCreditos() - gasto);
 
                 db.setValue(ordem);
-                    list.salvar(caminho, ordem.getIdDono());
-                    Intent i = new Intent(GerenciarCommoditiesActivity.this, MainActivity.class);
-                    i.putExtra("idTurma", caminho);
-                    startActivity(i);
-                finish();
+
+                DatabaseReference db2 = ConfiguracaoDatabase.getFirebaseDatabase().child(caminho).child(caminho).child(Base64Handler.codificarBase64(user.getEmail()));
+                Toast.makeText(GerenciarCommoditiesActivity.this, "Salvando operação. Aguarde.", Toast.LENGTH_SHORT).show();
+                db2.setValue(list).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Intent i = new Intent(GerenciarCommoditiesActivity.this, MainActivity.class);
+                            i.putExtra("idTurma", caminho);
+                            startActivity(i);
+                            finish();
+                        } else {
+                            Toast.makeText(GerenciarCommoditiesActivity.this, "Erro ao salvar. Tente novamente.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
 
             }
         });
@@ -129,12 +143,22 @@ public class GerenciarCommoditiesActivity extends AppCompatActivity {
                 list.setCreditos(adapterVendas.calcularLucroTotal() + list.getCreditos()); //ok. tá somando o dinheiro que tenho com o que ganhei
                 list.atualizarPatrimonio();
                 list.setPatrimonio(list.getPatrimonio() + list.getCreditos());
+                DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child(caminho).child(caminho).child(Base64Handler.codificarBase64(user.getEmail()));
+                Toast.makeText(GerenciarCommoditiesActivity.this, "Salvando operação. Aguarde.", Toast.LENGTH_SHORT).show();
+                db.setValue(list).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Intent i = new Intent(GerenciarCommoditiesActivity.this, MainActivity.class);
+                            i.putExtra("idTurma", caminho);
+                            startActivity(i);
+                            finish();
+                        } else {
+                            Toast.makeText(GerenciarCommoditiesActivity.this, "Erro ao salvar. Tente novamente.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
 
-                list.salvar(caminho, Base64Handler.codificarBase64(user.getEmail()));
-                Intent i = new Intent(GerenciarCommoditiesActivity.this, MainActivity.class);
-                i.putExtra("idTurma", caminho);
-                startActivity(i);
-                finish();
             }
         });
 

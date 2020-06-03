@@ -191,8 +191,7 @@ public class OrdensFragment extends Fragment {
                             listaOrdens.add(recuperada);
                         }
                     }
-
-
+                    popularDadosOrdens();
                 }
 
                 @Override
@@ -200,18 +199,17 @@ public class OrdensFragment extends Fragment {
                 }
             });
         }
+        popularOrdens();
+
+    }
+
+    private void popularOrdens() {
         List<Ordens> lista = new ArrayList<>(listaOrdens);
         Collections.reverse(lista);
-            recyclerOrdens = v.findViewById(R.id.recylerOrdens);
+        recyclerOrdens = v.findViewById(R.id.recylerOrdens);
         OrdensAdapter adapter = new OrdensAdapter(lista, getActivity());
-            recyclerOrdens.setLayoutManager(new LinearLayoutManager(getActivity()));
-            recyclerOrdens.setAdapter(adapter);
-
-
-
-
-
-
+        recyclerOrdens.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerOrdens.setAdapter(adapter);
 
     }
 

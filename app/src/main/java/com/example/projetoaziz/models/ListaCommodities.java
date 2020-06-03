@@ -22,7 +22,7 @@ public class ListaCommodities implements Serializable {
     public void salvar(String caminho, String id) {
         DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(caminho).child(id);
         db.setValue(this);
-        patrimonio = patrimonioAnterior = 100000;
+
     }
 
     public void atualizarPatrimonio() {
