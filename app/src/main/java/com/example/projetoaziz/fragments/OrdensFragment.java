@@ -121,9 +121,33 @@ public class OrdensFragment extends Fragment {
 
         Boolean monitor = false;
         for (String id : turma.getMonitores()) {
-            if (id.equals(usuario.getId())) {
-                monitor = true;
-            }
+            if (id.equals(usuario.getId())) { monitor = true; }
+        }
+
+
+
+        if(!monitor){
+            Toast.makeText(getActivity(), "entrou", Toast.LENGTH_SHORT).show();
+            DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("ordens").child(turma.getId()).child(turma.getIdProfessor());
+            db.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                   Ordens recuperada;
+                    for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                            recuperada = dsp.getValue(Ordens.class);
+                            assert recuperada != null;
+                            listaOrdens.add(recuperada);
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+
         }
         if (monitor) {
             DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("ordens").child(caminho);
@@ -143,10 +167,8 @@ public class OrdensFragment extends Fragment {
                 }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                }
-            });
-        } else {
+                public void onCancelled(@NonNull DatabaseError databaseError) { }}); }
+        else {
             DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("ordens").child(caminho).child(Base64Handler.codificarBase64(user.getEmail()));
             db.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -160,12 +182,8 @@ public class OrdensFragment extends Fragment {
                         popularOrdens();
                     }
                 }
-
                 @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
+                public void onCancelled(@NonNull DatabaseError databaseError) { }});
         }
     }
 
@@ -188,7 +206,6 @@ public class OrdensFragment extends Fragment {
 
 
     private void popularOrdens() {
-        Collections.reverse(listaOrdens);
         recyclerOrdens = v.findViewById(R.id.recylerOrdens);
         OrdensAdapter adapter = new OrdensAdapter(listaOrdens, getActivity());
         recyclerOrdens.setLayoutManager(new LinearLayoutManager(getActivity()));
