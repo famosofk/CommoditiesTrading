@@ -85,6 +85,22 @@
     <string name="recusar_intro">Recusar</string>
     <string name="monitor_cadastro_hint">Permite cadastrar monitores</string>
     <string name="participantes_intro">Participantes</string>
+    <string name="requer_senha">Requer Senha?</string>
+    <string name="abobora_text">Abóbora</string>
+    <string name="description_text">imageresource</string>
+    <string name="alface">Alface</string>
+    <string name="batata">Batata</string>
+    <string name="cebola">Cebola</string>
+    <string name="goiaba">Goiaba</string>
+    <string name="leite">Leite</string>
+    <string name="mandioca">Mandioca</string>
+    <string name="ovos">Ovos</string>
+    <string name="tomate">Tomate</string>
+    <string name="banana">Banana</string>
+    <string name="cenoura">Cenoura</string>
+    <string name="laranja">Laranja</string>
+    <string name="limao">Limão</string>
+    <string name="soja">Soja</string>
 
     <string-array name="commodities">
         <item name="Algodão" />

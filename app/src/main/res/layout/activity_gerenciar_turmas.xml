@@ -13,9 +13,7 @@
         android:orientation="vertical">
 
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+
 
             <LinearLayout
                 android:id="@+id/selectorAction"
@@ -98,6 +96,7 @@
                     android:ems="10"
                     android:hint="@string/nome_sala_intro"
                     android:inputType="textPersonName"
+                    android:importantForAutofill="no"
                     android:textAlignment="center" />
 
                 <TextView
@@ -115,6 +114,7 @@
                     android:ems="10"
                     android:hint="@string/creditos_intro_hint"
                     android:inputType="text|numberDecimal"
+                    android:importantForAutofill="no"
                     android:textAlignment="center" />
 
                 <CheckBox
@@ -123,7 +123,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="10dp"
-                    android:text="Requer Senha?" />
+                    android:text="@string/requer_senha" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -140,6 +140,7 @@
                     android:ems="10"
                     android:hint="@string/senha_turma_intro"
                     android:inputType="textPassword"
+                    android:importantForAutofill="no"
                     android:textAlignment="center" />
 
                 <TextView
@@ -158,6 +159,7 @@
                     android:ems="10"
                     android:hint="@string/monitor_cadastro_hint"
                     android:inputType="textPersonName"
+                    android:importantForAutofill="no"
                     android:textAlignment="center" />
 
                 <TextView
@@ -173,6 +175,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="30dp"
+                    android:baselineAligned="false"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -191,6 +194,7 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:layout_weight="1"
+                                android:contentDescription="@string/description_text"
                                 app:srcCompat="@drawable/pumpkin" />
 
                             <CheckBox
@@ -198,7 +202,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Abobora" />
+                                android:text="@string/abobora_text" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -210,13 +214,14 @@
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
+                                android:contentDescription="@string/description_text"
                                 app:srcCompat="@drawable/lettuce" />
 
                             <CheckBox
                                 android:id="@+id/checkBoxAlface"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Alface" />
+                                android:text="@string/alface" />
                         </LinearLayout>
 
 
@@ -229,6 +234,7 @@
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
+                                android:contentDescription="@string/description_text"
                                 app:srcCompat="@drawable/rice" />
 
                             <CheckBox
@@ -247,13 +253,14 @@
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
+                                android:contentDescription="@string/description_text"
                                 app:srcCompat="@drawable/potato" />
 
                             <CheckBox
                                 android:id="@+id/checkBoxBatata"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Batata" />
+                                android:text="@string/batata" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -265,6 +272,7 @@
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
+                                android:contentDescription="@string/description_text"
                                 app:srcCompat="@drawable/cow" />
 
                             <CheckBox
@@ -283,13 +291,14 @@
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
+                                android:contentDescription="@string/description_text"
                                 app:srcCompat="@drawable/onion" />
 
                             <CheckBox
                                 android:id="@+id/checkBoxCebola"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Cebola" />
+                                android:text="@string/cebola" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -301,6 +310,7 @@
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
+                                android:contentDescription="@string/description_text"
                                 app:srcCompat="@drawable/beans" />
 
                             <CheckBox
@@ -320,6 +330,7 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:layout_weight="1"
+                                android:contentDescription="@string/description_text"
                                 app:srcCompat="@drawable/guava" />
 
                             <CheckBox
@@ -327,7 +338,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Goiaba" />
+                                android:text="@string/goiaba" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -339,13 +350,14 @@
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
+                                android:contentDescription="@string/description_text"
                                 app:srcCompat="@drawable/milk" />
 
                             <CheckBox
                                 android:id="@+id/checkBoxLeite"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Leite" />
+                                android:text="@string/leite" />
                         </LinearLayout>
 
 
@@ -358,13 +370,14 @@
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
+                                android:contentDescription="@string/description_text"
                                 app:srcCompat="@drawable/mandioca" />
 
                             <CheckBox
                                 android:id="@+id/checkBoxMandioca"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Mandioca" />
+                                android:text="@string/mandioca" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -376,13 +389,14 @@
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
+                                android:contentDescription="@string/description_text"
                                 app:srcCompat="@drawable/egg" />
 
                             <CheckBox
                                 android:id="@+id/checkBoxOvos"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Ovos" />
+                                android:text="@string/ovos" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -394,13 +408,14 @@
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
+                                android:contentDescription="@string/description_text"
                                 app:srcCompat="@drawable/tomato" />
 
                             <CheckBox
                                 android:id="@+id/checkBoxTomate"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Tomate" />
+                                android:text="@string/tomate" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -412,6 +427,7 @@
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
+                                android:contentDescription="@string/description_text"
                                 app:srcCompat="@drawable/pig" />
 
                             <CheckBox
@@ -440,6 +456,7 @@
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
+                                android:contentDescription="@string/description_text"
                                 app:srcCompat="@drawable/sugar" />
 
                             <CheckBox
@@ -459,6 +476,7 @@
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
+                                android:contentDescription="@string/description_text"
                                 app:srcCompat="@drawable/cotton" />
 
                             <CheckBox
@@ -476,9 +494,10 @@
                             android:orientation="horizontal">
 
                             <ImageView
-                                android:layout_width="20dp"
+                                android:layout_width="0dp"
                                 android:layout_height="20dp"
                                 android:layout_weight="0"
+                                android:contentDescription="@string/description_text"
                                 app:srcCompat="@drawable/banana" />
 
 
@@ -486,7 +505,7 @@
                                 android:id="@+id/checkBoxBanana"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Banana" />
+                                android:text="@string/banana" />
                         </LinearLayout>
 
 
@@ -499,6 +518,7 @@
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
+                                android:contentDescription="@string/description_text"
                                 app:srcCompat="@drawable/ox" />
 
                             <CheckBox
@@ -517,6 +537,7 @@
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
+                                android:contentDescription="@string/description_text"
                                 app:srcCompat="@drawable/coffee" />
 
                             <CheckBox
@@ -535,13 +556,14 @@
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
+                                android:contentDescription="@string/description_text"
                                 app:srcCompat="@drawable/carrot" />
 
                             <CheckBox
                                 android:id="@+id/checkBoxCenoura"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="cenoura" />
+                                android:text="@string/cenoura" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -553,7 +575,9 @@
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
-                                app:srcCompat="@drawable/chicken" />
+                                android:contentDescription="@string/description_text"
+                                app:srcCompat="@drawable/chicken"
+                                tools:ignore="TooManyViews" />
 
                             <CheckBox
                                 android:id="@+id/checkBoxChicken"
@@ -571,13 +595,14 @@
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
+                                android:contentDescription="@string/description_text"
                                 app:srcCompat="@drawable/orange" />
 
                             <CheckBox
                                 android:id="@+id/checkBoxLaranja"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Laranja" />
+                                android:text="@string/laranja" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -588,14 +613,16 @@
 
                             <ImageView
                                 android:layout_width="20dp"
+                                android:contentDescription="@string/description_text"
                                 android:layout_height="20dp"
                                 app:srcCompat="@drawable/lemon" />
 
                             <CheckBox
                                 android:id="@+id/checkBoxLimao"
                                 android:layout_width="match_parent"
+
                                 android:layout_height="wrap_content"
-                                android:text="Limao" />
+                                android:text="@string/limao" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -607,6 +634,7 @@
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
+                                android:contentDescription="@string/description_text"
                                 app:srcCompat="@drawable/corn" />
 
                             <CheckBox
@@ -625,6 +653,7 @@
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
+                                android:contentDescription="@string/description_text"
                                 app:srcCompat="@drawable/wheatdraw" />
 
                             <CheckBox
@@ -643,13 +672,14 @@
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
+                                android:contentDescription="@string/description_text"
                                 app:srcCompat="@drawable/soy" />
 
                             <CheckBox
                                 android:id="@+id/checkBoxSoja"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Soja" />
+                                android:text="@string/soja" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -732,6 +762,7 @@
                         android:textAlignment="center"
                         android:textColor="@android:color/black"
                         android:textColorHint="@android:color/black"
+                        android:importantForAutofill="no"
                         android:visibility="visible" />
 
                     <LinearLayout
@@ -755,6 +786,7 @@
                             android:ems="10"
                             android:hint="@string/codigo_monitor_hint"
                             android:inputType="textPersonName"
+                            android:importantForAutofill="no"
                             android:textAlignment="center" />
                     </LinearLayout>
 
@@ -771,7 +803,8 @@
                             android:layout_marginEnd="5dp"
                             android:layout_weight="1"
                             android:background="#d3d3d3"
-                            android:text="@string/recusar_intro" />
+                            android:text="@string/recusar_intro"
+                            tools:ignore="ButtonStyle" />
 
                         <Button
                             android:id="@+id/confirmarButton"
@@ -781,7 +814,8 @@
                             android:layout_weight="1"
                             android:background="@color/colorPrimaryDark"
                             android:text="@string/confirmar_intro"
-                            android:textColor="@android:color/white" />
+                            android:textColor="@android:color/white"
+                            tools:ignore="ButtonStyle" />
                     </LinearLayout>
 
                     <TextView
@@ -795,7 +829,6 @@
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
-        </FrameLayout>
 
 
     </LinearLayout>

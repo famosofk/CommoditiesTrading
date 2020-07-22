@@ -34,6 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class SelecionarTurmaActivity extends AppCompatActivity {
@@ -41,7 +42,6 @@ public class SelecionarTurmaActivity extends AppCompatActivity {
     private TurmaAdapter adapter;
     private Usuario usuario;
     private FirebaseUser user;
-    private AlertDialog alerta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,16 +54,21 @@ public class SelecionarTurmaActivity extends AppCompatActivity {
 
         FirebaseAuth mauth = ConfiguracaoDatabase.getFirebaseAutenticacao();
         user = mauth.getCurrentUser();
+        assert user != null;
         recuperarUsuario(user);
     }
 
     private void recuperarUsuario(FirebaseUser user) {
-        DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child(user.getPhotoUrl().toString()).child(Base64Handler.codificarBase64(user.getEmail()));
+        DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child(Objects.requireNonNull(user.getPhotoUrl()).toString()).child(Base64Handler.codificarBase64(Objects.requireNonNull(user.getEmail())));
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 usuario = dataSnapshot.getValue(Usuario.class);
-                fazerListagem(usuario);
+                if (usuario != null) {
+                    fazerListagem(usuario);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Não conseguimos encontrar seu usuário", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -76,12 +81,11 @@ public class SelecionarTurmaActivity extends AppCompatActivity {
     private void fazerListagem(final Usuario usuario) {
 
 
-
         TextView semTurma = findViewById(R.id.semTurmaText);
         if (usuario.getListaTurmas().size() != 0) {
             semTurma.setVisibility(View.GONE);
             Set<String> set = new LinkedHashSet<>(usuario.getListaTurmas());
-            adapter = new TurmaAdapter(new ArrayList<String>(set), this);
+            adapter = new TurmaAdapter(new ArrayList<>(set), this);
             recycler.setLayoutManager(new LinearLayoutManager(this));
             new ItemTouchHelper(itemTouchSimpleCallBack).attachToRecyclerView(recycler);
             recycler.setAdapter(adapter);
@@ -178,7 +182,7 @@ public class SelecionarTurmaActivity extends AppCompatActivity {
             public void onClick(DialogInterface arg0, int arg1) {
                 final String value = (String) new LinkedHashSet<>(usuario.getListaTurmas()).toArray()[position];
                 usuario.getListaTurmas().remove(position);
-                DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child(user.getPhotoUrl().toString()).child(user.getDisplayName());
+                DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child(Objects.requireNonNull(user.getPhotoUrl()).toString()).child(Objects.requireNonNull(user.getDisplayName()));
                 db.setValue(usuario);
                 db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(value);
                 db.child(user.getDisplayName()).removeValue();
@@ -190,7 +194,7 @@ public class SelecionarTurmaActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         Turma turma = dataSnapshot.getValue(Turma.class);
                         if (dataSnapshot.exists()) {
-                            if (turma.getIdProfessor().equals(user.getDisplayName())) {
+                            if (Objects.requireNonNull(turma).getIdProfessor().equals(user.getDisplayName())) {
                                 DatabaseReference excluir = ConfiguracaoDatabase.getFirebaseDatabase().child("turmas").child(value);
                                 excluir.removeValue();
 
@@ -212,7 +216,7 @@ public class SelecionarTurmaActivity extends AppCompatActivity {
         builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) { Toast.makeText(SelecionarTurmaActivity.this, "Ação cancelada.", Toast.LENGTH_SHORT).show();
             adapter.notifyDataSetChanged();}});
-        alerta = builder.create();
+        AlertDialog alerta = builder.create();
         alerta.show();
     }
 

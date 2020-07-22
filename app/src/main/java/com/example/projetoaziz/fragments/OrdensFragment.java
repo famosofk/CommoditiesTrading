@@ -33,7 +33,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -127,7 +126,6 @@ public class OrdensFragment extends Fragment {
 
 
         if(!monitor){
-            Toast.makeText(getActivity(), "entrou", Toast.LENGTH_SHORT).show();
             DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("ordens").child(turma.getId()).child(turma.getIdProfessor());
             db.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -169,7 +167,7 @@ public class OrdensFragment extends Fragment {
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) { }}); }
         else {
-            DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("ordens").child(caminho).child(Base64Handler.codificarBase64(user.getEmail()));
+            DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("ordens").child(caminho).child(Base64Handler.codificarBase64(Objects.requireNonNull(user.getEmail())));
             db.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
