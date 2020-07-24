@@ -100,7 +100,7 @@
     <string name="cenoura">Cenoura</string>
     <string name="laranja">Laranja</string>
     <string name="limao">Limão</string>
-    <string name="soja">Soja</string>
+
 
     <string-array name="commodities">
         <item name="Algodão" />

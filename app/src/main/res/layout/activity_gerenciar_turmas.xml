@@ -12,9 +12,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-
-
-
             <LinearLayout
                 android:id="@+id/selectorAction"
                 android:layout_width="match_parent"
@@ -494,7 +491,7 @@
                             android:orientation="horizontal">
 
                             <ImageView
-                                android:layout_width="0dp"
+                                android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:layout_weight="0"
                                 android:contentDescription="@string/description_text"

@@ -148,12 +148,13 @@ public class OrdensFragment extends Fragment {
 
         }
         if (monitor) {
+            listaOrdens.clear();
             DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("ordens").child(caminho);
             db.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Ordens recuperada;
-                    listaOrdens.clear();
+
                     for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                         for (DataSnapshot dsp3 : dsp.getChildren()) {
                             recuperada = dsp3.getValue(Ordens.class);
