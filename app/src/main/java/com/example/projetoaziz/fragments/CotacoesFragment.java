@@ -1,6 +1,7 @@
 package com.example.projetoaziz.fragments;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -56,6 +58,13 @@ public class CotacoesFragment extends Fragment {
         v = inflater.inflate(R.layout.fragment_cotacoes, container, false);
         Bundle bundle = getArguments();
         caminho = bundle.getString("idTurma");
+        TextView jornal = v.findViewById(R.id.marketVisibility);
+        jornal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.agroplusufv.com.br/")));
+            }
+        });
 
         ImageButton editar = v.findViewById(R.id.imageView3);
         FirebaseAuth mauth = ConfiguracaoDatabase.getFirebaseAutenticacao();
@@ -96,6 +105,7 @@ public class CotacoesFragment extends Fragment {
                     transicaoTelaCompra();
                 } else if (user.getPhotoUrl().toString().equals("aluno")) {
                     if (turma.getVisibility()) {
+
                         transicaoTelaCompra();
                     } else {
                         exibirToastMercadoFechado();
@@ -131,6 +141,12 @@ public class CotacoesFragment extends Fragment {
                 if (dataSnapshot != null) {
                     turma = dataSnapshot.getValue(Turma.class);
                     if (turma != null) {
+                        TextView aberto = v.findViewById(R.id.marketVisibility);
+                        if (turma.getVisibility()) {
+                            aberto.setText("O mercado está ABERTO. \n Conheça nosso jornal clicando aqui");
+                        } else {
+                            aberto.setText("O mercado está FECHADO. \n Conheça nosso jornal clicando aqui");
+                        }
                         recuperarLista();
                     }
                 }
@@ -153,7 +169,7 @@ public class CotacoesFragment extends Fragment {
 
     private void atualizarLista(ListaCommodities lista) {
         dataChange = null;
-        Boolean troca = false;
+        boolean troca = false;
         List<Commodity> list = turma.getListaCommodities().getListaCommodities();
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getValor() != lista.getListaCommodities().get(i).getValor()) {

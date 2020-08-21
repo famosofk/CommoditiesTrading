@@ -6,7 +6,6 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,7 +15,6 @@ import com.example.projetoaziz.R;
 import com.example.projetoaziz.helpers.Base64Handler;
 import com.example.projetoaziz.helpers.ConfiguracaoDatabase;
 import com.example.projetoaziz.helpers.MoneySort;
-import com.example.projetoaziz.helpers.VariationSort;
 import com.example.projetoaziz.models.ListaCommodities;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Description;
@@ -54,7 +52,7 @@ public class ChartsFragment extends Fragment {
     private List<ListaCommodities> listaCommodities = new ArrayList<>();
     private View v;
     private DatabaseReference db;
-    private String caminho, acumulado, variado;
+    private String caminho;
     private int posicao, size;
     private TextView colocacao;
 
@@ -71,52 +69,26 @@ public class ChartsFragment extends Fragment {
         db = null;
         user = ConfiguracaoDatabase.getFirebaseAutenticacao().getCurrentUser();
         Bundle bundle = getArguments();
+        assert bundle != null;
         caminho = bundle.getString("idTurma");
         colocacao = v.findViewById(R.id.colocacaoText);
 
         recuperarListas();
 
 
-        final BarChart mbar = v.findViewById(R.id.barChart);
-        final BarChart mbar2 = v.findViewById(R.id.barChart2);
-
-        Button variacao = v.findViewById(R.id.exibirVariacao);
-        Button patrimonio = v.findViewById(R.id.exibirPatrimonio);
-
-        variacao.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mbar.setVisibility(View.GONE);
-                mbar2.setVisibility(View.VISIBLE);
-                colocacao.setText(Html.fromHtml(variado));
-
-            }
-        });
-
-        patrimonio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mbar.setVisibility(View.VISIBLE);
-                mbar2.setVisibility(View.GONE);
-                colocacao.setText(Html.fromHtml(acumulado));
-            }
-        });
-
 
         return v;
     }
 
     @SuppressLint("ResourceAsColor")
-    private void plotarGraficos(List<ListaCommodities> seteAcumulado, List<ListaCommodities> seteVariacao) {
+    private void plotarGraficos(List<ListaCommodities> seteAcumulado) {
         TextView ranking = v.findViewById(R.id.textPosicao);
         String POSICAO = "Colocação: " + posicao + "/" + size;
         ranking.setText(POSICAO);
         BarChart patrimonioBarChart = v.findViewById(R.id.barChart);
-        BarChart variacaoBarChart = v.findViewById(R.id.barChart2);
         List<BarEntry> patrimonioEntries = new ArrayList<>();
-        List<BarEntry> variacaoEntries = new ArrayList<>();
 
-        acumulado = "";
+        String acumulado = "";
         for (int i = 0; i < seteAcumulado.size(); i++) {
             ListaCommodities usuario = seteAcumulado.get(i);
             patrimonioEntries.add(new BarEntry(i, usuario.getPatrimonio()));
@@ -149,44 +121,9 @@ public class ChartsFragment extends Fragment {
             }
         }
 
-        variado = "";
-        for (int i = 0; i < seteVariacao.size(); i++) {
-            ListaCommodities usuario = seteVariacao.get(i);
-            variacaoEntries.add(new BarEntry(i, usuario.getPatrimonio() / usuario.getPatrimonioAnterior()));
-            if (i == 0) {
-                variado += String.format("<strong> <font color=#f44336> %2d ) %s %s </font> </strong> <br/>", i, usuario.getNome(), usuario.getSobrenome());
-            }
-            if (i == 1) {
-                variado += String.format("<strong> <font color=#9c27b0> %2d ) %s %s </font> </strong> <br/>", i, usuario.getNome(), usuario.getSobrenome());
-
-            }
-            if (i == 2) {
-                variado += String.format("<strong> <font color=#3f51b5> %2d ) %s %s </font> </strong> <br/>", i, usuario.getNome(), usuario.getSobrenome());
-
-            }
-            if (i == 3) {
-                variado += String.format("<strong> <font color=#03a9f4> %2d ) %s %s </font> </strong> <br/>", i, usuario.getNome(), usuario.getSobrenome());
-
-            }
-            if (i == 4) {
-                variado += String.format("<strong> <font color=#009688> %2d ) %s %s </font> </strong> <br/>", i, usuario.getNome(), usuario.getSobrenome());
-
-            }
-            if (i == 5) {
-                variado += String.format("<strong> <font color=#8bc34a> %2d ) %s %s </font> </strong> <br/>", i, usuario.getNome(), usuario.getSobrenome());
-
-            }
-            if (i == 6) {
-                variado += String.format("<strong> <font color=#ffeb3b> %2d ) %s %s </font> </strong> <br/>", i, usuario.getNome(), usuario.getSobrenome());
-
-            }
-
-        }
 
         BarDataSet patrimonioDataSet = new BarDataSet(patrimonioEntries, "Patrimônio");
-        BarDataSet variacaoDataSet = new BarDataSet(variacaoEntries, "Variação");
         patrimonioDataSet.setColors(FABINHO_COLORS);
-        variacaoDataSet.setColors(FABINHO_COLORS);
         BarData patrimonioBarData = new BarData(patrimonioDataSet);
         YAxis yAxisRight = patrimonioBarChart.getAxisRight();
         yAxisRight.setEnabled(false);
@@ -207,25 +144,6 @@ public class ChartsFragment extends Fragment {
         patrimonioBarChart.setFitBars(true);
         patrimonioBarChart.setData(patrimonioBarData);
         patrimonioBarChart.invalidate();
-        BarData variacaoBarData = new BarData(variacaoDataSet);
-        YAxis yAxisRight2 = variacaoBarChart.getAxisRight();
-        yAxisRight2.setEnabled(false);
-        YAxis yAxisLeft2 = variacaoBarChart.getAxisLeft();
-        yAxisLeft2.setEnabled(false);
-        XAxis xAxis2 = variacaoBarChart.getXAxis();
-        xAxis2.setEnabled(false);
-        variacaoBarData.setBarWidth(0.9f);
-        variacaoBarChart.setDrawValueAboveBar(true);
-        variacaoBarChart.fitScreen();
-        Description description2 = variacaoBarChart.getDescription();
-        description2.setEnabled(false);
-        Legend legend2 = variacaoBarChart.getLegend();
-        legend2.setEnabled(false);
-        variacaoBarChart.setDrawGridBackground(false);
-        variacaoBarChart.setDrawBorders(false);
-        variacaoBarChart.setFitBars(true);
-        variacaoBarChart.setData(variacaoBarData);
-        variacaoBarChart.invalidate();
         colocacao.setText(Html.fromHtml(acumulado));
         listaCommodities.clear();
         db = null;
@@ -233,7 +151,7 @@ public class ChartsFragment extends Fragment {
 
     private void recuperarListas() {
 
-        DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(caminho);
+        db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(caminho);
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -243,9 +161,7 @@ public class ChartsFragment extends Fragment {
                     }
                     size = listaCommodities.size() - 1;
 
-                    List<ListaCommodities> variacao = new ArrayList<>(listaCommodities);
                     Collections.sort(listaCommodities, new MoneySort());
-                    Collections.sort(variacao, new VariationSort());
                     for (int i = 0; i < listaCommodities.size(); i++) {
                         if (listaCommodities.get(i).getIdDono().equals(Base64Handler.codificarBase64(user.getEmail()))) {
                             posicao = i;
@@ -255,10 +171,9 @@ public class ChartsFragment extends Fragment {
                     while (listaCommodities.size() > 6) {
                         listaCommodities.remove(6);
                     }
-                    while (variacao.size() > 6) {
-                        variacao.remove(6);
-                    }
-                    recuperarListaUsuario(listaCommodities, variacao);
+
+
+                    recuperarListaUsuario(listaCommodities);
 
                 }
             }
@@ -270,16 +185,16 @@ public class ChartsFragment extends Fragment {
         });
     }
 
-    private void recuperarListaUsuario(final List<ListaCommodities> patrimonio, final List<ListaCommodities> variacao) {
-        DatabaseReference db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(caminho).child(Base64Handler.codificarBase64(user.getEmail()));
+    private void recuperarListaUsuario(final List<ListaCommodities> patrimonio) {
+        db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(caminho).child(Base64Handler.codificarBase64(user.getEmail()));
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
                     patrimonio.add(dataSnapshot.getValue(ListaCommodities.class));
-                    variacao.add(dataSnapshot.getValue(ListaCommodities.class));
+
                 }
-                plotarGraficos(patrimonio, variacao);
+                plotarGraficos(patrimonio);
             }
 
             @Override

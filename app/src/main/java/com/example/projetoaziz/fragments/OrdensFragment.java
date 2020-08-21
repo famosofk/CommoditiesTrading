@@ -118,12 +118,13 @@ public class OrdensFragment extends Fragment {
 
     private void userRecoveryOrders() {
 
-        Boolean monitor = false;
+        boolean monitor = false;
         for (String id : turma.getMonitores()) {
-            if (id.equals(usuario.getId())) { monitor = true; }
+            if (id.equals(usuario.getId())) {
+                monitor = true;
+                break;
+            }
         }
-
-
 
         if(!monitor){
             DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("ordens").child(turma.getId()).child(turma.getIdProfessor());
@@ -135,7 +136,6 @@ public class OrdensFragment extends Fragment {
                             recuperada = dsp.getValue(Ordens.class);
                             assert recuperada != null;
                             listaOrdens.add(recuperada);
-
                     }
                 }
 
