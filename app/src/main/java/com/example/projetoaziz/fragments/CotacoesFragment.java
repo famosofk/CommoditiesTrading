@@ -62,7 +62,7 @@ public class CotacoesFragment extends Fragment {
         jornal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.agroplusufv.com.br/")));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://docs.google.com/document/d/e/2PACX-1vTzIu1vz3AZkFobhDFNdFC-7afhDA4DsIkx_Xuo9sng_lg97bQL-d7qQTII1nHjawziLt9MSNtJ-TmF/pub")));
             }
         });
 
