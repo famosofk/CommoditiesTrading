@@ -10,8 +10,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projetoaziz.R;
+import com.example.projetoaziz.adapters.ListagemUsuarioAdapter;
 import com.example.projetoaziz.helpers.Base64Handler;
 import com.example.projetoaziz.helpers.ConfiguracaoDatabase;
 import com.example.projetoaziz.helpers.MoneySort;
@@ -38,8 +41,11 @@ import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * Se for a versão de professor, tirar o comentário da listagem de usuários.
  */
+
+
+
 public class ChartsFragment extends Fragment {
     private static int[] FABINHO_COLORS = {rgb("#f44336"),
             rgb("#9c27b0"),
@@ -149,6 +155,13 @@ public class ChartsFragment extends Fragment {
         db = null;
     }
 
+    private void listagemUsuarios(List<ListaCommodities> list) {
+        RecyclerView recycler = v.findViewById(R.id.listgemUsuariosChart);
+        ListagemUsuarioAdapter adapter = new ListagemUsuarioAdapter(list, getActivity());
+        recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recycler.setAdapter(adapter);
+    }
+
     private void recuperarListas() {
 
         db = ConfiguracaoDatabase.getFirebaseDatabase().child("listaCommodities").child(caminho);
@@ -162,6 +175,8 @@ public class ChartsFragment extends Fragment {
                     size = listaCommodities.size() - 1;
 
                     Collections.sort(listaCommodities, new MoneySort());
+                    // List<ListaCommodities> list = new ArrayList<>(listaCommodities);
+                    // listagemUsuarios(list);
                     for (int i = 0; i < listaCommodities.size(); i++) {
                         if (listaCommodities.get(i).getIdDono().equals(Base64Handler.codificarBase64(user.getEmail()))) {
                             posicao = i;
