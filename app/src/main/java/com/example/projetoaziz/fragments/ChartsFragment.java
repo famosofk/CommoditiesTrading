@@ -175,8 +175,8 @@ public class ChartsFragment extends Fragment {
                     size = listaCommodities.size() - 1;
 
                     Collections.sort(listaCommodities, new MoneySort());
-                    // List<ListaCommodities> list = new ArrayList<>(listaCommodities);
-                    // listagemUsuarios(list);
+                    List<ListaCommodities> list = new ArrayList<>(listaCommodities);
+                    listagemUsuarios(list);
                     for (int i = 0; i < listaCommodities.size(); i++) {
                         if (listaCommodities.get(i).getIdDono().equals(Base64Handler.codificarBase64(user.getEmail()))) {
                             posicao = i;
